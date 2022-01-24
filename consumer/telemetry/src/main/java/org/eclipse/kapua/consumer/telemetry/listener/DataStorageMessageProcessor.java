@@ -20,6 +20,7 @@ import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.metric.MetricServiceFactory;
 import org.eclipse.kapua.commons.metric.MetricsService;
 import org.eclipse.kapua.locator.KapuaLocator;
+import org.eclipse.kapua.message.device.data.KapuaDataMessage;
 import org.eclipse.kapua.service.camel.listener.AbstractProcessor;
 import org.eclipse.kapua.service.camel.message.CamelKapuaMessage;
 import org.eclipse.kapua.service.datastore.MessageStoreService;

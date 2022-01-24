@@ -78,7 +78,6 @@ import org.eclipse.kapua.service.device.registry.Device;
 import org.eclipse.kapua.service.device.registry.DeviceRegistryService;
 import org.eclipse.kapua.service.device.registry.DeviceStatus;
 import org.eclipse.kapua.service.client.message.MessageConstants;
-import org.eclipse.kapua.service.client.setting.ServiceClientSetting;
 import org.eclipse.kapua.service.client.setting.ServiceClientSettingKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
