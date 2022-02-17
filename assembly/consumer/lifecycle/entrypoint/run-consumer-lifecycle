@@ -10,7 +10,6 @@
 #    Contributors:
 #        Eurotech
 ################################################################################
-
 JAVA_OPTS="${JAVA_OPTS} --add-opens java.base/java.lang=ALL-UNNAMED"
 
-java ${JAVA_OPTS} ${DEBUG_OPTIONS} -jar kapua-consumer-lifecycle-2.0.0-j11-SNAPSHOT-app.jar
+java ${JAVA_OPTS} ${DEBUG_OPTIONS} -jar kapua-consumer-lifecycle-2.0.0-ARTEMIS-SNAPSHOT-app.jar
