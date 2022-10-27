@@ -78,6 +78,7 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
 
     public CredentialServiceImpl() {
         super(CredentialService.class.getName(), AuthenticationDomains.CREDENTIAL_DOMAIN, AuthenticationEntityManagerFactory.getInstance());
+        //TODO: Why is this logic in a constructor?
         int minPasswordLengthConfigValue;
         try {
             minPasswordLengthConfigValue = KapuaAuthenticationSetting.getInstance().getInt(KapuaAuthenticationSettingKeys.AUTHENTICATION_CREDENTIAL_USERPASS_PASSWORD_MINLENGTH);
