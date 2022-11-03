@@ -17,6 +17,7 @@ import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.KapuaIllegalArgumentException;
 import org.eclipse.kapua.commons.configuration.AbstractKapuaConfigurableService;
+import org.eclipse.kapua.commons.configuration.RootUserTester;
 import org.eclipse.kapua.commons.jpa.EntityManager;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.commons.util.CommonsValidationRegex;
@@ -76,8 +77,17 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
 
     private static final int SYSTEM_MAXIMUM_PASSWORD_LENGTH = 255;
 
+    /**
+     * @deprecated since 2.0.0 - please use {@link #CredentialServiceImpl(AuthenticationEntityManagerFactory, PermissionFactory, AuthorizationService, KapuaAuthenticationSetting, RootUserTester)} instead. This constructor might be removed in future releases
+     */
+    @Deprecated
     public CredentialServiceImpl() {
         super(CredentialService.class.getName(), AuthenticationDomains.CREDENTIAL_DOMAIN, AuthenticationEntityManagerFactory.getInstance());
+        systemMinimumPasswordLength = fixMinimumPasswordLength();
+    }
+
+    private int fixMinimumPasswordLength() {
+        final int systemMinimumPasswordLength;
         //TODO: Why is this logic in a constructor?
         int minPasswordLengthConfigValue;
         try {
@@ -91,6 +101,7 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
             minPasswordLengthConfigValue = 12;
         }
         systemMinimumPasswordLength = minPasswordLengthConfigValue;
+        return systemMinimumPasswordLength;
     }
 
     @Inject
@@ -98,28 +109,16 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
             AuthenticationEntityManagerFactory authenticationEntityManagerFactory,
             PermissionFactory permissionFactory,
             AuthorizationService authorizationService,
-            KapuaAuthenticationSetting kapuaAuthenticationSetting) {
+            KapuaAuthenticationSetting kapuaAuthenticationSetting,
+            RootUserTester rootUserTester) {
         super(CredentialService.class.getName(),
                 AuthenticationDomains.CREDENTIAL_DOMAIN,
                 authenticationEntityManagerFactory,
                 null,
                 permissionFactory,
                 authorizationService,
-                null //TODO: userService is not available when instantiating this object, let it be retrieved by the Locator later on - FOR NOW
-        );
-        //TODO: this logic validates the settings retrieved by KapuaAuthenticationSetting - shouldn't it be moved there?
-        int minPasswordLengthConfigValue;
-        try {
-            minPasswordLengthConfigValue = kapuaAuthenticationSetting.getInt(KapuaAuthenticationSettingKeys.AUTHENTICATION_CREDENTIAL_USERPASS_PASSWORD_MINLENGTH);
-        } catch (NoSuchElementException ex) {
-            LOGGER.warn("Minimum password length not set, 12 characters minimum will be enforced");
-            minPasswordLengthConfigValue = 12;
-        }
-        if (minPasswordLengthConfigValue < 12) {
-            LOGGER.warn("Minimum password length too short, 12 characters minimum will be enforced");
-            minPasswordLengthConfigValue = 12;
-        }
-        systemMinimumPasswordLength = minPasswordLengthConfigValue;
+                rootUserTester);
+        systemMinimumPasswordLength = fixMinimumPasswordLength();
     }
 
     @Override
