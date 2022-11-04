@@ -82,7 +82,13 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
      */
     @Deprecated
     public CredentialServiceImpl() {
-        super(CredentialService.class.getName(), AuthenticationDomains.CREDENTIAL_DOMAIN, AuthenticationEntityManagerFactory.getInstance());
+        super(CredentialService.class.getName(),
+                AuthenticationDomains.CREDENTIAL_DOMAIN,
+                AuthenticationEntityManagerFactory.getInstance(),
+                null,
+                null,
+                null,
+                null);
         systemMinimumPasswordLength = fixMinimumPasswordLength();
     }
 
