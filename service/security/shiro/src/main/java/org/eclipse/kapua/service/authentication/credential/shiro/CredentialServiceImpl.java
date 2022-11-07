@@ -16,9 +16,9 @@ import org.apache.shiro.codec.Base64;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.KapuaIllegalArgumentException;
-import org.eclipse.kapua.commons.configuration.AbstractKapuaConfigurableService;
-import org.eclipse.kapua.commons.configuration.RootUserTester;
+import org.eclipse.kapua.commons.configuration.ServiceConfigurationManager;
 import org.eclipse.kapua.commons.jpa.EntityManager;
+import org.eclipse.kapua.commons.service.internal.AbstractKapuaService;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.commons.util.CommonsValidationRegex;
 import org.eclipse.kapua.commons.util.KapuaExceptionUtils;
@@ -53,10 +53,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import java.security.SecureRandom;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  * {@link CredentialService} implementation.
@@ -64,7 +66,7 @@ import java.util.NoSuchElementException;
  * @since 1.0
  */
 @Singleton
-public class CredentialServiceImpl extends AbstractKapuaConfigurableService implements CredentialService {
+public class CredentialServiceImpl extends AbstractKapuaService implements CredentialService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CredentialServiceImpl.class);
 
@@ -74,22 +76,19 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
      * The minimum password length specified for the whole system. If not defined, assume 12; if defined and less than 12, assume 12.
      */
     private final int systemMinimumPasswordLength;
+    private final ServiceConfigurationManager serviceConfigurationManager;
 
     private static final int SYSTEM_MAXIMUM_PASSWORD_LENGTH = 255;
 
     /**
-     * @deprecated since 2.0.0 - please use {@link #CredentialServiceImpl(AuthenticationEntityManagerFactory, PermissionFactory, AuthorizationService, KapuaAuthenticationSetting, RootUserTester)} instead. This constructor might be removed in future releases
+     * @deprecated since 2.0.0 - please use {@link #CredentialServiceImpl(AuthenticationEntityManagerFactory, ServiceConfigurationManager)} instead. This constructor might be removed in future releases
      */
     @Deprecated
     public CredentialServiceImpl() {
-        super(CredentialService.class.getName(),
-                AuthenticationDomains.CREDENTIAL_DOMAIN,
-                AuthenticationEntityManagerFactory.getInstance(),
-                null,
-                null,
-                null,
+        super(AuthenticationEntityManagerFactory.getInstance(),
                 null);
         systemMinimumPasswordLength = fixMinimumPasswordLength();
+        this.serviceConfigurationManager = null;
     }
 
     private int fixMinimumPasswordLength() {
@@ -110,21 +109,18 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
         return systemMinimumPasswordLength;
     }
 
+    /*
+     *
+
+     * */
     @Inject
     public CredentialServiceImpl(
             AuthenticationEntityManagerFactory authenticationEntityManagerFactory,
-            PermissionFactory permissionFactory,
-            AuthorizationService authorizationService,
-            KapuaAuthenticationSetting kapuaAuthenticationSetting,
-            RootUserTester rootUserTester) {
-        super(CredentialService.class.getName(),
-                AuthenticationDomains.CREDENTIAL_DOMAIN,
-                authenticationEntityManagerFactory,
-                null,
-                permissionFactory,
-                authorizationService,
-                rootUserTester);
+            @Named("CredentialServiceConfigurationManager") ServiceConfigurationManager serviceConfigurationManager) {
+        super(authenticationEntityManagerFactory,
+                null);
         systemMinimumPasswordLength = fixMinimumPasswordLength();
+        this.serviceConfigurationManager = serviceConfigurationManager;
     }
 
     @Override
@@ -474,18 +470,18 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
         return minPasswordLength;
     }
 
-    @Override
-    protected boolean validateNewConfigValuesCoherence(KapuaTocd ocd, Map<String, Object> updatedProps, KapuaId scopeId, KapuaId parentId) throws KapuaException {
-        boolean valid = super.validateNewConfigValuesCoherence(ocd, updatedProps, scopeId, parentId);
-        if (updatedProps.get(PASSWORD_MIN_LENGTH) != null) {
-            // If we're going to set a new limit, check that it's not less than system limit
-            int newPasswordLimit = Integer.parseInt(updatedProps.get(PASSWORD_MIN_LENGTH).toString());
-            if (newPasswordLimit < systemMinimumPasswordLength || newPasswordLimit > SYSTEM_MAXIMUM_PASSWORD_LENGTH) {
-                throw new KapuaIllegalArgumentException(PASSWORD_MIN_LENGTH, String.valueOf(newPasswordLimit));
-            }
-        }
-        return valid;
-    }
+//    @Override
+//    protected boolean validateNewConfigValuesCoherence(KapuaTocd ocd, Map<String, Object> updatedProps, KapuaId scopeId, KapuaId parentId) throws KapuaException {
+//        boolean valid = super.validateNewConfigValuesCoherence(ocd, updatedProps, scopeId, parentId);
+//        if (updatedProps.get(PASSWORD_MIN_LENGTH) != null) {
+//            // If we're going to set a new limit, check that it's not less than system limit
+//            int newPasswordLimit = Integer.parseInt(updatedProps.get(PASSWORD_MIN_LENGTH).toString());
+//            if (newPasswordLimit < systemMinimumPasswordLength || newPasswordLimit > SYSTEM_MAXIMUM_PASSWORD_LENGTH) {
+//                throw new KapuaIllegalArgumentException(PASSWORD_MIN_LENGTH, String.valueOf(newPasswordLimit));
+//            }
+//        }
+//        return valid;
+//    }
 
     private long countExistingCredentials(CredentialType credentialType, KapuaId scopeId, KapuaId userId) throws KapuaException {
         KapuaLocator locator = KapuaLocator.getInstance();
@@ -546,7 +542,6 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
         }
     }
 
-
     @Override
     public void validatePassword(KapuaId scopeId, String plainPassword) throws KapuaException {
         //
@@ -565,7 +560,6 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
         ArgumentValidator.match(plainPassword, CommonsValidationRegex.PASSWORD_REGEXP, "plainPassword");
     }
 
-
     @Override
     public Credential findWithKey(KapuaId scopeId, KapuaId credentialId) throws KapuaException {
         // Validation of the fields
@@ -580,5 +574,20 @@ public class CredentialServiceImpl extends AbstractKapuaConfigurableService impl
         authorizationService.checkPermission(permissionFactory.newPermission(AuthenticationDomains.CREDENTIAL_DOMAIN, Actions.read, null));
 
         return entityManagerSession.doAction(em -> CredentialDAO.find(em, scopeId, credentialId));
+    }
+
+    @Override
+    public KapuaTocd getConfigMetadata(KapuaId scopeId) throws KapuaException {
+        return serviceConfigurationManager.getConfigMetadata(scopeId, true);
+    }
+
+    @Override
+    public Map<String, Object> getConfigValues(KapuaId scopeId) throws KapuaException {
+        return serviceConfigurationManager.getConfigValues(scopeId, true);
+    }
+
+    @Override
+    public void setConfigValues(KapuaId scopeId, KapuaId parentId, Map<String, Object> values) throws KapuaException {
+        serviceConfigurationManager.setConfigValues(scopeId, Optional.ofNullable(parentId), values);
     }
 }
