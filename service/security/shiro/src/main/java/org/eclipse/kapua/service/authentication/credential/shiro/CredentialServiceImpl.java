@@ -24,6 +24,7 @@ import org.eclipse.kapua.commons.util.KapuaExceptionUtils;
 import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
+import org.eclipse.kapua.model.config.metatype.KapuaTocd;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.query.KapuaQuery;
@@ -55,6 +56,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 import java.security.SecureRandom;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * {@link CredentialService} implementation.
@@ -63,7 +66,6 @@ import java.security.SecureRandom;
  */
 @Singleton
 public class CredentialServiceImpl extends KapuaConfigurableServiceBase implements CredentialService {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CredentialServiceImpl.class);
 
     public static final String PASSWORD_MIN_LENGTH = "password.minLength";
@@ -78,6 +80,10 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceBase implemen
         super(AuthenticationEntityManagerFactory.getInstance(), null, null);
     }
 
+    /*
+     *
+
+     * */
     @Inject
     public CredentialServiceImpl(
             AuthenticationEntityManagerFactory authenticationEntityManagerFactory,
@@ -433,7 +439,6 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceBase implemen
         return minPasswordLength;
     }
 
-
     private long countExistingCredentials(CredentialType credentialType, KapuaId scopeId, KapuaId userId) throws KapuaException {
         KapuaLocator locator = KapuaLocator.getInstance();
         CredentialFactory credentialFactory = locator.getFactory(CredentialFactory.class);
@@ -525,5 +530,20 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceBase implemen
         authorizationService.checkPermission(permissionFactory.newPermission(AuthenticationDomains.CREDENTIAL_DOMAIN, Actions.read, null));
 
         return entityManagerSession.doAction(em -> CredentialDAO.find(em, scopeId, credentialId));
+    }
+
+    @Override
+    public KapuaTocd getConfigMetadata(KapuaId scopeId) throws KapuaException {
+        return serviceConfigurationManager.getConfigMetadata(scopeId, true);
+    }
+
+    @Override
+    public Map<String, Object> getConfigValues(KapuaId scopeId) throws KapuaException {
+        return serviceConfigurationManager.getConfigValues(scopeId, true);
+    }
+
+    @Override
+    public void setConfigValues(KapuaId scopeId, KapuaId parentId, Map<String, Object> values) throws KapuaException {
+        serviceConfigurationManager.setConfigValues(scopeId, Optional.ofNullable(parentId), values);
     }
 }
