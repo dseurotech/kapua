@@ -233,10 +233,8 @@
                 <include>javax.cache:cache-api</include>
                 <include>com.warrenstrange:googleauth</include>
                 <include>com.google.zxing:core</include>
-
                 <include>jakarta.xml.bind:jakarta.xml.bind-api</include>
                 <include>com.sun.xml.bind:jaxb-impl</include>
-
                 <include>${pom.groupId}:kapua-account-api</include>
                 <include>${pom.groupId}:kapua-account-internal</include>
                 <include>${pom.groupId}:kapua-broker-api</include>

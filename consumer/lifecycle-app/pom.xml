@@ -25,13 +25,11 @@
     <artifactId>kapua-consumer-lifecycle-app</artifactId>
 
     <dependencies>
-
         <!-- fixes java.lang.ClassNotFoundException: javax.ws.rs.client.RxInvokerProvider -->
         <dependency>
             <groupId>org.glassfish.jersey.bundles</groupId>
             <artifactId>jaxrs-ri</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.eclipse.kapua</groupId>
             <artifactId>kapua-commons</artifactId>
