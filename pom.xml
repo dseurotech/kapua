@@ -56,7 +56,11 @@
         <guava.version>30.1-jre</guava.version>
         <guava-failureaccess.version>1.0.1</guava-failureaccess.version>
         <guava-listenablefuture.version>9999.0-empty-to-avoid-conflict-with-guava</guava-listenablefuture.version>
+<<<<<<< HEAD
 <!-- java11 - upgraded Guice to 5.1.0 to avoid this error (ok warning maybe) on jetty
+=======
+        <!-- upgraded Guice to 5.1.0 to avoid this error (ok warning maybe) on jetty
+>>>>>>> c412b84998 (java11 - dependencies updates and fixes)
         08:31:28.687 [main] INFO  o.e.kapua.locator.guice.KapuaModule - Binding service modules ...
         WARNING: An illegal reflective access operation has occurred
         WARNING: Illegal reflective access by com.google.inject.internal.cglib.core.$ReflectUtils$1 (file:/var/opt/jetty/webapps/root/WEB-INF/lib/guice-4.2.3.jar) to method java.lang.ClassLoader.defineClass(java.lang.String,byte[],int,int,java.security.ProtectionDomain)
