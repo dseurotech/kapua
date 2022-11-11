@@ -32,7 +32,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
@@ -42,7 +41,6 @@
             <artifactId>jaxb-impl</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>org.apache.karaf.features</groupId>
             <artifactId>framework</artifactId>
