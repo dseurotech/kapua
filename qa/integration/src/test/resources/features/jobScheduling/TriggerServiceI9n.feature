@@ -493,7 +493,7 @@ Feature: Trigger service tests
     And The trigger is set to start on "12-12-2020" at "10:00"
     And The trigger is set to end on "12-12-2020" at "10:00"
     Then I set retry interval to 1
-    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20 10:00 AM, endsOn 12/12/20 10:00 AM will never fire according to the current date"
+    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20, 10:00 AM, endsOn 12/12/20, 10:00 AM will never fire according to the current date"
     And I create a new trigger from the existing creator with previously defined date properties
     And  An exception was thrown
     And I logout
