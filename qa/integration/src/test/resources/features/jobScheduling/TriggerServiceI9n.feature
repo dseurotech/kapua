@@ -16,11 +16,11 @@
 
 Feature: Trigger service tests
 
-@setup
-Scenario: Init Security Context for all scenarios
-  Given Init Jaxb Context
-  And Init Security Context
-  And Start base docker environment
+  @setup
+  Scenario: Init Security Context for all scenarios
+    Given Init Jaxb Context
+    And Init Security Context
+    And Start base docker environment
 
   Scenario: Adding "Device Connect" Schedule With All Valid Parameters
   Login as kapua-sys user and create a job with name job0.
@@ -221,7 +221,7 @@ Scenario: Init Security Context for all scenarios
     And A regular trigger creator with the name "schedule0" is created
     And The trigger is set to start on "12-12-2020" at "11:00"
     And The trigger is set to end on "12-12-2020" at "10:00"
-    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20 11:00 AM, endsOn 12/12/20 10:00 AM will never fire according to the current date"
+    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20, 11:00 AM, endsOn 12/12/20, 10:00 AM will never fire according to the current date"
     And I create a new trigger from the existing creator with previously defined date properties
     And An exception was thrown
     And I logout
@@ -237,7 +237,7 @@ Scenario: Init Security Context for all scenarios
     And A regular trigger creator with the name "schedule0" is created
     And The trigger is set to start on "12-12-2020" at "10:00"
     And The trigger is set to end on "12-12-2020" at "10:00"
-    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20 10:00 AM, endsOn 12/12/20 10:00 AM will never fire according to the current date"
+    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20, 10:00 AM, endsOn 12/12/20, 10:00 AM will never fire according to the current date"
     And I create a new trigger from the existing creator with previously defined date properties
     And  An exception was thrown
     And I logout
@@ -476,7 +476,7 @@ Scenario: Init Security Context for all scenarios
     And The trigger is set to start on "12-12-2020" at "11:00"
     And The trigger is set to end on "12-12-2020" at "10:00"
     Then I set retry interval to 1
-    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20 11:00 AM, endsOn 12/12/20 10:00 AM will never fire according to the current date"
+    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20, 11:00 AM, endsOn 12/12/20, 10:00 AM will never fire according to the current date"
     And I create a new trigger from the existing creator with previously defined date properties
     And An exception was thrown
     And I logout
@@ -699,7 +699,7 @@ Scenario: Init Security Context for all scenarios
     And The trigger is set to start on "12-12-2020" at "12:00"
     And The trigger is set to end on "10-12-2020" at "10:00"
     Then I set cron expression to "0 15 10 * * ?"
-    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20 12:00 PM, endsOn 12/10/20 10:00 AM will never fire according to the current date"
+    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20, 12:00 PM, endsOn 12/10/20, 10:00 AM will never fire according to the current date"
     And I create a new trigger from the existing creator with previously defined date properties
     And An exception was thrown
     And I logout
@@ -716,7 +716,7 @@ Scenario: Init Security Context for all scenarios
     And The trigger is set to start on "12-12-2020" at "10:00"
     And The trigger is set to end on "12-12-2020" at "10:00"
     Then I set cron expression to "0 15 10 * * ?"
-    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20 10:00 AM, endsOn 12/12/20 10:00 AM will never fire according to the current date"
+    When I expect the exception "TriggerInvalidDatesException" with the text "Trigger with startsOn 12/12/20, 10:00 AM, endsOn 12/12/20, 10:00 AM will never fire according to the current date"
     And I create a new trigger from the existing creator with previously defined date properties
     And  An exception was thrown
     And I logout
@@ -785,7 +785,7 @@ Scenario: Init Security Context for all scenarios
     And There is no trigger with the name "schedule0" in the database
     Then I logout
 
-@teardown
+  @teardown
   Scenario: Stop test environment
     Given Stop full docker environment
     And Reset Security Context
