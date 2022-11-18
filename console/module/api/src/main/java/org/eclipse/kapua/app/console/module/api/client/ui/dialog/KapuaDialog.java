@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.api.client.ui.dialog;
 
-import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
-import org.eclipse.kapua.app.console.module.api.client.resources.icons.KapuaIcon;
-
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.Style.Orientation;
 import com.extjs.gxt.ui.client.Style.Scroll;
@@ -27,6 +24,8 @@ import com.extjs.gxt.ui.client.widget.layout.TableData;
 import com.extjs.gxt.ui.client.widget.layout.TableLayout;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
+import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
+import org.eclipse.kapua.app.console.module.api.client.resources.icons.KapuaIcon;
 
 public abstract class KapuaDialog extends Dialog {
 
@@ -72,7 +71,7 @@ public abstract class KapuaDialog extends Dialog {
         if (headingMessage == null) {
             headingMessage = "";
         }
-        setHeading(headingMessage);
+        setHeadingHtml(headingMessage);
         getHeader().setStyleAttribute("white-space", "nowrap");
         getHeader().setStyleAttribute("text-overflow", "ellipsis");
         getHeader().setStyleAttribute("overflow", "hidden");

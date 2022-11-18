@@ -93,7 +93,7 @@ public final class TranslatorKuraKapuaUtils {
             kapuaPosition = KAPUA_MESSAGE_FACTORY.newPosition();
 
             kapuaPosition.setAltitude(devicePosition.getAltitude());
-            kapuaPosition.setHeading(devicePosition.getHeading());
+            kapuaPosition.setHeadingHtml(devicePosition.getHeading());
             kapuaPosition.setLatitude(devicePosition.getLatitude());
             kapuaPosition.setLongitude(devicePosition.getLongitude());
             kapuaPosition.setPrecision(devicePosition.getPrecision());

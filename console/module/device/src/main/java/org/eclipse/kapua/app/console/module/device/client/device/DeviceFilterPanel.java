@@ -80,7 +80,7 @@ public class DeviceFilterPanel extends EntityFilterPanel<GwtDevice> {
         entityGrid = entityView.getEntityGrid(entityView, currentSession);
         this.currentSession = currentSession;
 
-        setHeading(DEVICE_MSGS.deviceFilteringPanelHeading());
+        setHeadingHtml(DEVICE_MSGS.deviceFilteringPanelHeading());
 
         VerticalPanel fieldsPanel = getFieldsPanel();
 

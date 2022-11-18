@@ -37,6 +37,7 @@ public class ConsoleInfo extends Info {
 
     /**
      * Method for returning ConsoleInfo singleton instance.
+     *
      * @return static instance of ConsoleInfo class
      */
     public static ConsoleInfo getInstance() {
@@ -117,25 +118,25 @@ public class ConsoleInfo extends Info {
     }
 
     private void setTitle() {
-        if (config.title != null) {
+        if (config.titleHtml != null) {
             head.setVisible(true);
             if (config.params != null) {
-                config.title = Format.substitute(config.title, config.params);
+                config.titleHtml = Format.substitute(config.titleHtml, config.params);
             }
-            setHeading(config.title);
-            } else {
-                head.setVisible(false);
-            }
+            setHeadingHtml(config.titleHtml);
+        } else {
+            head.setVisible(false);
         }
+    }
 
     private void setText() {
-        if (config.text != null) {
+        if (config.html != null) {
             if (config.params != null) {
-                config.text = Format.substitute(config.text, config.params);
+                config.html = Format.substitute(config.html, config.params);
             }
             removeAll();
-            addText(config.text);
-            }
+            addText(config.html);
+        }
     }
 
     protected void afterHide() {

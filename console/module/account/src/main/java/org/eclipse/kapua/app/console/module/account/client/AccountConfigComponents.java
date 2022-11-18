@@ -328,7 +328,7 @@ public class AccountConfigComponents extends LayoutContainer {
                                 public void handleEvent(MessageBoxEvent ce) {
                                     // if confirmed, delete
                                     Dialog dialog = ce.getDialog();
-                                    if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                                    if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
                                         devConfPanel.removeFromParent();
                                         devConfPanel = null;
                                         tree.getSelectionModel().select(false, componentToSwitchTo);
@@ -426,7 +426,7 @@ public class AccountConfigComponents extends LayoutContainer {
                         // if confirmed, push the update
                         // if confirmed, delete
                         Dialog dialog = ce.getDialog();
-                        if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                        if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
 
                             // mark the whole config panel dirty and for reload
                             tabConfig.setEntity(selectedAccount);
@@ -469,7 +469,7 @@ public class AccountConfigComponents extends LayoutContainer {
                         public void handleEvent(MessageBoxEvent ce) {
                             // if confirmed, delete
                             Dialog dialog = ce.getDialog();
-                            if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                            if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
                                 refreshConfigPanel(comp);
                             }
                         }
@@ -527,7 +527,7 @@ public class AccountConfigComponents extends LayoutContainer {
 
             Label label = new Label(((GwtConfigComponent) model).getComponentName(), kapuaIcon);
 
-            return label.getText();
+            return label.getHtml();
         }
     };
 

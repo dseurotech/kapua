@@ -90,18 +90,18 @@ public class MetricsTable extends LayoutContainer {
         tableContainer.setBodyBorder(true);
         tableContainer.setHeaderVisible(true);
         switch (type) {
-        case TOPIC:
-            tableContainer.setHeading(MSGS.metricsTableHeaderTopic(""));
-            break;
-        case DEVICE:
-            tableContainer.setHeading(MSGS.metricsTableHeaderDevice(""));
-            break;
+            case TOPIC:
+                tableContainer.setHeadingHtml(MSGS.metricsTableHeaderTopic(""));
+                break;
+            case DEVICE:
+                tableContainer.setHeadingHtml(MSGS.metricsTableHeaderDevice(""));
+                break;
 
-        case ASSET:
-            tableContainer.setHeading(MSGS.metricsTableHeaderAssets());
-            break;
-        default:
-            break;
+            case ASSET:
+                tableContainer.setHeadingHtml(MSGS.metricsTableHeaderAssets());
+                break;
+            default:
+                break;
         }
         tableContainer.setScrollMode(Scroll.AUTOY);
         tableContainer.setLayout(new FitLayout());
@@ -178,10 +178,10 @@ public class MetricsTable extends LayoutContainer {
 
     public void refresh(GwtTopic selectedTopic) {
         if (selectedTopic != null) {
-            tableContainer.setHeading(MSGS.metricsTableHeaderTopic(selectedTopic.getSemanticTopic()));
+            tableContainer.setHeadingHtml(MSGS.metricsTableHeaderTopic(selectedTopic.getSemanticTopic()));
             this.selectedTopic = selectedTopic;
         } else {
-            tableContainer.setHeading(MSGS.metricsTableHeaderTopic(""));
+            tableContainer.setHeadingHtml(MSGS.metricsTableHeaderTopic(""));
             this.selectedTopic = null;
         }
         refresh();
@@ -192,13 +192,13 @@ public class MetricsTable extends LayoutContainer {
             tableContainer.getHeader().setStyleAttribute("white-space", "nowrap");
             tableContainer.getHeader().setStyleAttribute("text-overflow", "ellipsis");
             tableContainer.getHeader().setStyleAttribute("overflow", "hidden");
-            tableContainer.setHeading(MSGS.metricsTableHeaderDevice(selectedDevice.getDevice()));
+            tableContainer.setHeadingHtml(MSGS.metricsTableHeaderDevice(selectedDevice.getDevice()));
             if (selectedAsset != null) {
-                tableContainer.setHeading(MSGS.metricsTableHeaderAssets());
+                tableContainer.setHeadingHtml(MSGS.metricsTableHeaderAssets());
             }
             this.selectedDevice = selectedDevice;
         } else {
-            tableContainer.setHeading(MSGS.metricsTableHeaderDevice(""));
+            tableContainer.setHeadingHtml(MSGS.metricsTableHeaderDevice(""));
             this.selectedDevice = null;
         }
         refresh();
@@ -206,10 +206,10 @@ public class MetricsTable extends LayoutContainer {
 
     public void refresh(GwtDatastoreAsset selectedAsset) {
         if (selectedAsset != null) {
-            tableContainer.setHeading(MSGS.metricsTableHeaderAssets());
+            tableContainer.setHeadingHtml(MSGS.metricsTableHeaderAssets());
             this.selectedAsset = selectedAsset;
         } else {
-            tableContainer.setHeading(MSGS.metricsTableHeaderAssets());
+            tableContainer.setHeadingHtml(MSGS.metricsTableHeaderAssets());
             this.selectedAsset = null;
         }
         refresh();

@@ -12,9 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.api.client.ui.panel;
 
-import org.eclipse.kapua.app.console.module.api.client.resources.icons.KapuaIcon;
-
 import com.extjs.gxt.ui.client.widget.Layout;
+import org.eclipse.kapua.app.console.module.api.client.resources.icons.KapuaIcon;
 
 public class ContentPanel extends com.extjs.gxt.ui.client.widget.ContentPanel {
 
@@ -30,18 +29,18 @@ public class ContentPanel extends com.extjs.gxt.ui.client.widget.ContentPanel {
     }
 
     @Override
-    public String getHeading() {
+    public String getHeadingHtml() {
         return originalHeading;
     }
 
     @Override
-    public void setHeading(String heading) {
-        super.setHeading((icon != null ? icon.getInlineHTML() + "&nbsp;&nbsp;" : "") + heading);
+    public void setHeadingHtml(String heading) {
+        super.setHeadingHtml((icon != null ? icon.getInlineHTML() + "&nbsp;&nbsp;" : "") + heading);
         this.originalHeading = heading;
     }
 
     public void setIcon(KapuaIcon icon) {
-        super.setHeading(icon.getInlineHTML() + "&nbsp;&nbsp;" + originalHeading);
+        super.setHeadingHtml(icon.getInlineHTML() + "&nbsp;&nbsp;" + originalHeading);
         this.icon = icon;
     }
 

@@ -187,7 +187,7 @@ public class JobStepAddDialog extends EntityAddEditDialog {
             }
         });
 
-        jobStepPropertiesFieldSet.setHeading(JOB_MSGS.jobStepPropertiesFieldSetHeading());
+        jobStepPropertiesFieldSet.setHeadingHtml(JOB_MSGS.jobStepPropertiesFieldSetHeading());
         jobStepPropertiesFieldSet.setVisible(false);
 
         jobStepDefinitionDescription.setStyleAttribute("display", "block");
@@ -271,7 +271,7 @@ public class JobStepAddDialog extends EntityAddEditDialog {
 
     protected void refreshJobStepDefinition(GwtJobStepDefinition gwtJobStepDefinition) {
         jobStepPropertiesFieldSet.setVisible(true);
-        jobStepDefinitionDescription.setText(gwtJobStepDefinition.getDescription() + ".");
+        jobStepDefinitionDescription.setHtml(gwtJobStepDefinition.getDescription() + ".");
         jobStepPropertiesPanel.removeAll();
         propertiesButtonPanel.removeAll();
 

@@ -24,7 +24,7 @@ public class PasswordFieldValidator extends TextFieldValidator {
         textField.setRegex(null);
         this.minLength = minLength;
         this.textField.getMessages().setRegexText(this.textField.getMessages().getRegexText().replace("{0}", Integer.toString(minLength)));
-        this.textField.setToolTip(this.textField.getToolTip().getToolTipConfig().getText().replace("{0}", Integer.toString(minLength)));
+        this.textField.setToolTip(this.textField.getToolTip().getToolTipConfig().getHtml().replace("{0}", Integer.toString(minLength)));
     }
 
     public String validate(Field<?> field, String value) {

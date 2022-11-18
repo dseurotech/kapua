@@ -57,7 +57,7 @@ public class AccountFilterPanel extends EntityFilterPanel<GwtAccount> {
         entityGrid = entityView.getEntityGrid(entityView, currentSession);
         this.currentSession = currentSession;
 
-        setHeading(MSGS.filterHeader());
+        setHeadingHtml(MSGS.filterHeader());
 
         VerticalPanel fieldsPanel = getFieldsPanel();
 

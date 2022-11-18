@@ -143,34 +143,34 @@ public class ConnectionGrid extends EntityGrid<GwtDeviceConnection> {
         configs.add(column);
 
         column = new ColumnConfig("clientId", 120);
-        column.setHeader(CONNECTION_MSGS.connectionTableClientId());
+        column.setHeaderHtml(CONNECTION_MSGS.connectionTableClientId());
         column.setWidth(150);
         configs.add(column);
 
         column = new ColumnConfig("userName", 120);
-        column.setHeader(CONNECTION_MSGS.connectionTableUserName());
+        column.setHeaderHtml(CONNECTION_MSGS.connectionTableUserName());
         column.setSortable(false);
         column.setWidth(150);
         configs.add(column);
 
         column = new ColumnConfig("protocol", 120);
-        column.setHeader(CONNECTION_MSGS.connectionTableProtocol());
+        column.setHeaderHtml(CONNECTION_MSGS.connectionTableProtocol());
         column.setWidth(150);
         configs.add(column);
 
         column = new ColumnConfig("connectionUserCouplingMode", 120);
-        column.setHeader(CONNECTION_MSGS.connectionTableUserCouplingMode());
+        column.setHeaderHtml(CONNECTION_MSGS.connectionTableUserCouplingMode());
         column.setWidth(150);
         configs.add(column);
 
         column = new ColumnConfig("reservedUserName", 120);
-        column.setHeader(CONNECTION_MSGS.connectionTableReservedUserName());
+        column.setHeaderHtml(CONNECTION_MSGS.connectionTableReservedUserName());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("clientIp", 120);
-        column.setHeader(CONNECTION_MSGS.connectionTableClientIp());
+        column.setHeaderHtml(CONNECTION_MSGS.connectionTableClientIp());
         column.setWidth(150);
         configs.add(column);
 

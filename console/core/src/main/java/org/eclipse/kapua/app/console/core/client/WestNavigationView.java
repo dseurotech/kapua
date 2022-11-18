@@ -43,10 +43,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
-import org.eclipse.kapua.app.console.module.api.client.ui.panel.EntityFilterPanel;
-import org.eclipse.kapua.app.console.module.api.client.ui.view.AbstractEntityView;
-import org.eclipse.kapua.app.console.module.api.client.ui.view.descriptor.MainViewDescriptor;
-import org.eclipse.kapua.app.console.module.api.shared.service.GwtConsoleServiceAsync;
 import org.eclipse.kapua.app.console.module.account.client.AccountDetailsView;
 import org.eclipse.kapua.app.console.module.account.shared.model.GwtAccount;
 import org.eclipse.kapua.app.console.module.account.shared.service.GwtAccountService;
@@ -55,10 +51,14 @@ import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
 import org.eclipse.kapua.app.console.module.api.client.resources.icons.IconSet;
 import org.eclipse.kapua.app.console.module.api.client.resources.icons.KapuaIcon;
 import org.eclipse.kapua.app.console.module.api.client.ui.panel.ContentPanel;
+import org.eclipse.kapua.app.console.module.api.client.ui.panel.EntityFilterPanel;
+import org.eclipse.kapua.app.console.module.api.client.ui.view.AbstractEntityView;
 import org.eclipse.kapua.app.console.module.api.client.ui.view.AbstractView;
+import org.eclipse.kapua.app.console.module.api.client.ui.view.descriptor.MainViewDescriptor;
 import org.eclipse.kapua.app.console.module.api.client.util.FailureHandler;
 import org.eclipse.kapua.app.console.module.api.shared.model.session.GwtSession;
 import org.eclipse.kapua.app.console.module.api.shared.service.GwtConsoleService;
+import org.eclipse.kapua.app.console.module.api.shared.service.GwtConsoleServiceAsync;
 
 import java.util.Arrays;
 import java.util.List;
@@ -153,7 +153,7 @@ public class WestNavigationView extends LayoutContainer {
                 accountManagementPanel = new ContentPanel();
                 accountManagementPanel.setBorders(false);
                 accountManagementPanel.setBodyBorder(false);
-                accountManagementPanel.setHeading(MSGS.manageHeading());
+                accountManagementPanel.setHeadingHtml(MSGS.manageHeading());
 
                 cloudResourcesTreeStore = new TreeStore<ModelData>();
                 accountManagementTreeStore = new TreeStore<ModelData>();
@@ -180,7 +180,7 @@ public class WestNavigationView extends LayoutContainer {
 
                     @Override
                     public void selectionChanged(final SelectionChangedEvent<ModelData> se) {
-                        cloudResourcesTreeGrid.getView().ensureVisible(getLastSelection(se),0, false);
+                        cloudResourcesTreeGrid.getView().ensureVisible(getLastSelection(se), 0, false);
 
                         if ((currentSession.isFormDirty()) && (!skipNextSelChange)) {
                             // ask for confirmation before switching
@@ -192,7 +192,7 @@ public class WestNavigationView extends LayoutContainer {
                                         public void handleEvent(MessageBoxEvent ce) {
                                             // if confirmed
                                             Dialog dialog = ce.getDialog();
-                                            if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                                            if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
                                                 currentSession.setFormDirty(false);
                                                 menuChange(se, additionalViewDescriptors);
                                                 lastSelection = getLastSelection(se);
@@ -229,7 +229,7 @@ public class WestNavigationView extends LayoutContainer {
 
                     MainViewDescriptor firstView = additionalViewDescriptors.get(0);
                     panel.setIcon(new KapuaIcon(firstView.getIcon()));
-                    panel.setHeading(firstView.getName());
+                    panel.setHeadingHtml(firstView.getName());
                     panel.add((AbstractView) firstView.getViewInstance(currentSession));
                     panel.setBorders(false);
                     panel.setBodyBorder(false);
@@ -310,7 +310,7 @@ public class WestNavigationView extends LayoutContainer {
                     settingView.setAccount(result);
 
                     panel.setIcon(new KapuaIcon(IconSet.COG));
-                    panel.setHeading(MSGS.settings());
+                    panel.setHeadingHtml(MSGS.settings());
                     panel.add(settingView);
 
                     centerPanel.add(panel);
@@ -324,7 +324,7 @@ public class WestNavigationView extends LayoutContainer {
             for (MainViewDescriptor viewDescriptor : additionalViewDescriptors) {
                 if (viewDescriptor.getViewId().equals(selectedId)) {
                     panel.setIcon(new KapuaIcon(viewDescriptor.getIcon()));
-                    panel.setHeading(viewDescriptor.getName());
+                    panel.setHeadingHtml(viewDescriptor.getName());
 
                     AbstractView view = (AbstractView) viewDescriptor.getViewInstance(currentSession);
                     panel.add(view);

@@ -97,31 +97,31 @@ public class DeviceTabInventoryTabBundles extends TabItem {
 
         ColumnConfig column = new ColumnConfig();
         column.setId("id");
-        column.setHeader("Id");
+        column.setHeaderHtml("Id");
         column.setWidth(60);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("name");
-        column.setHeader("Name");
+        column.setHeaderHtml("Name");
         column.setWidth(200);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("version");
-        column.setHeader("Version");
+        column.setHeaderHtml("Version");
         column.setWidth(80);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("status");
-        column.setHeader("Status");
+        column.setHeaderHtml("Status");
         column.setWidth(80);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("signed");
-        column.setHeader("Signed");
+        column.setHeaderHtml("Signed");
         column.setWidth(50);
         column.setRenderer(new GridCellRenderer<GwtInventoryBundle>() {
             @Override

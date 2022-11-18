@@ -317,7 +317,7 @@ public class DeviceAssetsValues extends LayoutContainer {
                                 public void handleEvent(MessageBoxEvent ce) {
                                     // if confirmed, delete
                                     Dialog dialog = ce.getDialog();
-                                    if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                                    if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
                                         assetValuesPanel.removeFromParent();
                                         assetValuesPanel = null;
                                         tree.getSelectionModel().select(false, assetToSwitchTo);
@@ -416,7 +416,7 @@ public class DeviceAssetsValues extends LayoutContainer {
                         // if confirmed, push the update
                         // if confirmed, delete
                         Dialog dialog = ce.getDialog();
-                        if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                        if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
 
                             assetValuesPanel.mask(MSGS.applying());
                             tree.mask();
@@ -482,7 +482,7 @@ public class DeviceAssetsValues extends LayoutContainer {
                         public void handleEvent(MessageBoxEvent ce) {
                             // if confirmed, delete
                             Dialog dialog = ce.getDialog();
-                            if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                            if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
                                 refreshAssetPanel(asset);
                             }
                         }
@@ -496,7 +496,7 @@ public class DeviceAssetsValues extends LayoutContainer {
         public String getStringValue(ModelData model, String property) {
 
             Label label = new Label(((GwtDeviceAsset) model).getName(), null);
-            return label.getText();
+            return label.getHtml();
         }
     };
 

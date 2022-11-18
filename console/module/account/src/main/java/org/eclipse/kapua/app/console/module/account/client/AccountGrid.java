@@ -23,7 +23,6 @@ import com.extjs.gxt.ui.client.widget.grid.Grid;
 import com.extjs.gxt.ui.client.widget.grid.GridCellRenderer;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import org.eclipse.kapua.app.console.module.account.client.messages.ConsoleAccountMessages;
 import org.eclipse.kapua.app.console.module.account.client.toolbar.AccountGridToolbar;
 import org.eclipse.kapua.app.console.module.account.shared.model.GwtAccount;
@@ -106,29 +105,29 @@ public class AccountGrid extends EntityGrid<GwtAccount> {
         List<ColumnConfig> configs = new ArrayList<ColumnConfig>();
 
         column = new ColumnConfig("name", 120);
-        column.setHeader(ACCOUNT_MSGS.accountTableName());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableName());
         column.setWidth(150);
         configs.add(column);
 
         column = new ColumnConfig("orgName", 120);
-        column.setHeader(ACCOUNT_MSGS.accountTableOrgName());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableOrgName());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("orgEmail", 120);
-        column.setHeader(ACCOUNT_MSGS.accountTableOrgEmail());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableOrgEmail());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("expirationDateFormatted", 120);
-        column.setHeader(ACCOUNT_MSGS.accountTableExpirationDate());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableExpirationDate());
         GridCellRenderer<GwtAccount> setExpirationDate = new GridCellRenderer<GwtAccount>() {
 
             @Override
             public Object render(GwtAccount gwtAccount, String property, ColumnData config, int rowIndex, int colIndex,
-                    ListStore<GwtAccount> store, Grid<GwtAccount> grid) {
+                                 ListStore<GwtAccount> store, Grid<GwtAccount> grid) {
                 if (gwtAccount.getExpirationDateFormatted() != null) {
                     return gwtAccount.getExpirationDateFormatted();
                 } else {
@@ -152,63 +151,63 @@ public class AccountGrid extends EntityGrid<GwtAccount> {
 
         column = new ColumnConfig("contactName", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTableContactName());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableContactName());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("phoneNumber", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTablePhoneNumber());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTablePhoneNumber());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("address1", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTableAddress1());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableAddress1());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("address2", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTableAddress2());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableAddress2());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("address3", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTableAddress3());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableAddress3());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("zipPostCode", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTableZipPostCode());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableZipPostCode());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("city", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTableCity());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableCity());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("stateProvince", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTableStateProvince());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableStateProvince());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);
 
         column = new ColumnConfig("country", 120);
         column.setHidden(true);
-        column.setHeader(ACCOUNT_MSGS.accountTableCountry());
+        column.setHeaderHtml(ACCOUNT_MSGS.accountTableCountry());
         column.setWidth(150);
         column.setSortable(false);
         configs.add(column);

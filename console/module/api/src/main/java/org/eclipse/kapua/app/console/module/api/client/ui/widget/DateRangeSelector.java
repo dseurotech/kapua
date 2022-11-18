@@ -12,10 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.api.client.ui.widget;
 
-import java.util.Date;
-
-import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
-
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.BaseEvent;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -38,6 +34,9 @@ import com.extjs.gxt.ui.client.widget.menu.SeparatorMenuItem;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Element;
+import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
+
+import java.util.Date;
 
 public class DateRangeSelector extends LayoutContainer {
 
@@ -144,16 +143,16 @@ public class DateRangeSelector extends LayoutContainer {
 
     private long getDelta() {
         switch (currentIndex) {
-        case 0: // last 1h
-            return 1L * 60L * 60L * 1000L;
-        case 1: // last 12h
-            return 12L * 60L * 60L * 1000L;
-        case 2: // last 24h
-            return 24L * 60L * 60L * 1000L;
-        case 3: // last week
-            return 7L * 24L * 60L * 60L * 1000L;
-        case 4: // last month
-            return 30L * 24L * 60L * 60L * 1000L;
+            case 0: // last 1h
+                return 1L * 60L * 60L * 1000L;
+            case 1: // last 12h
+                return 12L * 60L * 60L * 1000L;
+            case 2: // last 24h
+                return 24L * 60L * 60L * 1000L;
+            case 3: // last week
+                return 7L * 24L * 60L * 60L * 1000L;
+            case 4: // last month
+                return 30L * 24L * 60L * 60L * 1000L;
         }
         return 0;
     }
@@ -171,31 +170,31 @@ public class DateRangeSelector extends LayoutContainer {
         Date now = new Date();
         long nowTime = now.getTime();
         switch (index) {
-        case 0: // last 1h
-            endDate = null;
-            startDate = new Date(nowTime - 1L * 60L * 60L * 1000L);
-            dateRange.setText(MSGS.dataDateRangeLastHour());
-            break;
-        case 1: // last 12h
-            endDate = null;
-            startDate = new Date(nowTime - 12L * 60L * 60L * 1000L);
-            dateRange.setText(MSGS.dataDateRangeLast12Hours());
-            break;
-        case 2: // last 24h
-            endDate = null;
-            startDate = new Date(nowTime - 24L * 60L * 60L * 1000L);
-            dateRange.setText(MSGS.dataDateRangeLast24Hours());
-            break;
-        case 3: // last week
-            endDate = null;
-            startDate = new Date(nowTime - 7L * 24L * 60L * 60L * 1000L);
-            dateRange.setText(MSGS.dataDateRangeLastWeek());
-            break;
-        case 4: // last month
-            endDate = null;
-            startDate = new Date(nowTime - (long) 30L * 24L * 60L * 60L * 1000L);
-            dateRange.setText(MSGS.dataDateRangeLastMonth());
-            break;
+            case 0: // last 1h
+                endDate = null;
+                startDate = new Date(nowTime - 1L * 60L * 60L * 1000L);
+                dateRange.setText(MSGS.dataDateRangeLastHour());
+                break;
+            case 1: // last 12h
+                endDate = null;
+                startDate = new Date(nowTime - 12L * 60L * 60L * 1000L);
+                dateRange.setText(MSGS.dataDateRangeLast12Hours());
+                break;
+            case 2: // last 24h
+                endDate = null;
+                startDate = new Date(nowTime - 24L * 60L * 60L * 1000L);
+                dateRange.setText(MSGS.dataDateRangeLast24Hours());
+                break;
+            case 3: // last week
+                endDate = null;
+                startDate = new Date(nowTime - 7L * 24L * 60L * 60L * 1000L);
+                dateRange.setText(MSGS.dataDateRangeLastWeek());
+                break;
+            case 4: // last month
+                endDate = null;
+                startDate = new Date(nowTime - (long) 30L * 24L * 60L * 60L * 1000L);
+                dateRange.setText(MSGS.dataDateRangeLastMonth());
+                break;
         }
         if (me != null && listener != null) {
             listener.onUpdate();
@@ -230,7 +229,7 @@ public class DateRangeSelector extends LayoutContainer {
         final Dialog dialog = new Dialog();
         dialog.setClosable(false);
         dialog.setBodyBorder(false);
-        dialog.setHeading(MSGS.dataDateRangeCustomTitle());
+        dialog.setHeadingHtml(MSGS.dataDateRangeCustomTitle());
         dialog.setWidth(300);
         dialog.setHeight(200);
         dialog.setHideOnButtonClick(true);
@@ -328,7 +327,7 @@ public class DateRangeSelector extends LayoutContainer {
 
             @Override
             public String validate(Field<?> field, String value) {
-                if (startDateField.getValue() != null && endDateField.getValue() != null && startDateField != null && endDateField!= null && startDateField.getValue().equals(endDateField.getValue()) &&
+                if (startDateField.getValue() != null && endDateField.getValue() != null && startDateField != null && endDateField != null && startDateField.getValue().equals(endDateField.getValue()) &&
                         endTimeField.getDateValue().before(startTimeField.getDateValue())) {
                     return MSGS.dataDateRangeInvalidStopTime();
                 } else {

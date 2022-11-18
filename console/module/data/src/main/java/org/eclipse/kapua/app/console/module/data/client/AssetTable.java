@@ -86,7 +86,7 @@ public class AssetTable extends LayoutContainer {
         tableContainer.setBorders(false);
         tableContainer.setBodyBorder(true);
         tableContainer.setHeaderVisible(true);
-        tableContainer.setHeading(MSGS.assetTableHeader());
+        tableContainer.setHeadingHtml(MSGS.assetTableHeader());
         tableContainer.setScrollMode(Scroll.AUTOY);
         tableContainer.setLayout(new FitLayout());
         tableContainer.add(assetGrid);

@@ -117,13 +117,13 @@ public class DeviceTabPackagesHistory extends KapuaTabItem<GwtDevice> {
 
         ColumnConfig column = new ColumnConfig();
         column.setId("startedOnFormatted");
-        column.setHeader(DEVICES_MSGS.deviceInstallTabHistoryTableStartedOn());
+        column.setHeaderHtml(DEVICES_MSGS.deviceInstallTabHistoryTableStartedOn());
         column.setWidth(200);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("endedOnFormatted");
-        column.setHeader(DEVICES_MSGS.deviceInstallTabHistoryTableEndedOn());
+        column.setHeaderHtml(DEVICES_MSGS.deviceInstallTabHistoryTableEndedOn());
         column.setWidth(200);
         column.setAlignment(HorizontalAlignment.CENTER);
         column.setRenderer(
@@ -141,7 +141,7 @@ public class DeviceTabPackagesHistory extends KapuaTabItem<GwtDevice> {
 
         column = new ColumnConfig();
         column.setId("status");
-        column.setHeader(DEVICES_MSGS.deviceInstallTabHistoryTableStatus());
+        column.setHeaderHtml(DEVICES_MSGS.deviceInstallTabHistoryTableStatus());
         column.setWidth(200);
         column.setAlignment(HorizontalAlignment.CENTER);
         column.setRenderer(
@@ -167,13 +167,13 @@ public class DeviceTabPackagesHistory extends KapuaTabItem<GwtDevice> {
 
         column = new ColumnConfig();
         column.setId("resource");
-        column.setHeader(DEVICES_MSGS.deviceInstallTabHistoryTableResource());
+        column.setHeaderHtml(DEVICES_MSGS.deviceInstallTabHistoryTableResource());
         column.setWidth(200);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("inputProperty_packageName");
-        column.setHeader(DEVICES_MSGS.deviceInstallTabHistoryTableName());
+        column.setHeaderHtml(DEVICES_MSGS.deviceInstallTabHistoryTableName());
         column.setWidth(200);
         column.setSortable(false);
         column.setRenderer(
@@ -196,7 +196,7 @@ public class DeviceTabPackagesHistory extends KapuaTabItem<GwtDevice> {
 
         column = new ColumnConfig();
         column.setId("inputProperty_packageVersion");
-        column.setHeader(DEVICES_MSGS.deviceInstallTabHistoryTableVersion());
+        column.setHeaderHtml(DEVICES_MSGS.deviceInstallTabHistoryTableVersion());
         column.setWidth(200);
         column.setSortable(false);
         column.setRenderer(
@@ -220,7 +220,7 @@ public class DeviceTabPackagesHistory extends KapuaTabItem<GwtDevice> {
         column = new ColumnConfig();
         column.setId("inputProperty_kapuapackagedownloaduri");
         column.setSortable(false);
-        column.setHeader(DEVICES_MSGS.deviceInstallTabHistoryTableURI());
+        column.setHeaderHtml(DEVICES_MSGS.deviceInstallTabHistoryTableURI());
         column.setWidth(200);
         configs.add(column);
 

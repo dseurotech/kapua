@@ -30,7 +30,7 @@
 
         <!-- GWT Compiler options-->
         <gwt-maven-plugin.compile.draftCompile>false</gwt-maven-plugin.compile.draftCompile>
-        <gwt-maven-plugin.compile.extraJvmArgs>-Xmx2048m -XX:+UseParallelGC</gwt-maven-plugin.compile.extraJvmArgs>
+        <gwt-maven-plugin.compile.extraJvmArgs>-Xmx2048m -XX:+UseParallelGC --illegal-access=permit --add-opens java.base/java.lang=ALL-UNNAMED</gwt-maven-plugin.compile.extraJvmArgs>
         <gwt-maven-plugin.compile.optimizationLevel>9</gwt-maven-plugin.compile.optimizationLevel>
         <gwt-maven-plugin.compile.module>org.eclipse.kapua.app.console.admin</gwt-maven-plugin.compile.module>
         <gwt-maven-plugin.compile.style>OBF</gwt-maven-plugin.compile.style>
@@ -242,6 +242,7 @@
                             <goal>compile</goal>
                         </goals>
                         <configuration>
+                            <sourceLevel>1.8</sourceLevel>
                             <draftCompile>${gwt-maven-plugin.compile.draftCompile}</draftCompile>
                             <extraJvmArgs>${gwt-maven-plugin.compile.extraJvmArgs}</extraJvmArgs>
                             <optimizationLevel>${gwt-maven-plugin.compile.optimizationLevel}</optimizationLevel>
@@ -274,7 +275,7 @@
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>com.extjs</groupId>
-                                    <artifactId>gxt-ui</artifactId>
+                                    <artifactId>gxt</artifactId>
                                     <version>${com.extjs.gxt.version}</version>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>${site.basedir}</outputDirectory>

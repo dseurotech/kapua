@@ -347,7 +347,7 @@ public class KuraPayload implements DevicePayload {
                 devicePosition.setPrecision(protoPosition.getPrecision());
             }
             if (protoPosition.hasHeading()) {
-                devicePosition.setHeading(protoPosition.getHeading());
+                devicePosition.setHeadingHtml(protoPosition.getHeading());
             }
             if (protoPosition.hasSpeed()) {
                 devicePosition.setSpeed(protoPosition.getSpeed());

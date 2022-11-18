@@ -29,6 +29,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
 import org.eclipse.kapua.app.console.module.api.client.ui.dialog.entity.EntityAddEditDialog;
 import org.eclipse.kapua.app.console.module.api.client.ui.panel.FormPanel;
+import org.eclipse.kapua.app.console.module.api.client.ui.widget.KapuaDateField;
 import org.eclipse.kapua.app.console.module.api.client.util.ConsoleInfo;
 import org.eclipse.kapua.app.console.module.api.client.util.DialogUtils;
 import org.eclipse.kapua.app.console.module.api.client.util.FailureHandler;
@@ -43,7 +44,6 @@ import org.eclipse.kapua.app.console.module.authentication.shared.model.GwtCrede
 import org.eclipse.kapua.app.console.module.authentication.shared.model.GwtCredentialType;
 import org.eclipse.kapua.app.console.module.authentication.shared.service.GwtCredentialService;
 import org.eclipse.kapua.app.console.module.authentication.shared.service.GwtCredentialServiceAsync;
-import org.eclipse.kapua.app.console.module.api.client.ui.widget.KapuaDateField;
 
 
 public class CredentialAddDialog extends EntityAddEditDialog {
@@ -80,7 +80,7 @@ public class CredentialAddDialog extends EntityAddEditDialog {
         credentialFormPanel = new FormPanel(FORM_LABEL_WIDTH);
 
         subject = new LabelField();
-        subject.setText(selectedUserName);
+        subject.setValue(selectedUserName);
         subject.setFieldLabel(MSGS.dialogAddFieldSubject());
         subject.setLabelSeparator(":");
         credentialFormPanel.add(subject);
@@ -124,7 +124,7 @@ public class CredentialAddDialog extends EntityAddEditDialog {
                     confirmPassword.clear();
                     confirmPassword.disable();
                 }
-             }
+            }
         });
         credentialFormPanel.add(credentialType);
 

@@ -356,7 +356,7 @@ public class DeviceConfigComponents extends LayoutContainer {
                                 public void handleEvent(MessageBoxEvent ce) {
                                     // if confirmed, delete
                                     Dialog dialog = ce.getDialog();
-                                    if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                                    if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
                                         devConfPanel.removeFromParent();
                                         devConfPanel = null;
                                         tree.getSelectionModel().select(false, componentToSwitchTo);
@@ -521,7 +521,7 @@ public class DeviceConfigComponents extends LayoutContainer {
                         // if confirmed, push the update
                         // if confirmed, delete
                         Dialog dialog = ce.getDialog();
-                        if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                        if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
 
                             configPanel.mask(MSGS.loading());
                             apply.setEnabled(false);
@@ -562,7 +562,7 @@ public class DeviceConfigComponents extends LayoutContainer {
                         public void handleEvent(MessageBoxEvent ce) {
                             // if confirmed, delete
                             Dialog dialog = ce.getDialog();
-                            if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                            if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
                                 refreshConfigPanel(comp);
                             }
                         }
@@ -618,7 +618,7 @@ public class DeviceConfigComponents extends LayoutContainer {
 
             Label label = new Label(((GwtConfigComponent) model).getComponentName(), kapuaIcon);
 
-            return label.getText();
+            return label.getHtml();
         }
     };
 

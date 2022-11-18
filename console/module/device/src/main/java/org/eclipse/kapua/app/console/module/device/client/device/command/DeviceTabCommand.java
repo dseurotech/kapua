@@ -229,7 +229,7 @@ public class DeviceTabCommand extends KapuaTabItem<GwtDevice> {
 
                     String output = htmlResult.substring(outputMessageStartIndex, outputMessageEndIndex);
 
-                    result.setText(KapuaSafeHtmlUtils.htmlUnescape(output));
+                    result.setHtml(KapuaSafeHtmlUtils.htmlUnescape(output));
                     commandInput.unmask();
                 }
             }
@@ -361,7 +361,7 @@ public class DeviceTabCommand extends KapuaTabItem<GwtDevice> {
 
     private void clearAll() {
         formPanel.reset();
-        result.setText(DEVICE_MSGS.deviceCommandNoOutput());
+        result.setHtml(DEVICE_MSGS.deviceCommandNoOutput());
     }
 
     // --------------------------------------------------------------------------------------

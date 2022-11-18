@@ -124,27 +124,27 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
 
         ColumnConfig column = new ColumnConfig();
         column.setId("keystoreId");
-        column.setHeader("Keystore Id");
+        column.setHeaderHtml("Keystore Id");
         columns.add(column);
 
         column = new ColumnConfig();
         column.setId("alias");
-        column.setHeader("Alias");
+        column.setHeaderHtml("Alias");
         columns.add(column);
 
         column = new ColumnConfig();
         column.setId("itemType");
-        column.setHeader("Type");
+        column.setHeaderHtml("Type");
         columns.add(column);
 
         column = new ColumnConfig();
         column.setId("algorithm");
-        column.setHeader("Algorithm");
+        column.setHeaderHtml("Algorithm");
         columns.add(column);
 
         column = new ColumnConfig();
         column.setId("size");
-        column.setHeader("Size");
+        column.setHeaderHtml("Size");
         columns.add(column);
 
         grid = new Grid<GwtDeviceKeystoreItem>(new ListStore<GwtDeviceKeystoreItem>(), new ColumnModel(columns));

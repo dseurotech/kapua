@@ -65,7 +65,7 @@ public class ConnectionFilterPanel extends EntityFilterPanel<GwtDeviceConnection
         this.currentSession = currentSession;
 
         VerticalPanel fieldsPanel = getFieldsPanel();
-        setHeading(MSGS.connectionFilterHeader());
+        setHeadingHtml(MSGS.connectionFilterHeader());
         Label clientIdLabel = new Label(MSGS.connectionFilterClientIdLabel());
         clientIdLabel.setWidth(WIDTH);
         clientIdLabel.setStyleAttribute(CssLiterals.MARGIN, "5px");

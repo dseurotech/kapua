@@ -139,7 +139,7 @@ public abstract class EntityGridField<M extends GwtEntityModel> extends ContentP
         if (label == null) {
             label = new LabelField();
         }
-        label.setText(text);
+        label.setValue(text);
     }
 
     @Override

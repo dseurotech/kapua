@@ -112,7 +112,7 @@ public class JobTargetAddDialog extends EntityAddEditDialog {
 
         ContentPanel targetDevicePanel = new ContentPanel(new FitLayout());
         targetDevicePanel.add(targetDeviceGrid);
-        targetDevicePanel.setHeading("Devices");
+        targetDevicePanel.setHeadingHtml("Devices");
         targetDevicePanel.setIcon(new KapuaIcon(IconSet.HDD_O));
         targetDevicePanel.setBorders(false);
         targetDevicePanel.setBodyBorder(false);
@@ -126,7 +126,7 @@ public class JobTargetAddDialog extends EntityAddEditDialog {
 
             ContentPanel targetTagPanel = new ContentPanel(new FitLayout());
             targetTagPanel.add(targetTagGrid);
-            targetTagPanel.setHeading("Tags");
+            targetTagPanel.setHeadingHtml("Tags");
             targetTagPanel.setIcon(new KapuaIcon(IconSet.TAG));
             targetTagPanel.setBorders(false);
             targetTagPanel.setBodyBorder(false);
@@ -168,7 +168,7 @@ public class JobTargetAddDialog extends EntityAddEditDialog {
                     @Override
                     public void onSuccess(List<GwtDevice> result) {
                         List<GwtDevice> finalList = new ArrayList<GwtDevice>(result);
-                        for(GwtDevice gwtDevice : targetDeviceGrid.getSelectionModel().getSelectedItems()) {
+                        for (GwtDevice gwtDevice : targetDeviceGrid.getSelectionModel().getSelectedItems()) {
                             if (!finalList.contains(gwtDevice)) {
                                 finalList.add(gwtDevice);
                             }

@@ -103,7 +103,7 @@ public interface DevicePosition extends Position {
      * @param heading The heading.
      * @since 1.0.0
      */
-    void setHeading(Double heading);
+    void setHeadingHtml(Double heading);
 
     /**
      * Gets the speed.

@@ -12,18 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.device.servlet;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.opencsv.CSVWriter;
+import org.apache.commons.lang3.CharEncoding;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
@@ -33,8 +23,16 @@ import org.eclipse.kapua.service.account.Account;
 import org.eclipse.kapua.service.account.AccountService;
 import org.eclipse.kapua.service.device.registry.Device;
 
-import com.opencsv.CSVWriter;
-import org.apache.commons.lang3.CharEncoding;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.URLEncoder;
+import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 public class DeviceExporterCsv extends DeviceExporter {
 
@@ -169,7 +167,7 @@ public class DeviceExporterCsv extends DeviceExporter {
             // Custom attribute 5
             cols.add(device.getCustomAttribute5() != null ? device.getCustomAttribute5() : BLANK);
 
-            writer.writeNext(cols.toArray(new String[]{ }));
+            writer.writeNext(cols.toArray(new String[]{}));
         }
     }
 

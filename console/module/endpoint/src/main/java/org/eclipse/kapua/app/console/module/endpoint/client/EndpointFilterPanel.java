@@ -48,7 +48,7 @@ public class EndpointFilterPanel extends EntityFilterPanel<GwtEndpoint> {
         super(entityView, currentSession);
         entityGrid = entityView.getEntityGrid(entityView, currentSession);
         this.currentSession = currentSession;
-        setHeading(MSGS.filterHeader());
+        setHeadingHtml(MSGS.filterHeader());
 
         VerticalPanel verticalPanel = getFieldsPanel();
 

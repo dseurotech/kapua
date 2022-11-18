@@ -260,7 +260,7 @@ public class DeviceTabBundles extends KapuaTabItem<GwtDevice> {
                                 public void handleEvent(MessageBoxEvent ce) {
                                     // if confirmed, stop
                                     Dialog dialog = ce.getDialog();
-                                    if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                                    if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
                                         toolBar.disable();
                                         grid.mask(MSGS.loading());
                                         //

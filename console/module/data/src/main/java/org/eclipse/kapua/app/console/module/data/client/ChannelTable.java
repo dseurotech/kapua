@@ -76,7 +76,7 @@ public class ChannelTable extends LayoutContainer {
         tableContainer.setBorders(false);
         tableContainer.setBodyBorder(false);
         tableContainer.setHeaderVisible(true);
-        tableContainer.setHeading(MSGS.channelTableHeader());
+        tableContainer.setHeadingHtml(MSGS.channelTableHeader());
         tableContainer.setScrollMode(Scroll.AUTOY);
         tableContainer.setLayout(new FitLayout());
         tableContainer.add(channelGrid);

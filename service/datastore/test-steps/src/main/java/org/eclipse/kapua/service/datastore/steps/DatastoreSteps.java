@@ -240,9 +240,9 @@ public class DatastoreSteps extends TestBase {
     @DataTableType
     public MetricEntry metricEntry(Map<String, String> entry) {
         return new MetricEntry(
-            entry.get("key"),
-            entry.get("type"),
-            entry.get("value")
+                entry.get("key"),
+                entry.get("type"),
+                entry.get("value")
         );
     }
 
@@ -284,7 +284,7 @@ public class DatastoreSteps extends TestBase {
         this.session = session;
     }
 
-    @After(value="@setup")
+    @After(value = "@setup")
     public void setServices() throws Exception {
         locator = KapuaLocator.getInstance();
         // Get instance of services used in different scenarios
@@ -320,7 +320,7 @@ public class DatastoreSteps extends TestBase {
 
     }
 
-    @After(value="not (@setup or @teardown)", order=10)
+    @After(value = "not (@setup or @teardown)", order = 10)
     public void afterScenario() {
         try {
             deleteIndices();
@@ -1484,12 +1484,12 @@ public class DatastoreSteps extends TestBase {
     @When("I count for metric info")
     public void countForMetricInfo() throws KapuaException {
         MetricInfoQuery metricInfoQuery = (MetricInfoQuery) stepData.get(METRIC_INFO_QUERY);
-        stepData.put("metricInfoCountResult", (int)metricInfoRegistryService.count(metricInfoQuery));
+        stepData.put("metricInfoCountResult", (int) metricInfoRegistryService.count(metricInfoQuery));
     }
 
     @Then("I get metric info count {int}")
     public void getDesiredMetricInfoCountResult(int desiredCount) {
-        int count = (int)stepData.get("metricInfoCountResult");
+        int count = (int) stepData.get("metricInfoCountResult");
         Assert.assertEquals(desiredCount, count);
     }
 
@@ -1667,7 +1667,7 @@ public class DatastoreSteps extends TestBase {
 
         KapuaPosition tmpPosition = messageFactory.newPosition();
         tmpPosition.setAltitude(20000.0 * random.nextDouble()); // 0 .. 20000
-        tmpPosition.setHeading(360.0 * random.nextDouble()); // 0 .. 360
+        tmpPosition.setHeadingHtml(360.0 * random.nextDouble()); // 0 .. 360
         tmpPosition.setLatitude(180.0 * (random.nextDouble() - 0.5)); // -90 .. 90
         tmpPosition.setLongitude(360.0 * (random.nextDouble() - 0.5)); // -180 .. 180
         tmpPosition.setPrecision(100.0 * random.nextDouble()); // 0 .. 100

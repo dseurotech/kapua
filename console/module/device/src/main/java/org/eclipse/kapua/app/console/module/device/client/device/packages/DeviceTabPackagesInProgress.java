@@ -104,7 +104,7 @@ public class DeviceTabPackagesInProgress extends TabItem {
 
         ColumnConfig column = new ColumnConfig();
         column.setId("operation");
-        column.setHeader(MSGS.deviceInstallTabInProgressTableOperation());
+        column.setHeaderHtml(MSGS.deviceInstallTabInProgressTableOperation());
         column.setAlignment(HorizontalAlignment.CENTER);
         column.setWidth(60);
         column.setRenderer(renderer);
@@ -139,14 +139,14 @@ public class DeviceTabPackagesInProgress extends TabItem {
 
         column = new ColumnConfig();
         column.setId("size");
-        column.setHeader(MSGS.deviceInstallTabInProgressTableSize());
+        column.setHeaderHtml(MSGS.deviceInstallTabInProgressTableSize());
         column.setWidth(200);
         column.setRenderer(renderer);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("progress");
-        column.setHeader(MSGS.deviceInstallTabInProgressTableProgressPercentage());
+        column.setHeaderHtml(MSGS.deviceInstallTabInProgressTableProgressPercentage());
         column.setWidth(80);
         column.setAlignment(HorizontalAlignment.CENTER);
         configs.add(column);

@@ -17,23 +17,23 @@ import com.extjs.gxt.ui.client.event.MessageBoxEvent;
 import com.extjs.gxt.ui.client.widget.Dialog;
 import com.extjs.gxt.ui.client.widget.MessageBox;
 
-public class KapuaMessageBox extends MessageBox{
+public class KapuaMessageBox extends MessageBox {
 
     public static final String QUESTION = "fa fa-question-circle fa-3x";
     private Dialog dialog;
     public static final String YESNO = Dialog.YESNO;
 
     public static MessageBox confirm(String title, String msg, Listener<MessageBoxEvent> callback) {
-          KapuaMessageBox box = new KapuaMessageBox();
-          box.setTitle(title);
-          box.setMessage(msg);
-          box.addCallback(callback);
-          box.setButtons(YESNO);
-          box.setIcon(QUESTION);
-          box.show();
+        KapuaMessageBox box = new KapuaMessageBox();
+        box.setTitleHtml(title);
+        box.setMessage(msg);
+        box.addCallback(callback);
+        box.setButtons(YESNO);
+        box.setIcon(QUESTION);
+        box.show();
 
         return box;
-      }
+    }
 
     @Override
     public void show() {

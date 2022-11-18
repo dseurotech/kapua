@@ -37,7 +37,7 @@ public class KapuaButton extends com.extjs.gxt.ui.client.widget.button.Button {
     }
 
     @Override
-    public String getText() {
+    public String getHtml() {
         return originalText;
     }
 

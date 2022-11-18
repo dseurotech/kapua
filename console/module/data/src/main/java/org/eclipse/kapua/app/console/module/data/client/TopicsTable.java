@@ -132,7 +132,7 @@ public class TopicsTable extends LayoutContainer {
         tableContainer.setBorders(false);
         tableContainer.setBodyBorder(true);
         tableContainer.setHeaderVisible(true);
-        tableContainer.setHeading(MSGS.topicInfoTableHeader());
+        tableContainer.setHeadingHtml(MSGS.topicInfoTableHeader());
         tableContainer.setScrollMode(Scroll.AUTOY);
         tableContainer.setLayout(new FitLayout());
         tableContainer.add(topicInfoGrid);

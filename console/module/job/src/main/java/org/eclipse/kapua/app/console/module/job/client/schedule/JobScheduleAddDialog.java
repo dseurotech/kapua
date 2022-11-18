@@ -149,7 +149,7 @@ public class JobScheduleAddDialog extends EntityAddEditDialog {
         triggerName.setToolTip(JOB_MSGS.dialogAddScheduleNameTooltip());
         mainPanel.add(triggerName);
 
-        startsOnLabel.setText("* " + JOB_MSGS.dialogAddScheduleStartsOnLabel());
+        startsOnLabel.setHtml("* " + JOB_MSGS.dialogAddScheduleStartsOnLabel());
         startsOnLabel.setWidth(FORM_LABEL_WIDTH);
         startsOnLabel.setStyleAttribute(CssLiterals.PADDING, "0px 88px 0px 0px");
 
@@ -183,7 +183,7 @@ public class JobScheduleAddDialog extends EntityAddEditDialog {
         startsOnPanel.add(startsOnTime);
         mainPanel.add(startsOnPanel);
 
-        endsOnLabel.setText(JOB_MSGS.dialogAddScheduleEndsOnLabel());
+        endsOnLabel.setHtml(JOB_MSGS.dialogAddScheduleEndsOnLabel());
         endsOnLabel.setStyleAttribute("margin-left", "10px");
         endsOnLabel.setWidth(FORM_LABEL_WIDTH);
         endsOnLabel.setStyleAttribute(CssLiterals.PADDING, "0px 92px 0px 0px");
@@ -249,7 +249,7 @@ public class JobScheduleAddDialog extends EntityAddEditDialog {
 
         triggerDefinitionDescription.setStyleAttribute("display", "block");
 
-        triggerPropertiesFieldSet.setHeading(JOB_MSGS.dialogAddTriggerPropertiesFieldSetHeading());
+        triggerPropertiesFieldSet.setHeadingHtml(JOB_MSGS.dialogAddTriggerPropertiesFieldSetHeading());
         triggerPropertiesFieldSet.setVisible(false);
         triggerPropertiesFieldSet.add(triggerDefinitionDescription);
         triggerPropertiesFieldSet.add(triggerPropertiesPanel);
@@ -261,7 +261,7 @@ public class JobScheduleAddDialog extends EntityAddEditDialog {
 
     private void refreshTriggerDefinition(GwtTriggerDefinition gwtTriggerDefinition) {
         triggerPropertiesFieldSet.setVisible(true);
-        triggerDefinitionDescription.setText(gwtTriggerDefinition.getDescription() + ".");
+        triggerDefinitionDescription.setHtml(gwtTriggerDefinition.getDescription() + ".");
         triggerPropertiesPanel.removeAll();
 
         if (TRIGGER_DEFINITION_NAME_INTERVAL.equals(gwtTriggerDefinition.getTriggerDefinitionName())) {

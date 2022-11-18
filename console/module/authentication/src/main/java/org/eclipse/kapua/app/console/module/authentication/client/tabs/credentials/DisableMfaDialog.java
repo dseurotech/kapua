@@ -44,7 +44,7 @@ public class DisableMfaDialog extends Dialog {
     public DisableMfaDialog(final String username, final String scopeId, final String mfaCredentialOptionsId, final boolean selfManagement) {
         super();
 
-        setHeading(MSGS.disableMfaConfirmationHeader(username));
+        setHeadingHtml(MSGS.disableMfaConfirmationHeader(username));
         setButtons(Dialog.YESNO);
         setModal(true);
         setBodyBorder(true);

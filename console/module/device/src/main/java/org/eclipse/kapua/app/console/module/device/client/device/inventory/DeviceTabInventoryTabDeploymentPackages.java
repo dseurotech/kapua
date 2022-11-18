@@ -81,13 +81,13 @@ public class DeviceTabInventoryTabDeploymentPackages extends TabItem {
 
         ColumnConfig name = new ColumnConfig();
         name.setId("name");
-        name.setHeader("Name");
+        name.setHeaderHtml("Name");
         name.setWidth(100);
         name.setRenderer(new TreeGridCellRenderer<ModelData>());
 
         ColumnConfig version = new ColumnConfig();
         version.setId("version");
-        version.setHeader("Version");
+        version.setHeaderHtml("Version");
         version.setWidth(150);
 
         ColumnModel cm = new ColumnModel(Arrays.asList(name, version));

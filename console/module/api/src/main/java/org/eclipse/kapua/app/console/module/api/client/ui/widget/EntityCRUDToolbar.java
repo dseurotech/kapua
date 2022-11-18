@@ -28,9 +28,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
 import org.eclipse.kapua.app.console.module.api.client.ui.button.AddButton;
-import org.eclipse.kapua.app.console.module.api.client.ui.button.KapuaButton;
 import org.eclipse.kapua.app.console.module.api.client.ui.button.DeleteButton;
 import org.eclipse.kapua.app.console.module.api.client.ui.button.EditButton;
+import org.eclipse.kapua.app.console.module.api.client.ui.button.KapuaButton;
 import org.eclipse.kapua.app.console.module.api.client.ui.button.RefreshButton;
 import org.eclipse.kapua.app.console.module.api.client.ui.dialog.ActionDialog;
 import org.eclipse.kapua.app.console.module.api.client.ui.dialog.KapuaDialog;
@@ -125,7 +125,7 @@ public class EntityCRUDToolbar<M extends GwtEntityModel> extends ToolBar {
                 @Override
                 public void componentSelected(ButtonEvent ce) {
                     if (filterButton.isPressed()) {
-                        if (filterButton.getText().equals(MSGS.deviceTableToolbarOpenFilter())) {
+                        if (filterButton.getHtml().equals(MSGS.deviceTableToolbarOpenFilter())) {
                             filterPanel.show();
                             filterButton.setText(MSGS.deviceTableToolbarCloseFilter());
                             filterButton.toggle(false);

@@ -2001,7 +2001,7 @@ public class DeviceRegistrySteps extends TestBase {
         tmpPosition.setLongitude(13.02);
         tmpPosition.setAltitude(323.0);
         tmpPosition.setSpeed(50.0);
-        tmpPosition.setHeading(0.0);
+        tmpPosition.setHeadingHtml(0.0);
         tmpPosition.setPrecision(0.15);
         tmpPosition.setSatellites(16);
         tmpPosition.setStatus(7);
@@ -2047,7 +2047,7 @@ public class DeviceRegistrySteps extends TestBase {
     private KapuaPosition getDefaultPosition() {
         KapuaPosition tmpPos = messageFactory.newPosition();
         tmpPos.setAltitude(250.0);
-        tmpPos.setHeading(90.0);
+        tmpPos.setHeadingHtml(90.0);
         tmpPos.setLatitude(45.5);
         tmpPos.setLongitude(13.6);
         tmpPos.setPrecision(0.3);

@@ -134,7 +134,7 @@ public class DeviceAddDialog extends EntityAddEditDialog {
         FormLayout layout = new FormLayout();
         layout.setLabelWidth(Constants.LABEL_WIDTH_DEVICE_FORM);
         fieldSet.setLayout(layout);
-        fieldSet.setHeading(DEVICE_MSGS.deviceFormFieldsetGeneralInfo());
+        fieldSet.setHeadingHtml(DEVICE_MSGS.deviceFormFieldsetGeneralInfo());
 
         // Device Client ID
         clientIdLabel = new LabelField();
@@ -237,7 +237,7 @@ public class DeviceAddDialog extends EntityAddEditDialog {
         FormLayout layoutCustomAttributes = new FormLayout();
         layoutCustomAttributes.setLabelWidth(Constants.LABEL_WIDTH_DEVICE_FORM);
         fieldSetCustomAttributes.setLayout(layoutCustomAttributes);
-        fieldSetCustomAttributes.setHeading(DEVICE_MSGS.deviceFormFieldsetCustomAttributes());
+        fieldSetCustomAttributes.setHeadingHtml(DEVICE_MSGS.deviceFormFieldsetCustomAttributes());
 
         // Custom Attribute #1
         customAttribute1Field = new KapuaTextField<String>();

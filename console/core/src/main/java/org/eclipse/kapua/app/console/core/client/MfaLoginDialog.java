@@ -74,7 +74,7 @@ public class MfaLoginDialog extends Dialog {
         setButtons(""); // don't show OK button
         setIcon(IconHelper.createStyle("user"));
 
-        setHeading(CRED_MSGS.mfaLoginTitle());
+        setHeadingHtml(CRED_MSGS.mfaLoginTitle());
 
         setModal(true);
         setBodyBorder(true);

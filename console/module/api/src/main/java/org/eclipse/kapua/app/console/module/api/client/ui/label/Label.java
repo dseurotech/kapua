@@ -21,18 +21,18 @@ public class Label extends com.extjs.gxt.ui.client.widget.Label {
 
     public Label(String text, KapuaIcon icon) {
         super();
-        setText(text);
+        setHtml(text);
         setIcon(icon);
     }
 
     @Override
-    public void setText(String text) {
-        super.setText((icon != null ? icon.getInlineHTML() + "&nbsp;&nbsp;" : "") + text);
+    public void setHtml(String text) {
+        super.setHtml((icon != null ? icon.getInlineHTML() + "&nbsp;&nbsp;" : "") + text);
         this.originalText = text;
     }
 
     public void setIcon(KapuaIcon icon) {
-        super.setText((icon != null ? icon.getInlineHTML() + "&nbsp;&nbsp;" : "") + originalText);
+        super.setHtml((icon != null ? icon.getInlineHTML() + "&nbsp;&nbsp;" : "") + originalText);
         this.icon = icon;
     }
 }

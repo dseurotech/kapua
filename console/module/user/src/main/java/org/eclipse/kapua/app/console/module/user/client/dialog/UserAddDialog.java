@@ -125,7 +125,7 @@ public class UserAddDialog extends EntityAddEditDialog {
         userInfoLayout.setLabelWidth(Constants.LABEL_WIDTH_FORM);
 
         infoFieldSet = new FieldSet();
-        infoFieldSet.setHeading(USER_MSGS.dialogAddFieldSet());
+        infoFieldSet.setHeadingHtml(USER_MSGS.dialogAddFieldSet());
         infoFieldSet.setBorders(true);
         infoFieldSet.setStyleAttribute("margin", "0px 10px 0px 10px");
         infoFieldSet.setLayout(userInfoLayout);
@@ -323,7 +323,7 @@ public class UserAddDialog extends EntityAddEditDialog {
         FieldSet statusFieldSet = new FieldSet();
         statusFieldSet.setBorders(true);
         statusFieldSet.setStyleAttribute("margin", "5px 10px 0px 10px");
-        statusFieldSet.setHeading(USER_MSGS.dialogAddStatus());
+        statusFieldSet.setHeadingHtml(USER_MSGS.dialogAddStatus());
         statusFieldSet.setLayout(statusLayout);
         statusFieldSet.setStyleAttribute("background-color", "E8E8E8");
         userFormPanel.add(statusFieldSet, userFormData);

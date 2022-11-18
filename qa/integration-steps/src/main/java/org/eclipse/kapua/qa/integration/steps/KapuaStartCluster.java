@@ -42,7 +42,7 @@ public class KapuaStartCluster {
         String clientId = "test-client";
         MqttClient client = connect(clientId, "kapua-broker", "kapua-password");
         int loopCount = 0;
-        while(loopCount++<MAX_LOOP) {
+        while (loopCount++ < MAX_LOOP) {
             sendMessageBirth(client, "kapua-sys", 0);
             sendMessage(client, "kapua-sys" + "/" + clientId + "/topic", 0);
             Thread.sleep(1000);
@@ -80,7 +80,7 @@ public class KapuaStartCluster {
     }
 
     private static Map<String, Object> getMetrics() {
-        return getMetrics(new Object[][] {new Object[] {"metric int", 123}, new Object[] {"metric boolean", true}, new Object[] {"metric string", "text"}});
+        return getMetrics(new Object[][]{new Object[]{"metric int", 123}, new Object[]{"metric boolean", true}, new Object[]{"metric string", "text"}});
     }
 
     protected static byte[] getByteArray(byte[] body, Date date, Map<String, Object> metrics, KuraPosition position) {
@@ -95,7 +95,7 @@ public class KapuaStartCluster {
     protected static Map<String, Object> getMetrics(Object[][] metrics) {
         Map<String, Object> metricsMap = new HashMap<>();
         for (Object[] obj : metrics) {
-            metricsMap.put((String)obj[0], obj[1]);
+            metricsMap.put((String) obj[0], obj[1]);
         }
         return metricsMap;
     }
@@ -105,7 +105,7 @@ public class KapuaStartCluster {
         position.setLatitude(latitude);
         position.setLongitude(longitude);
         position.setAltitude(altitude);
-        position.setHeading(heading);
+        position.setHeadingHtml(heading);
         position.setPrecision(precision);
         position.setSpeed(speed);
         position.setTimestamp(timestamp);

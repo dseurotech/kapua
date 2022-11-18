@@ -100,19 +100,19 @@ public class DeviceTabInventoryTabContainer extends TabItem {
 
         ColumnConfig column = new ColumnConfig();
         column.setId("name");
-        column.setHeader("Name");
+        column.setHeaderHtml("Name");
         column.setWidth(200);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("version");
-        column.setHeader("Version");
+        column.setHeaderHtml("Version");
         column.setWidth(80);
         configs.add(column);
 
         column = new ColumnConfig();
         column.setId("type");
-        column.setHeader("Type");
+        column.setHeaderHtml("Type");
         column.setWidth(80);
         configs.add(column);
 

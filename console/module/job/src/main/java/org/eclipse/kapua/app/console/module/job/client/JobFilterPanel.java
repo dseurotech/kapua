@@ -42,7 +42,7 @@ public class JobFilterPanel extends EntityFilterPanel<GwtJob> {
         entityGrid = entityView.getEntityGrid(entityView, currentSession);
         this.currentSession = currentSession;
 
-        setHeading(JOB_MSGS.filterHeader());
+        setHeadingHtml(JOB_MSGS.filterHeader());
 
         VerticalPanel fieldsPanel = getFieldsPanel();
 

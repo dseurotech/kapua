@@ -169,7 +169,7 @@ public class DeviceEventImpl extends AbstractKapuaEntity implements DeviceEvent 
             this.position = new KapuaPositionImpl();
 
             this.position.setAltitude(position.getAltitude());
-            this.position.setHeading(position.getHeading());
+            this.position.setHeadingHtml(position.getHeading());
             this.position.setLatitude(position.getLatitude());
             this.position.setLongitude(position.getLongitude());
             this.position.setPrecision(position.getPrecision());

@@ -26,7 +26,7 @@ public class SplitButton extends com.extjs.gxt.ui.client.widget.button.SplitButt
     }
 
     @Override
-    public String getText() {
+    public String getHtml() {
         return originalText;
     }
 

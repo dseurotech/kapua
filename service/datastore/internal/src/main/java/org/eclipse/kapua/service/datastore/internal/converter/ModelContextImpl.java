@@ -185,7 +185,7 @@ public class ModelContextImpl implements ModelContext {
             }
             obj = positionMap.get(MessageSchema.MESSAGE_POS_HEADING);
             if (obj != null) {
-                position.setHeading((double) obj);
+                position.setHeadingHtml((double) obj);
             }
             obj = positionMap.get(MessageSchema.MESSAGE_POS_PRECISION);
             if (obj != null) {

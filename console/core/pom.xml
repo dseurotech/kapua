@@ -180,12 +180,12 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-servlet</artifactId>
-            <scope>runtime</scope>
+            <!--            <scope>runtime</scope>-->
         </dependency>
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <scope>provided</scope>
+            <!--            <scope>provided</scope>-->
         </dependency>
         <dependency>
             <groupId>com.extjs</groupId>

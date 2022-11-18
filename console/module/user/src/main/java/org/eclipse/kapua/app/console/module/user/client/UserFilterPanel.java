@@ -54,7 +54,7 @@ public class UserFilterPanel extends EntityFilterPanel<GwtUser> {
         entityGrid = entityView.getEntityGrid(entityView, currentSession);
         this.currentSession = currentSession;
 
-        setHeading(USER_MSGS.filterHeader());
+        setHeadingHtml(USER_MSGS.filterHeader());
 
         VerticalPanel fieldsPanel = getFieldsPanel();
 

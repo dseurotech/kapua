@@ -111,7 +111,7 @@ public class DeviceTable extends LayoutContainer {
         tableContainer.setBorders(false);
         tableContainer.setBodyBorder(true);
         tableContainer.setHeaderVisible(true);
-        tableContainer.setHeading(DATA_MSGS.deviceInfoTableHeader());
+        tableContainer.setHeadingHtml(DATA_MSGS.deviceInfoTableHeader());
         tableContainer.setScrollMode(Scroll.AUTOY);
         tableContainer.setLayout(new FitLayout());
         tableContainer.add(deviceGrid);
@@ -121,7 +121,7 @@ public class DeviceTable extends LayoutContainer {
         filterField.setEmptyText(DATA_MSGS.deviceInfoTableFilter());
         new KeyNav<ComponentEvent>(filterField) {
             public void onKeyPress(ComponentEvent ce) {
-                if (ce.getKeyCode() == KeyCodes.KEY_ENTER ) {
+                if (ce.getKeyCode() == KeyCodes.KEY_ENTER) {
                     refresh();
                 }
             }

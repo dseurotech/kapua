@@ -86,7 +86,7 @@ public abstract class EntityDescriptionTabItem<M extends GwtEntityModel> extends
         // Name
         ColumnConfig nameColumn = new ColumnConfig();
         nameColumn.setId("nameLoc");
-        nameColumn.setHeader(MSGS.entityTabDescriptionName());
+        nameColumn.setHeaderHtml(MSGS.entityTabDescriptionName());
         nameColumn.setWidth(50);
         columns.add(nameColumn);
 
@@ -103,7 +103,7 @@ public abstract class EntityDescriptionTabItem<M extends GwtEntityModel> extends
 
         ColumnConfig valueColumn = new ColumnConfig();
         valueColumn.setId("value");
-        valueColumn.setHeader(MSGS.devicePropValue());
+        valueColumn.setHeaderHtml(MSGS.devicePropValue());
         valueColumn.setWidth(50);
         valueColumn.setRenderer(valueColumnRenderer);
         columns.add(valueColumn);

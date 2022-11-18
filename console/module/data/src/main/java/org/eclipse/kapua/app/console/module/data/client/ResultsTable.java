@@ -41,7 +41,6 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-
 import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
 import org.eclipse.kapua.app.console.module.api.client.resources.icons.IconSet;
 import org.eclipse.kapua.app.console.module.api.client.resources.icons.KapuaIcon;
@@ -235,7 +234,7 @@ public class ResultsTable extends LayoutContainer {
         resultsToolBar.add(new SeparatorToolItem());
 
         warningLabel = new Label();
-        warningLabel.setText(MSGS.warningLimitReached());
+        warningLabel.setHtml(MSGS.warningLimitReached());
         warningLabel.setStyleAttribute("margin-left", "10px");
         warningLabel.setStyleAttribute("font-weight", "bold");
         warningLabel.setStyleAttribute("color", "grey");

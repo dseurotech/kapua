@@ -12,6 +12,13 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.authentication.client.tabs.credentials;
 
+import com.extjs.gxt.ui.client.event.ButtonEvent;
+import com.extjs.gxt.ui.client.event.SelectionListener;
+import com.extjs.gxt.ui.client.widget.Dialog;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import org.eclipse.kapua.app.console.module.api.client.messages.ConsoleMessages;
 import org.eclipse.kapua.app.console.module.api.client.util.CookieUtils;
 import org.eclipse.kapua.app.console.module.api.client.util.FailureHandler;
@@ -22,18 +29,8 @@ import org.eclipse.kapua.app.console.module.authentication.client.messages.Conso
 import org.eclipse.kapua.app.console.module.authentication.shared.service.GwtMfaCredentialOptionsService;
 import org.eclipse.kapua.app.console.module.authentication.shared.service.GwtMfaCredentialOptionsServiceAsync;
 
-import com.extjs.gxt.ui.client.event.ButtonEvent;
-import com.extjs.gxt.ui.client.event.SelectionListener;
-import com.extjs.gxt.ui.client.widget.Dialog;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
-
 /**
- *
  * Trust machine - Forget dialog
- *
  */
 public class ForgetTrustMachineDialog extends Dialog {
 
@@ -46,7 +43,7 @@ public class ForgetTrustMachineDialog extends Dialog {
     public ForgetTrustMachineDialog(final String username, final String scopeId, final String mfaCredentialOptionsId, final boolean selfManagement) {
         super();
 
-        setHeading(MSGS.mfaForgetTrustDevice());
+        setHeadingHtml(MSGS.mfaForgetTrustDevice());
         setButtons(Dialog.YESNO);
         setModal(true);
         setBodyBorder(true);

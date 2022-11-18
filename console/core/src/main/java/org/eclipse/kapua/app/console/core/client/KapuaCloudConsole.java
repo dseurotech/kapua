@@ -365,7 +365,7 @@ public class KapuaCloudConsole implements EntryPoint {
         RootPanel.get().add(viewport);
 
         genericNote.setHtml(productInformation.getInformationSnippet());
-        creditLabel.setText(productInformation.getBackgroundCredits());
+        creditLabel.setHtml(productInformation.getBackgroundCredits());
 
         // Check if coming from OpenID Connect Single Sign-On login
         String accessToken = Window.Location.getParameter(OPENID_ACCESS_TOKEN_PARAM);
@@ -401,7 +401,7 @@ public class KapuaCloudConsole implements EntryPoint {
             }
         });
 
-        loginDialog.setHeading(CORE_MSGS.loginTitle(productInformation.getProductName()));
+        loginDialog.setHeadingHtml(CORE_MSGS.loginTitle(productInformation.getProductName()));
 
         if (!UserAgentUtils.isIE()) {
             Window.addResizeHandler(new ResizeHandler() {
@@ -420,7 +420,7 @@ public class KapuaCloudConsole implements EntryPoint {
 
         // show wait dialog
         final Dialog ssoLoginWaitDialog = new Dialog();
-        ssoLoginWaitDialog.setHeading(MSGS.ssoWaitDialog_title());
+        ssoLoginWaitDialog.setHeadingHtml(MSGS.ssoWaitDialog_title());
         ssoLoginWaitDialog.setButtons("");
         ssoLoginWaitDialog.setClosable(false);
         ssoLoginWaitDialog.setResizable(false);

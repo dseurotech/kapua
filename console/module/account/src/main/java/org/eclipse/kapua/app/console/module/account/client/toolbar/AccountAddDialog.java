@@ -102,7 +102,7 @@ public class AccountAddDialog extends EntityAddEditDialog {
         // //////////////////////////////////////////
         // Account Information field set
         // //////////////////////////////////////////
-        fieldSet.setHeading(MSGS.accountFormInformation());
+        fieldSet.setHeadingHtml(MSGS.accountFormInformation());
         FormLayout layoutAccount = new FormLayout();
         layoutAccount.setLabelWidth(LABEL_WIDTH_FORM);
         fieldSet.setLayout(layoutAccount);
@@ -158,7 +158,7 @@ public class AccountAddDialog extends EntityAddEditDialog {
         // Deployment Information field set
         // //////////////////////////////////////////
         FieldSet fieldSetDeployment = new FieldSet();
-        fieldSetDeployment.setHeading(MSGS.accountFormDeploymentInformation());
+        fieldSetDeployment.setHeadingHtml(MSGS.accountFormDeploymentInformation());
         FormLayout layoutDeployment = new FormLayout();
         layoutDeployment.setLabelWidth(LABEL_WIDTH_FORM);
         fieldSetDeployment.setLayout(layoutDeployment);
@@ -175,7 +175,7 @@ public class AccountAddDialog extends EntityAddEditDialog {
         // Organization Information field set
         // //////////////////////////////////////////
         FieldSet fieldSetOrg = new FieldSet();
-        fieldSetOrg.setHeading(MSGS.accountFormOrgInformation());
+        fieldSetOrg.setHeadingHtml(MSGS.accountFormOrgInformation());
         FormLayout layoutOrg = new FormLayout();
         layoutOrg.setLabelWidth(LABEL_WIDTH_FORM);
         fieldSetOrg.setLayout(layoutOrg);
@@ -215,7 +215,7 @@ public class AccountAddDialog extends EntityAddEditDialog {
         organizationSubFieldSet.addListener(Events.Collapse, fieldSetListener);
         organizationSubFieldSet.addListener(Events.Expand, fieldSetListener);
 
-        organizationSubFieldSet.setHeading(MSGS.accountFormOrgPrimaryContact());
+        organizationSubFieldSet.setHeadingHtml(MSGS.accountFormOrgPrimaryContact());
         organizationSubFieldSet.setBorders(false);
         organizationSubFieldSet.setCollapsible(true);
         organizationSubFieldSet.setWidth(540);

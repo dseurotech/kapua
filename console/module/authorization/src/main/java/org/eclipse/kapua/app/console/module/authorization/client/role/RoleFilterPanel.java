@@ -42,7 +42,7 @@ public class RoleFilterPanel extends EntityFilterPanel<GwtRole> {
         entityGrid = entityView.getEntityGrid(entityView, currentSession);
         this.currentSession = currentSession;
 
-        setHeading(ROLE_MSGS.filterHeader());
+        setHeadingHtml(ROLE_MSGS.filterHeader());
 
         VerticalPanel fieldsPanel = getFieldsPanel();
 

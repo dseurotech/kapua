@@ -334,7 +334,7 @@ public class GwtAuthorizationServiceImpl extends KapuaRemoteServiceServlet imple
                     // Permission info
                     AccessPermissionListResult accessPermissions = ACCESS_PERMISSION_SERVICE.findByAccessInfoId(userAccessInfo.getScopeId(), userAccessInfo.getId());
                     for (AccessPermission ap : accessPermissions.getItems()) {
-                        gwtSession.addSessionPermission(convert(ap.getPermission()));
+                        gwtSession.addSessionPermission(disambiguousConvert(ap.getPermission()));
                     }
 
                     // Role info
@@ -345,7 +345,7 @@ public class GwtAuthorizationServiceImpl extends KapuaRemoteServiceServlet imple
 
                         RolePermissionListResult rolePermissions = ROLE_PERMISSION_SERVICE.findByRoleId(role.getScopeId(), role.getId());
                         for (RolePermission rp : rolePermissions.getItems()) {
-                            gwtSession.addSessionPermission(convert(rp.getPermission()));
+                            gwtSession.addSessionPermission(disambiguousConvert(rp.getPermission()));
                         }
                     }
                 }
@@ -389,6 +389,11 @@ public class GwtAuthorizationServiceImpl extends KapuaRemoteServiceServlet imple
         } catch (Throwable throwable) {
             throw KapuaExceptionHandler.buildExceptionFromError(throwable);
         }
+    }
+
+    private GwtSessionPermission disambiguousConvert(Permission permission) {
+        return convert(permission);
+
     }
 
     private GwtSessionPermission convert(Permission permission) {

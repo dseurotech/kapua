@@ -124,7 +124,7 @@ public interface KapuaPosition extends Position, Serializable {
      * @param heading The GPS heading
      * @since 1.0.0
      */
-    void setHeading(Double heading);
+    void setHeadingHtml(Double heading);
 
     /**
      * Gets the GPS speed

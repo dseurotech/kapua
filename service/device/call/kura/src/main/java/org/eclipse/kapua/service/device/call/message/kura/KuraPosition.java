@@ -151,7 +151,7 @@ public class KuraPosition implements DevicePosition {
     }
 
     @Override
-    public void setHeading(Double heading) {
+    public void setHeadingHtml(Double heading) {
         this.heading = heading;
     }
 

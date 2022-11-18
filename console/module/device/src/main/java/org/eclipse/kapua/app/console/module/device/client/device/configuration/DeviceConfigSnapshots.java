@@ -433,7 +433,7 @@ public class DeviceConfigSnapshots extends LayoutContainer {
                 }
             });
 
-            fileUpload.setHeading(MSGS.upload());
+            fileUpload.setHeadingHtml(MSGS.upload());
             fileUpload.addListener(Events.Render, new Listener<BaseEvent>() {
 
                 @Override
@@ -457,7 +457,7 @@ public class DeviceConfigSnapshots extends LayoutContainer {
                         public void handleEvent(MessageBoxEvent ce) {
                             // if confirmed, delete
                             Dialog dialog = ce.getDialog();
-                            if (dialog.yesText.equals(ce.getButtonClicked().getText())) {
+                            if (dialog.yesText.equals(ce.getButtonClicked().getHtml())) {
 
                                 dirty = true;
                                 grid.mask(MSGS.rollingBack());

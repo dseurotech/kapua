@@ -22,6 +22,7 @@
         <version>2.0.0-SNAPSHOT</version>
     </parent>
 
+
     <artifactId>kapua-console</artifactId>
     <packaging>pom</packaging>
 
@@ -32,8 +33,10 @@
     </modules>
 
     <properties>
-        <com.google.gwt.version>2.4.0</com.google.gwt.version>
-        <com.extjs.gxt.version>2.2.5</com.extjs.gxt.version>
+        <!--        <com.google.gwt.version>2.4.0</com.google.gwt.version>-->
+        <com.google.gwt.version>2.8.2</com.google.gwt.version>
+        <!--        <com.extjs.gxt.version>2.2.5</com.extjs.gxt.version>-->
+        <com.extjs.gxt.version>2.3.1-gwt22</com.extjs.gxt.version>
         <com.allen-sauer.gwt.log.version>3.1.8</com.allen-sauer.gwt.log.version>
     </properties>
 
@@ -264,10 +267,10 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.6</source>
-                        <target>1.6</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                         <jdkToolchain>
-                            <version>6</version>
+                            <version>8</version>
                         </jdkToolchain>
                     </configuration>
                 </plugin>
@@ -320,6 +323,7 @@
                                         <groupId>org.codehaus.mojo</groupId>
                                         <artifactId>gwt-maven-plugin</artifactId>
                                         <versionRange>[2.4.0,)</versionRange>
+                                        <sourcelevel>1.6</sourcelevel>
                                         <goals>
                                             <goal>generateAsync</goal>
                                             <goal>i18n</goal>

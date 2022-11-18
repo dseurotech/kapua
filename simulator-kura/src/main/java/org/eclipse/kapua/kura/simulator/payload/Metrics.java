@@ -12,15 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.kura.simulator.payload;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.nio.ByteBuffer;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
-
+import com.google.protobuf.ByteString;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.eclipse.kapua.kura.simulator.generator.Payload;
@@ -30,7 +22,14 @@ import org.eclipse.kura.core.message.protobuf.KuraPayloadProto.KuraPayload.KuraM
 import org.eclipse.kura.core.message.protobuf.KuraPayloadProto.KuraPayload.KuraMetric.ValueType;
 import org.eclipse.kura.core.message.protobuf.KuraPayloadProto.KuraPayload.KuraPosition;
 
-import com.google.protobuf.ByteString;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
 
 public final class Metrics {
 
@@ -48,12 +47,9 @@ public final class Metrics {
      * Only the supported Kura values types must be used (String, boolean, int,
      * long, float, double, byte[])
      *
-     * @param builder
-     *            the builder to append the metrics to
-     * @param metrics
-     *            the metrics map
-     * @throws IllegalArgumentException
-     *             in case of an unsupported value type
+     * @param builder the builder to append the metrics to
+     * @param metrics the metrics map
+     * @throws IllegalArgumentException in case of an unsupported value type
      */
     public static void buildMetrics(final KuraPayload.Builder builder, final Map<String, ?> metrics) {
         Objects.requireNonNull(metrics);
@@ -190,27 +186,27 @@ public final class Metrics {
         for (final KuraMetric metric : metricList) {
             final String name = metric.getName();
             switch (metric.getType()) {
-            case BOOL:
-                result.put(name, metric.getBoolValue());
-                break;
-            case BYTES:
-                result.put(name, metric.getBytesValue().toByteArray());
-                break;
-            case DOUBLE:
-                result.put(name, metric.getDoubleValue());
-                break;
-            case FLOAT:
-                result.put(name, metric.getFloatValue());
-                break;
-            case INT32:
-                result.put(name, metric.getIntValue());
-                break;
-            case INT64:
-                result.put(name, metric.getLongValue());
-                break;
-            case STRING:
-                result.put(name, metric.getStringValue());
-                break;
+                case BOOL:
+                    result.put(name, metric.getBoolValue());
+                    break;
+                case BYTES:
+                    result.put(name, metric.getBytesValue().toByteArray());
+                    break;
+                case DOUBLE:
+                    result.put(name, metric.getDoubleValue());
+                    break;
+                case FLOAT:
+                    result.put(name, metric.getFloatValue());
+                    break;
+                case INT32:
+                    result.put(name, metric.getIntValue());
+                    break;
+                case INT64:
+                    result.put(name, metric.getLongValue());
+                    break;
+                case STRING:
+                    result.put(name, metric.getStringValue());
+                    break;
             }
         }
 

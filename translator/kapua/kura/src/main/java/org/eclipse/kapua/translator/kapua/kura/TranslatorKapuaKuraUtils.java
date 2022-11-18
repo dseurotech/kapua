@@ -72,7 +72,7 @@ public final class TranslatorKapuaKuraUtils {
         if (kapuaPosition != null) {
             kuraPosition = new KuraPosition();
             kuraPosition.setAltitude(kapuaPosition.getAltitude());
-            kuraPosition.setHeading(kapuaPosition.getHeading());
+            kuraPosition.setHeadingHtml(kapuaPosition.getHeading());
             kuraPosition.setLatitude(kapuaPosition.getLatitude());
             kuraPosition.setLongitude(kapuaPosition.getLongitude());
             kuraPosition.setPrecision(kapuaPosition.getPrecision());

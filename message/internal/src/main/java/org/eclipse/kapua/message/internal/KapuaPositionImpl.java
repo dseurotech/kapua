@@ -89,7 +89,7 @@ public class KapuaPositionImpl implements KapuaPosition {
     }
 
     @Override
-    public void setHeading(Double heading) {
+    public void setHeadingHtml(Double heading) {
         this.heading = heading;
     }
 
