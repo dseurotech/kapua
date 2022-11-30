@@ -1992,7 +1992,7 @@
             <dependency>
                 <groupId>org.glassfish.jersey.media</groupId>
                 <artifactId>jersey-media-moxy</artifactId>
-                <version>${jersey-repackaged.version}</version>
+                <version>${jersey.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>
