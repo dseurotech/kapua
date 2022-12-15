@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.core.exception.model;
 
+import org.eclipse.kapua.app.api.core.exception.info.SelfManagedOnlyExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.eclipse.kapua.service.authorization.shiro.exception.SelfManagedOnlyException;
 import org.junit.Assert;
@@ -56,7 +57,7 @@ public class SelfManagedOnlyExceptionInfoTest {
     @Test
     public void selfManagedOnlyExceptionInfoStatusExceptionTest() {
         for (int i = 0; i < statusList.length; i++) {
-            SelfManagedOnlyExceptionInfo selfManagedOnlyExceptionInfo = new SelfManagedOnlyExceptionInfo(statusList[i], selfManagedOnlyException);
+            SelfManagedOnlyExceptionInfo selfManagedOnlyExceptionInfo = new SelfManagedOnlyExceptionInfo(statusList[i], selfManagedOnlyException, false);
             Assert.assertEquals("Expected and actual values should be the same.", "SELF_MANAGED_ONLY", selfManagedOnlyExceptionInfo.getKapuaErrorCode());
             Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], selfManagedOnlyExceptionInfo.getHttpErrorCode());
             Assert.assertEquals("Expected and actual values should be the same.", "User cannot perform this action on behalf of another user. This action can be performed only in self-management.", selfManagedOnlyExceptionInfo.getMessage());
@@ -65,11 +66,11 @@ public class SelfManagedOnlyExceptionInfoTest {
 
     @Test(expected = NullPointerException.class)
     public void selfManagedOnlyExceptionInfoNullStatusExceptionTest() {
-        new SelfManagedOnlyExceptionInfo(null, selfManagedOnlyException);
+        new SelfManagedOnlyExceptionInfo(null, selfManagedOnlyException, false);
     }
 
     @Test(expected = NullPointerException.class)
     public void selfManagedOnlyExceptionInfStatusNullExceptionTest() {
-        new SelfManagedOnlyExceptionInfo(Response.Status.OK, null);
+        new SelfManagedOnlyExceptionInfo(Response.Status.OK, null, false);
     }
 } 

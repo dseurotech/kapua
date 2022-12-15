@@ -13,7 +13,7 @@
 package org.eclipse.kapua.qa.common;
 
 import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.app.api.core.exception.model.ExceptionInfo;
+import org.eclipse.kapua.app.api.core.exception.info.ExceptionInfo;
 import org.eclipse.kapua.commons.configuration.metatype.TscalarImpl;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordCreator;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordListResult;

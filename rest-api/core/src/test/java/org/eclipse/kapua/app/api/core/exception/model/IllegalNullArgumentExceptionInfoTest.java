@@ -13,6 +13,8 @@
 package org.eclipse.kapua.app.api.core.exception.model;
 
 import org.eclipse.kapua.KapuaIllegalNullArgumentException;
+import org.eclipse.kapua.app.api.core.exception.info.IllegalArgumentExceptionInfo;
+import org.eclipse.kapua.app.api.core.exception.info.IllegalNullArgumentExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.junit.Assert;
 import org.junit.Before;
@@ -56,7 +58,7 @@ public class IllegalNullArgumentExceptionInfoTest {
     @Test
     public void illegalNullArgumentExceptionInfoWithParametersTest() {
         for (int i = 0; i < statusList.length; i++) {
-            IllegalNullArgumentExceptionInfo illegalNullArgumentExceptionInfo = new IllegalNullArgumentExceptionInfo(statusList[i], kapuaIllegalNullArgumentException);
+            IllegalNullArgumentExceptionInfo illegalNullArgumentExceptionInfo = new IllegalNullArgumentExceptionInfo(statusList[i], kapuaIllegalNullArgumentException, false);
 
             Assert.assertEquals("Expected and actual values should be the same.", "ILLEGAL_NULL_ARGUMENT", illegalNullArgumentExceptionInfo.getKapuaErrorCode());
             Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], illegalNullArgumentExceptionInfo.getHttpErrorCode());
@@ -66,11 +68,11 @@ public class IllegalNullArgumentExceptionInfoTest {
 
     @Test(expected = NullPointerException.class)
     public void illegalArgumentExceptionInfoNullStatusTest() {
-        new IllegalArgumentExceptionInfo(null, kapuaIllegalNullArgumentException);
+        new IllegalArgumentExceptionInfo(null, kapuaIllegalNullArgumentException, false);
     }
 
     @Test(expected = NullPointerException.class)
     public void illegalArgumentExceptionInfoNullExceptionTest() {
-        new IllegalArgumentExceptionInfo(Response.Status.OK, null);
+        new IllegalArgumentExceptionInfo(Response.Status.OK, null, false);
     }
 } 

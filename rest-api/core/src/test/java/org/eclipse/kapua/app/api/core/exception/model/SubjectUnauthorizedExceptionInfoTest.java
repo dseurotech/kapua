@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.core.exception.model;
 
+import org.eclipse.kapua.app.api.core.exception.info.SubjectUnauthorizedExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.eclipse.kapua.service.authorization.permission.Permission;
 import org.eclipse.kapua.service.authorization.shiro.exception.SubjectUnauthorizedException;
@@ -60,7 +61,7 @@ public class SubjectUnauthorizedExceptionInfoTest {
     @Test
     public void subjectUnauthorizedExceptionInfoWithParametersTest() {
         for (int i = 0; i < statusList.length; i++) {
-            SubjectUnauthorizedExceptionInfo subjectUnauthorizedExceptionInfo = new SubjectUnauthorizedExceptionInfo(statusList[i], subjectUnauthorizedException);
+            SubjectUnauthorizedExceptionInfo subjectUnauthorizedExceptionInfo = new SubjectUnauthorizedExceptionInfo(statusList[i], subjectUnauthorizedException, false);
 
             Assert.assertEquals("Expected and actual values should be the same.", "SUBJECT_UNAUTHORIZED", subjectUnauthorizedExceptionInfo.getKapuaErrorCode());
             Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], subjectUnauthorizedExceptionInfo.getHttpErrorCode());
@@ -70,11 +71,11 @@ public class SubjectUnauthorizedExceptionInfoTest {
 
     @Test(expected = NullPointerException.class)
     public void subjectUnauthorizedExceptionInfoNullStatusTest() {
-        new SubjectUnauthorizedExceptionInfo(null, subjectUnauthorizedException);
+        new SubjectUnauthorizedExceptionInfo(null, subjectUnauthorizedException, false);
     }
 
     @Test(expected = NullPointerException.class)
     public void subjectUnauthorizedExceptionInfoNullExceptionTest() {
-        new SubjectUnauthorizedExceptionInfo(Response.Status.OK, null);
+        new SubjectUnauthorizedExceptionInfo(Response.Status.OK, null, false);
     }
 } 

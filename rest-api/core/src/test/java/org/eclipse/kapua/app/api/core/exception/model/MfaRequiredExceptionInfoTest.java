@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.core.exception.model;
 
+import org.eclipse.kapua.app.api.core.exception.info.MfaRequiredExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.eclipse.kapua.service.authentication.KapuaAuthenticationErrorCodes;
 import org.eclipse.kapua.service.authentication.shiro.KapuaAuthenticationException;
@@ -72,7 +73,7 @@ public class MfaRequiredExceptionInfoTest {
             for (int j = 0; j < errorCodes.length; j++) {
                 kapuaException = new KapuaAuthenticationException(errorCodes[j]);
 
-                MfaRequiredExceptionInfo mfaRequiredExceptionInfo = new MfaRequiredExceptionInfo(statusList[i], kapuaException);
+                MfaRequiredExceptionInfo mfaRequiredExceptionInfo = new MfaRequiredExceptionInfo(statusList[i], kapuaException, false);
                 Assert.assertEquals("Expected and actual values should be the same.", expectedKapuaErrorCode[j], mfaRequiredExceptionInfo.getKapuaErrorCode());
                 Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], mfaRequiredExceptionInfo.getHttpErrorCode());
                 Assert.assertEquals("Expected and actual values should be the same.", "Error: ", mfaRequiredExceptionInfo.getMessage());
@@ -83,11 +84,11 @@ public class MfaRequiredExceptionInfoTest {
     @Test(expected = NullPointerException.class)
     public void mfaRequiredExceptionInfoNullStatusExceptionTest() {
         kapuaException = new KapuaAuthenticationException(KapuaAuthenticationErrorCodes.SUBJECT_ALREADY_LOGGED);
-        new MfaRequiredExceptionInfo(null, kapuaException);
+        new MfaRequiredExceptionInfo(null, kapuaException, false);
     }
 
     @Test(expected = NullPointerException.class)
     public void mfaRequiredExceptionInfoStatusNullExceptionTest() {
-        new MfaRequiredExceptionInfo(Response.Status.OK, null);
+        new MfaRequiredExceptionInfo(Response.Status.OK, null, false);
     }
 } 

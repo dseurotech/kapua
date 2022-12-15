@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.core.exception.model;
 
+import org.eclipse.kapua.app.api.core.exception.info.ThrowableInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.junit.Assert;
 import org.junit.Before;
@@ -58,7 +59,7 @@ public class ThrowableInfoTest {
     public void throwableInfoWithParametersFalseStackTraceTest() {
         for (int i = 0; i < statusList.length; i++) {
             for (int j = 0; j < throwables.length; j++) {
-                ThrowableInfo throwableInfo = new ThrowableInfo(statusList[i], throwables[j]);
+                ThrowableInfo throwableInfo = new ThrowableInfo(statusList[i], throwables[j], false);
 
                 Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], throwableInfo.getHttpErrorCode());
                 Assert.assertEquals("Expected and actual values should be the same.", expectedMessage[j], throwableInfo.getMessage());
@@ -69,13 +70,13 @@ public class ThrowableInfoTest {
 
     @Test(expected = NullPointerException.class)
     public void throwableInfoNullStatusTest() {
-        new ThrowableInfo(null, new Throwable());
+        new ThrowableInfo(null, new Throwable(), false);
     }
 
     @Test
     public void throwableInfoNullThrowableTest() {
         for (int i = 0; i < statusList.length; i++) {
-            ThrowableInfo throwableInfo = new ThrowableInfo(statusList[i], null);
+            ThrowableInfo throwableInfo = new ThrowableInfo(statusList[i], null, false);
             Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], throwableInfo.getHttpErrorCode());
             Assert.assertNull("Null expected.", throwableInfo.getMessage());
             Assert.assertNull("Null expected.", throwableInfo.getStackTrace());
@@ -85,7 +86,7 @@ public class ThrowableInfoTest {
     @Test
     public void setAndGetHttpErrorCodeTest() {
         ThrowableInfo throwableInfo1 = new ThrowableInfo();
-        ThrowableInfo throwableInfo2 = new ThrowableInfo(Response.Status.OK, new Throwable());
+        ThrowableInfo throwableInfo2 = new ThrowableInfo(Response.Status.OK, new Throwable(), false);
 
         for (int i = 0; i < statusList.length; i++) {
             throwableInfo1.setHttpErrorCode(statusList[i]);
@@ -115,7 +116,7 @@ public class ThrowableInfoTest {
     @Test
     public void setAndGetMessageTest() {
         ThrowableInfo throwableInfo1 = new ThrowableInfo();
-        ThrowableInfo throwableInfo2 = new ThrowableInfo(Response.Status.OK, new Throwable());
+        ThrowableInfo throwableInfo2 = new ThrowableInfo(Response.Status.OK, new Throwable(), false);
         String[] messages = {null, "", "mess_age", "message#123", "@message-333", "message<9>,", "(1*2)m,."};
 
         for (int i = 0; i < messages.length; i++) {

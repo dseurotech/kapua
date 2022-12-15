@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.core.exception.model;
 
+import org.eclipse.kapua.app.api.core.exception.info.InternalUserOnlyExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.eclipse.kapua.service.authorization.shiro.exception.InternalUserOnlyException;
 import org.junit.Assert;
@@ -56,7 +57,7 @@ public class InternalUserOnlyExceptionInfoTest {
     @Test
     public void internalUserOnlyExceptionInfoStatusExceptionTest() {
         for (int i = 0; i < statusList.length; i++) {
-            InternalUserOnlyExceptionInfo internalUserOnlyExceptionInfo = new InternalUserOnlyExceptionInfo(statusList[i], internalUserOnlyException);
+            InternalUserOnlyExceptionInfo internalUserOnlyExceptionInfo = new InternalUserOnlyExceptionInfo(statusList[i], internalUserOnlyException, false);
             Assert.assertEquals("Expected and actual values should be the same.", "INTERNAL_USER_ONLY", internalUserOnlyExceptionInfo.getKapuaErrorCode());
             Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], internalUserOnlyExceptionInfo.getHttpErrorCode());
             Assert.assertEquals("Expected and actual values should be the same.", "This action can be performed only by internal users.", internalUserOnlyExceptionInfo.getMessage());
@@ -65,11 +66,11 @@ public class InternalUserOnlyExceptionInfoTest {
 
     @Test(expected = NullPointerException.class)
     public void internalUserOnlyExceptionInfoNullStatusExceptionTest() {
-        new InternalUserOnlyExceptionInfo(null, internalUserOnlyException);
+        new InternalUserOnlyExceptionInfo(null, internalUserOnlyException, false);
     }
 
     @Test(expected = NullPointerException.class)
     public void internalUserOnlyExceptionInfoStatusNullExceptionTest() {
-        new InternalUserOnlyExceptionInfo(Response.Status.OK, null);
+        new InternalUserOnlyExceptionInfo(Response.Status.OK, null, false);
     }
 } 

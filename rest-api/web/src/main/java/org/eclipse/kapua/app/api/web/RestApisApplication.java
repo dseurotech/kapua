@@ -12,11 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.web;
 
-import java.util.HashMap;
-
-import javax.ws.rs.core.MediaType;
-import javax.xml.bind.JAXBException;
-
 import org.eclipse.kapua.app.api.core.KapuaSerializableBodyWriter;
 import org.eclipse.kapua.app.api.core.ListBodyWriter;
 import org.eclipse.kapua.app.api.core.MoxyJsonConfigContextResolver;
@@ -28,11 +23,17 @@ import org.glassfish.jersey.server.filter.UriConnegFilter;
 import org.glassfish.jersey.server.spi.Container;
 import org.glassfish.jersey.server.spi.ContainerLifecycleListener;
 
+import javax.ws.rs.core.MediaType;
+import javax.xml.bind.JAXBException;
+import java.util.HashMap;
+
 public class RestApisApplication extends ResourceConfig {
 
     public RestApisApplication() throws JAXBException {
+        register(new KapuaApplicationBinder());
+
         packages("org.eclipse.kapua.app.api",
-                 "org.eclipse.kapua.service");
+                "org.eclipse.kapua.service");
 
         // Bind media type to resource extension
         HashMap<String, MediaType> mappedMediaTypes = new HashMap<>();
