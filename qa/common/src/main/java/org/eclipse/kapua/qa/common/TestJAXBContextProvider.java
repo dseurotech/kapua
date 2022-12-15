@@ -13,7 +13,6 @@
 package org.eclipse.kapua.qa.common;
 
 import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.app.api.core.exception.info.ExceptionInfo;
 import org.eclipse.kapua.commons.configuration.metatype.TscalarImpl;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordCreator;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordListResult;
@@ -24,6 +23,7 @@ import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.job.engine.JobStartOptions;
 import org.eclipse.kapua.job.engine.client.JobStartOptionsClient;
 import org.eclipse.kapua.job.engine.commons.model.JobTargetSublist;
+import org.eclipse.kapua.job.engine.rest.model.errors.ExceptionInfo;
 import org.eclipse.kapua.model.config.metatype.KapuaTad;
 import org.eclipse.kapua.model.config.metatype.KapuaTdesignate;
 import org.eclipse.kapua.model.config.metatype.KapuaTicon;

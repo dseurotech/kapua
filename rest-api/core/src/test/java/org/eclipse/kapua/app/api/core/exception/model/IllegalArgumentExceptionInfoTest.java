@@ -13,7 +13,7 @@
 package org.eclipse.kapua.app.api.core.exception.model;
 
 import org.eclipse.kapua.KapuaIllegalArgumentException;
-import org.eclipse.kapua.app.api.core.exception.info.IllegalArgumentExceptionInfo;
+import org.eclipse.kapua.job.engine.rest.model.errors.IllegalArgumentExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.junit.Assert;
 import org.junit.Before;

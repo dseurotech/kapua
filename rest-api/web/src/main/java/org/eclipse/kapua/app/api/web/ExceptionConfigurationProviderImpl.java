@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.web;
 
-import org.eclipse.kapua.app.api.core.exception.mapper.ExceptionConfigurationProvider;
+import org.eclipse.kapua.job.engine.rest.service.errors.ExceptionConfigurationProvider;
 import org.eclipse.kapua.app.api.core.settings.KapuaApiCoreSetting;
 import org.eclipse.kapua.app.api.core.settings.KapuaApiCoreSettingKeys;
 import org.slf4j.Logger;

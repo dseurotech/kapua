@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.core.exception.model;
 
-import org.eclipse.kapua.app.api.core.exception.info.ThrowableInfo;
+import org.eclipse.kapua.job.engine.rest.model.errors.ThrowableInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.junit.Assert;
 import org.junit.Before;
