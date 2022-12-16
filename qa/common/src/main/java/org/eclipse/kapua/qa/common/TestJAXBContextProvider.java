@@ -23,7 +23,6 @@ import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.job.engine.JobStartOptions;
 import org.eclipse.kapua.job.engine.client.JobStartOptionsClient;
 import org.eclipse.kapua.job.engine.commons.model.JobTargetSublist;
-import org.eclipse.kapua.job.engine.rest.model.errors.ExceptionInfo;
 import org.eclipse.kapua.model.config.metatype.KapuaTad;
 import org.eclipse.kapua.model.config.metatype.KapuaTdesignate;
 import org.eclipse.kapua.model.config.metatype.KapuaTicon;
@@ -187,9 +186,7 @@ public class TestJAXBContextProvider implements JAXBContextProvider {
                     DeviceConfiguration.class,
                     DevicePackages.class,
                     DevicePackageDownloadRequest.class,
-                    DevicePackageUninstallRequest.class,
-
-                    ExceptionInfo.class
+                    DevicePackageUninstallRequest.class
             };
             try {
                 Map<String, Object> properties = new HashMap<>(1);
