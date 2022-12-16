@@ -32,7 +32,8 @@ public class RestApisApplication extends ResourceConfig {
     public RestApisApplication() throws JAXBException {
         register(new KapuaApplicationBinder());
 
-        packages("org.eclipse.kapua.app.api",
+        packages("org.eclipse.kapua.job.engine.rest.service",
+                "org.eclipse.kapua.app.api",
                 "org.eclipse.kapua.service");
 
         // Bind media type to resource extension

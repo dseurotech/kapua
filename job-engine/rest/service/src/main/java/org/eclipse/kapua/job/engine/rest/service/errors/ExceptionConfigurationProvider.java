@@ -17,6 +17,5 @@ import org.jvnet.hk2.annotations.Contract;
 
 @Contract
 public interface ExceptionConfigurationProvider {
-    //KapuaApiCoreSetting.getInstance().getBoolean(KapuaApiCoreSettingKeys.API_EXCEPTION_STACKTRACE_SHOW, false);
     boolean showStackTrace();
 }

@@ -84,6 +84,14 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.kapua</groupId>
+            <artifactId>kapua-job-engine-rest-service</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kapua</groupId>
+            <artifactId>kapua-job-engine-rest-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kapua</groupId>
             <artifactId>kapua-scheduler-api</artifactId>
         </dependency>
         <dependency>
@@ -220,10 +228,7 @@
             <artifactId>logback-core</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.eclipse.kapua</groupId>
-            <artifactId>kapua-job-engine-rest-service</artifactId>
-        </dependency>
+
     </dependencies>
 
     <build>

@@ -12,8 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.job.engine.rest.service.errors;
 
-import org.eclipse.kapua.job.engine.rest.model.errors.JobMissingTargetExceptionInfo;
 import org.eclipse.kapua.job.engine.exception.JobMissingTargetException;
+import org.eclipse.kapua.job.engine.rest.model.errors.JobMissingTargetExceptionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
