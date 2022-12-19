@@ -14,7 +14,7 @@ package org.eclipse.kapua.job.engine.rest.service.errors;
 
 import org.eclipse.kapua.job.engine.rest.model.errors.MfaRequiredExceptionInfo;
 import org.eclipse.kapua.service.authentication.KapuaAuthenticationErrorCodes;
-import org.eclipse.kapua.service.authentication.shiro.KapuaAuthenticationException;
+import org.eclipse.kapua.service.authentication.exception.KapuaAuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

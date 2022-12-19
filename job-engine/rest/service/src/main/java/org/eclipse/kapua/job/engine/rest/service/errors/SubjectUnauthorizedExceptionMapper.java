@@ -13,7 +13,7 @@
 package org.eclipse.kapua.job.engine.rest.service.errors;
 
 import org.eclipse.kapua.job.engine.rest.model.errors.SubjectUnauthorizedExceptionInfo;
-import org.eclipse.kapua.service.authorization.shiro.exception.SubjectUnauthorizedException;
+import org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

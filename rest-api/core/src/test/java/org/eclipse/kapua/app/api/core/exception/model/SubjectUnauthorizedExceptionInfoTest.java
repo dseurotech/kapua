@@ -15,7 +15,7 @@ package org.eclipse.kapua.app.api.core.exception.model;
 import org.eclipse.kapua.job.engine.rest.model.errors.SubjectUnauthorizedExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.eclipse.kapua.service.authorization.permission.Permission;
-import org.eclipse.kapua.service.authorization.shiro.exception.SubjectUnauthorizedException;
+import org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

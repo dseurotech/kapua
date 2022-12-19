@@ -13,7 +13,7 @@
 package org.eclipse.kapua.job.engine.rest.service.errors;
 
 import org.eclipse.kapua.job.engine.rest.model.errors.SelfManagedOnlyExceptionInfo;
-import org.eclipse.kapua.service.authorization.shiro.exception.SelfManagedOnlyException;
+import org.eclipse.kapua.service.authentication.exception.SelfManagedOnlyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

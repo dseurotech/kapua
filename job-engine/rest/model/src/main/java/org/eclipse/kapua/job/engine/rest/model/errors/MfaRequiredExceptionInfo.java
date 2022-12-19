@@ -12,7 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.job.engine.rest.model.errors;
 
-import org.eclipse.kapua.service.authentication.shiro.KapuaAuthenticationException;
+
+import org.eclipse.kapua.service.authentication.exception.KapuaAuthenticationException;
 
 import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
