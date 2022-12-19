@@ -14,7 +14,9 @@ package org.eclipse.kapua.job.engine.app.web;
 
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
 import org.eclipse.kapua.job.engine.app.web.jaxb.JobEngineJAXBContextProvider;
+import org.eclipse.kapua.job.engine.rest.service.errors.ExceptionConfigurationProvider;
 import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
@@ -22,13 +24,21 @@ import org.glassfish.jersey.server.filter.UriConnegFilter;
 import org.glassfish.jersey.server.spi.Container;
 import org.glassfish.jersey.server.spi.ContainerLifecycleListener;
 
+import javax.inject.Singleton;
 import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
 
 public class JobEngineApplication extends ResourceConfig {
 
     public JobEngineApplication() {
-        register(new KapuaApplicationBinder());
+        register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                this.bind(ExceptionConfigurationProviderImpl.class)
+                        .to(ExceptionConfigurationProvider.class)
+                        .in(Singleton.class);
+            }
+        });
         packages("org.eclipse.kapua.job.engine.rest.service", "org.eclipse.kapua.job.engine.app", "org.eclipse.kapua.app.api.core");
 
         // Bind media type to resource extension

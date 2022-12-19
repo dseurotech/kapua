@@ -16,13 +16,16 @@ import org.eclipse.kapua.app.api.core.KapuaSerializableBodyWriter;
 import org.eclipse.kapua.app.api.core.ListBodyWriter;
 import org.eclipse.kapua.app.api.core.MoxyJsonConfigContextResolver;
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
+import org.eclipse.kapua.job.engine.rest.service.errors.ExceptionConfigurationProvider;
 import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 import org.glassfish.jersey.server.filter.UriConnegFilter;
 import org.glassfish.jersey.server.spi.Container;
 import org.glassfish.jersey.server.spi.ContainerLifecycleListener;
 
+import javax.inject.Singleton;
 import javax.ws.rs.core.MediaType;
 import javax.xml.bind.JAXBException;
 import java.util.HashMap;
@@ -30,7 +33,14 @@ import java.util.HashMap;
 public class RestApisApplication extends ResourceConfig {
 
     public RestApisApplication() throws JAXBException {
-        register(new KapuaApplicationBinder());
+        register(new AbstractBinder() {
+            @Override
+            protected void configure() {
+                this.bind(ExceptionConfigurationProviderImpl.class)
+                        .to(ExceptionConfigurationProvider.class)
+                        .in(Singleton.class);
+            }
+        });
 
         packages("org.eclipse.kapua.job.engine.rest.service",
                 "org.eclipse.kapua.app.api",
