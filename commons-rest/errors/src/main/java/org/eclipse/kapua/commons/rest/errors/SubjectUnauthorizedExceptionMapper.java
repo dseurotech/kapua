@@ -41,7 +41,7 @@ public class SubjectUnauthorizedExceptionMapper implements ExceptionMapper<Subje
 
         return Response
                 .status(Status.FORBIDDEN)
-                .entity(new SubjectUnauthorizedExceptionInfo(Status.FORBIDDEN, subjectUnauthorizedException, showStackTrace))
+                .entity(new SubjectUnauthorizedExceptionInfo(Status.FORBIDDEN.getStatusCode(), subjectUnauthorizedException, showStackTrace))
                 .build();
     }
 

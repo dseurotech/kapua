@@ -10,9 +10,8 @@
  * Contributors:
  *     Eurotech - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.app.api.core.exception.model;
+package org.eclipse.kapua.commons.rest.model.errors;
 
-import org.eclipse.kapua.commons.rest.model.errors.MfaRequiredExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.eclipse.kapua.service.authentication.KapuaAuthenticationErrorCodes;
 import org.eclipse.kapua.service.authentication.exception.KapuaAuthenticationException;
@@ -73,7 +72,7 @@ public class MfaRequiredExceptionInfoTest {
             for (int j = 0; j < errorCodes.length; j++) {
                 kapuaException = new KapuaAuthenticationException(errorCodes[j]);
 
-                MfaRequiredExceptionInfo mfaRequiredExceptionInfo = new MfaRequiredExceptionInfo(statusList[i], kapuaException, false);
+                MfaRequiredExceptionInfo mfaRequiredExceptionInfo = new MfaRequiredExceptionInfo(statusList[i].getStatusCode(), kapuaException, false);
                 Assert.assertEquals("Expected and actual values should be the same.", expectedKapuaErrorCode[j], mfaRequiredExceptionInfo.getKapuaErrorCode());
                 Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], mfaRequiredExceptionInfo.getHttpErrorCode());
                 Assert.assertEquals("Expected and actual values should be the same.", "Error: ", mfaRequiredExceptionInfo.getMessage());
@@ -82,13 +81,7 @@ public class MfaRequiredExceptionInfoTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void mfaRequiredExceptionInfoNullStatusExceptionTest() {
-        kapuaException = new KapuaAuthenticationException(KapuaAuthenticationErrorCodes.SUBJECT_ALREADY_LOGGED);
-        new MfaRequiredExceptionInfo(null, kapuaException, false);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void mfaRequiredExceptionInfoStatusNullExceptionTest() {
-        new MfaRequiredExceptionInfo(Response.Status.OK, null, false);
+        new MfaRequiredExceptionInfo(Response.Status.OK.getStatusCode(), null, false);
     }
 } 

@@ -10,12 +10,10 @@
  * Contributors:
  *     Eurotech - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.app.api.core.exception.model;
+package org.eclipse.kapua.commons.rest.model.errors;
 
-import org.eclipse.kapua.KapuaIllegalNullArgumentException;
-import org.eclipse.kapua.commons.rest.model.errors.IllegalArgumentExceptionInfo;
-import org.eclipse.kapua.commons.rest.model.errors.IllegalNullArgumentExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
+import org.eclipse.kapua.service.authentication.exception.InternalUserOnlyException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +23,11 @@ import javax.ws.rs.core.Response;
 
 
 @Category(JUnitTests.class)
-public class IllegalNullArgumentExceptionInfoTest {
+public class InternalUserOnlyExceptionInfoTest {
 
     Response.Status[] statusList;
     int[] expectedStatusCodes;
-    KapuaIllegalNullArgumentException kapuaIllegalNullArgumentException;
+    InternalUserOnlyException internalUserOnlyException;
 
     @Before
     public void initialize() {
@@ -43,36 +41,30 @@ public class IllegalNullArgumentExceptionInfoTest {
                 Response.Status.REQUESTED_RANGE_NOT_SATISFIABLE, Response.Status.EXPECTATION_FAILED, Response.Status.INTERNAL_SERVER_ERROR, Response.Status.NOT_IMPLEMENTED,
                 Response.Status.BAD_GATEWAY, Response.Status.SERVICE_UNAVAILABLE, Response.Status.GATEWAY_TIMEOUT, Response.Status.HTTP_VERSION_NOT_SUPPORTED};
         expectedStatusCodes = new int[]{200, 201, 202, 204, 205, 206, 301, 302, 303, 304, 305, 307, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 500, 501, 502, 503, 504, 505};
-        kapuaIllegalNullArgumentException = new KapuaIllegalNullArgumentException("name");
+        internalUserOnlyException = new InternalUserOnlyException();
     }
 
     @Test
-    public void illegalNullArgumentExceptionInfoWithoutParametersTest() {
-        IllegalNullArgumentExceptionInfo illegalNullArgumentExceptionInfo = new IllegalNullArgumentExceptionInfo();
+    public void internalUserOnlyExceptionInfoWithoutParametersTest() {
+        InternalUserOnlyExceptionInfo internalUserOnlyExceptionInfo = new InternalUserOnlyExceptionInfo();
 
-        Assert.assertNull("Null expected.", illegalNullArgumentExceptionInfo.getKapuaErrorCode());
-        Assert.assertEquals("Expected and actual values should be the same.", 0, illegalNullArgumentExceptionInfo.getHttpErrorCode());
-        Assert.assertNull("Null expected.", illegalNullArgumentExceptionInfo.getArgumenName());
+        Assert.assertNull("Null expected.", internalUserOnlyExceptionInfo.getKapuaErrorCode());
+        Assert.assertEquals("Expected and actual values should be the same.", 0, internalUserOnlyExceptionInfo.getHttpErrorCode());
+        Assert.assertNull("Null expected.", internalUserOnlyExceptionInfo.getMessage());
     }
 
     @Test
-    public void illegalNullArgumentExceptionInfoWithParametersTest() {
+    public void internalUserOnlyExceptionInfoStatusExceptionTest() {
         for (int i = 0; i < statusList.length; i++) {
-            IllegalNullArgumentExceptionInfo illegalNullArgumentExceptionInfo = new IllegalNullArgumentExceptionInfo(statusList[i], kapuaIllegalNullArgumentException, false);
-
-            Assert.assertEquals("Expected and actual values should be the same.", "ILLEGAL_NULL_ARGUMENT", illegalNullArgumentExceptionInfo.getKapuaErrorCode());
-            Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], illegalNullArgumentExceptionInfo.getHttpErrorCode());
-            Assert.assertEquals("Expected and actual values should be the same.", "name", illegalNullArgumentExceptionInfo.getArgumenName());
+            InternalUserOnlyExceptionInfo internalUserOnlyExceptionInfo = new InternalUserOnlyExceptionInfo(statusList[i].getStatusCode(), internalUserOnlyException, false);
+            Assert.assertEquals("Expected and actual values should be the same.", "INTERNAL_USER_ONLY", internalUserOnlyExceptionInfo.getKapuaErrorCode());
+            Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], internalUserOnlyExceptionInfo.getHttpErrorCode());
+            Assert.assertEquals("Expected and actual values should be the same.", "This action can be performed only by internal users.", internalUserOnlyExceptionInfo.getMessage());
         }
     }
 
     @Test(expected = NullPointerException.class)
-    public void illegalArgumentExceptionInfoNullStatusTest() {
-        new IllegalArgumentExceptionInfo(null, kapuaIllegalNullArgumentException, false);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void illegalArgumentExceptionInfoNullExceptionTest() {
-        new IllegalArgumentExceptionInfo(Response.Status.OK, null, false);
+    public void internalUserOnlyExceptionInfoStatusNullExceptionTest() {
+        new InternalUserOnlyExceptionInfo(Response.Status.OK.getStatusCode(), null, false);
     }
 } 

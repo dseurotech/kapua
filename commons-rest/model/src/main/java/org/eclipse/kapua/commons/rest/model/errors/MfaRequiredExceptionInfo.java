@@ -15,7 +15,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.service.authentication.exception.KapuaAuthenticationException;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,11 +35,11 @@ public class MfaRequiredExceptionInfo extends ExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus                   The {@link Response.Status} of the {@link Response}
+     * @param httpStatusCode               The http status code of the response containing this info
      * @param kapuaAuthenticationException The root exception.
      * @since 1.0.0
      */
-    public MfaRequiredExceptionInfo(Response.Status httpStatus, KapuaAuthenticationException kapuaAuthenticationException, boolean showStackTrace) {
-        super(httpStatus, kapuaAuthenticationException, showStackTrace);
+    public MfaRequiredExceptionInfo(int httpStatusCode, KapuaAuthenticationException kapuaAuthenticationException, boolean showStackTrace) {
+        super(httpStatusCode, kapuaAuthenticationException, showStackTrace);
     }
 }

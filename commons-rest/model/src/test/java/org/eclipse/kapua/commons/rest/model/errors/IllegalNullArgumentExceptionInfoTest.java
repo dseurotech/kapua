@@ -10,10 +10,9 @@
  * Contributors:
  *     Eurotech - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.app.api.core.exception.model;
+package org.eclipse.kapua.commons.rest.model.errors;
 
-import org.eclipse.kapua.KapuaIllegalArgumentException;
-import org.eclipse.kapua.commons.rest.model.errors.IllegalArgumentExceptionInfo;
+import org.eclipse.kapua.KapuaIllegalNullArgumentException;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.junit.Assert;
 import org.junit.Before;
@@ -24,11 +23,11 @@ import javax.ws.rs.core.Response;
 
 
 @Category(JUnitTests.class)
-public class IllegalArgumentExceptionInfoTest {
+public class IllegalNullArgumentExceptionInfoTest {
 
     Response.Status[] statusList;
     int[] expectedStatusCodes;
-    KapuaIllegalArgumentException kapuaIllegalArgumentException;
+    KapuaIllegalNullArgumentException kapuaIllegalNullArgumentException;
 
     @Before
     public void initialize() {
@@ -42,38 +41,31 @@ public class IllegalArgumentExceptionInfoTest {
                 Response.Status.REQUESTED_RANGE_NOT_SATISFIABLE, Response.Status.EXPECTATION_FAILED, Response.Status.INTERNAL_SERVER_ERROR, Response.Status.NOT_IMPLEMENTED,
                 Response.Status.BAD_GATEWAY, Response.Status.SERVICE_UNAVAILABLE, Response.Status.GATEWAY_TIMEOUT, Response.Status.HTTP_VERSION_NOT_SUPPORTED};
         expectedStatusCodes = new int[]{200, 201, 202, 204, 205, 206, 301, 302, 303, 304, 305, 307, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 500, 501, 502, 503, 504, 505};
-        kapuaIllegalArgumentException = new KapuaIllegalArgumentException("name", "value");
+        kapuaIllegalNullArgumentException = new KapuaIllegalNullArgumentException("name");
     }
 
     @Test
-    public void illegalArgumentExceptionInfoWithoutParametersTest() {
-        IllegalArgumentExceptionInfo illegalArgumentExceptionInfo = new IllegalArgumentExceptionInfo();
+    public void illegalNullArgumentExceptionInfoWithoutParametersTest() {
+        IllegalNullArgumentExceptionInfo illegalNullArgumentExceptionInfo = new IllegalNullArgumentExceptionInfo();
 
-        Assert.assertNull("Null expected.", illegalArgumentExceptionInfo.getKapuaErrorCode());
-        Assert.assertEquals("Expected and actual values should be the same.", 0, illegalArgumentExceptionInfo.getHttpErrorCode());
-        Assert.assertNull("Null expected.", illegalArgumentExceptionInfo.getArgumenName());
-        Assert.assertNull("Null expected.", illegalArgumentExceptionInfo.getArgumentValue());
+        Assert.assertNull("Null expected.", illegalNullArgumentExceptionInfo.getKapuaErrorCode());
+        Assert.assertEquals("Expected and actual values should be the same.", 0, illegalNullArgumentExceptionInfo.getHttpErrorCode());
+        Assert.assertNull("Null expected.", illegalNullArgumentExceptionInfo.getArgumenName());
     }
 
     @Test
-    public void illegalArgumentExceptionInfoWithParametersTest() {
+    public void illegalNullArgumentExceptionInfoWithParametersTest() {
         for (int i = 0; i < statusList.length; i++) {
-            IllegalArgumentExceptionInfo illegalArgumentExceptionInfo = new IllegalArgumentExceptionInfo(statusList[i], kapuaIllegalArgumentException, false);
+            IllegalNullArgumentExceptionInfo illegalNullArgumentExceptionInfo = new IllegalNullArgumentExceptionInfo(statusList[i].getStatusCode(), kapuaIllegalNullArgumentException, false);
 
-            Assert.assertEquals("Expected and actual values should be the same.", "ILLEGAL_ARGUMENT", illegalArgumentExceptionInfo.getKapuaErrorCode());
-            Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], illegalArgumentExceptionInfo.getHttpErrorCode());
-            Assert.assertEquals("Expected and actual values should be the same.", "name", illegalArgumentExceptionInfo.getArgumenName());
-            Assert.assertEquals("Expected and actual values should be the same.", "value", illegalArgumentExceptionInfo.getArgumentValue());
+            Assert.assertEquals("Expected and actual values should be the same.", "ILLEGAL_NULL_ARGUMENT", illegalNullArgumentExceptionInfo.getKapuaErrorCode());
+            Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], illegalNullArgumentExceptionInfo.getHttpErrorCode());
+            Assert.assertEquals("Expected and actual values should be the same.", "name", illegalNullArgumentExceptionInfo.getArgumenName());
         }
     }
 
     @Test(expected = NullPointerException.class)
-    public void illegalArgumentExceptionInfoNullStatusTest() {
-        new IllegalArgumentExceptionInfo(null, kapuaIllegalArgumentException, false);
-    }
-
-    @Test(expected = NullPointerException.class)
     public void illegalArgumentExceptionInfoNullExceptionTest() {
-        new IllegalArgumentExceptionInfo(Response.Status.ACCEPTED, null, false);
+        new IllegalArgumentExceptionInfo(Response.Status.OK.getStatusCode(), null, false);
     }
-}
+} 

@@ -40,7 +40,7 @@ public class SelfManagedOnlyExceptionMapper implements ExceptionMapper<SelfManag
         LOG.error("Only self managed allowed!", exception);
         return Response//
                 .status(Status.FORBIDDEN) //
-                .entity(new SelfManagedOnlyExceptionInfo(Status.FORBIDDEN, exception, showStackTrace)) //
+                .entity(new SelfManagedOnlyExceptionInfo(Status.FORBIDDEN.getStatusCode(), exception, showStackTrace)) //
                 .build();
     }
 }

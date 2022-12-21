@@ -14,8 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.KapuaEntityUniquenessException;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -45,12 +43,12 @@ public class EntityUniquenessExceptionInfo extends ExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus                     The {@link Status} of the {@link Response}
+     * @param httpStatusCode                 The http status code of the response containing this info
      * @param kapuaEntityUniquenessException The root exception.
      * @since 1.0.0
      */
-    public EntityUniquenessExceptionInfo(Status httpStatus, KapuaEntityUniquenessException kapuaEntityUniquenessException, boolean showStackTrace) {
-        super(httpStatus, kapuaEntityUniquenessException, showStackTrace);
+    public EntityUniquenessExceptionInfo(int httpStatusCode, KapuaEntityUniquenessException kapuaEntityUniquenessException, boolean showStackTrace) {
+        super(httpStatusCode, kapuaEntityUniquenessException, showStackTrace);
 
         this.entityType = kapuaEntityUniquenessException.getEntityType();
         this.uniquesFieldValues = kapuaEntityUniquenessException.getUniquesFieldValues();

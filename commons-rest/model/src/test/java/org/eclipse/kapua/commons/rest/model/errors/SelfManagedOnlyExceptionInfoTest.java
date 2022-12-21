@@ -10,28 +10,24 @@
  * Contributors:
  *     Eurotech - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.app.api.core.exception.model;
+package org.eclipse.kapua.commons.rest.model.errors;
 
-import org.eclipse.kapua.commons.rest.model.errors.SubjectUnauthorizedExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
-import org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException;
-import org.eclipse.kapua.service.authorization.permission.Permission;
+import org.eclipse.kapua.service.authentication.exception.SelfManagedOnlyException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
-import org.mockito.Mockito;
 
 import javax.ws.rs.core.Response;
 
 
 @Category(JUnitTests.class)
-public class SubjectUnauthorizedExceptionInfoTest {
+public class SelfManagedOnlyExceptionInfoTest {
 
     Response.Status[] statusList;
     int[] expectedStatusCodes;
-    Permission permission;
-    SubjectUnauthorizedException subjectUnauthorizedException;
+    SelfManagedOnlyException selfManagedOnlyException;
 
     @Before
     public void initialize() {
@@ -45,37 +41,30 @@ public class SubjectUnauthorizedExceptionInfoTest {
                 Response.Status.REQUESTED_RANGE_NOT_SATISFIABLE, Response.Status.EXPECTATION_FAILED, Response.Status.INTERNAL_SERVER_ERROR, Response.Status.NOT_IMPLEMENTED,
                 Response.Status.BAD_GATEWAY, Response.Status.SERVICE_UNAVAILABLE, Response.Status.GATEWAY_TIMEOUT, Response.Status.HTTP_VERSION_NOT_SUPPORTED};
         expectedStatusCodes = new int[]{200, 201, 202, 204, 205, 206, 301, 302, 303, 304, 305, 307, 400, 401, 402, 403, 404, 405, 406, 407, 408, 409, 410, 411, 412, 413, 414, 415, 416, 417, 500, 501, 502, 503, 504, 505};
-        permission = Mockito.mock(Permission.class);
-        subjectUnauthorizedException = new SubjectUnauthorizedException(permission);
+        selfManagedOnlyException = new SelfManagedOnlyException();
     }
 
     @Test
-    public void subjectUnauthorizedExceptionInfoWithoutParametersTest() {
-        SubjectUnauthorizedExceptionInfo subjectUnauthorizedExceptionInfo = new SubjectUnauthorizedExceptionInfo();
+    public void selfManagedOnlyExceptionInfoWithoutParametersTest() {
+        SelfManagedOnlyExceptionInfo selfManagedOnlyExceptionInfo = new SelfManagedOnlyExceptionInfo();
 
-        Assert.assertNull("Null expected.", subjectUnauthorizedExceptionInfo.getKapuaErrorCode());
-        Assert.assertEquals("Expected and actual values should be the same.", 0, subjectUnauthorizedExceptionInfo.getHttpErrorCode());
-        Assert.assertNull("Null expected.", subjectUnauthorizedExceptionInfo.getPermission());
+        Assert.assertNull("Null expected.", selfManagedOnlyExceptionInfo.getKapuaErrorCode());
+        Assert.assertEquals("Expected and actual values should be the same.", 0, selfManagedOnlyExceptionInfo.getHttpErrorCode());
+        Assert.assertNull("Null expected.", selfManagedOnlyExceptionInfo.getMessage());
     }
 
     @Test
-    public void subjectUnauthorizedExceptionInfoWithParametersTest() {
+    public void selfManagedOnlyExceptionInfoStatusExceptionTest() {
         for (int i = 0; i < statusList.length; i++) {
-            SubjectUnauthorizedExceptionInfo subjectUnauthorizedExceptionInfo = new SubjectUnauthorizedExceptionInfo(statusList[i], subjectUnauthorizedException, false);
-
-            Assert.assertEquals("Expected and actual values should be the same.", "SUBJECT_UNAUTHORIZED", subjectUnauthorizedExceptionInfo.getKapuaErrorCode());
-            Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], subjectUnauthorizedExceptionInfo.getHttpErrorCode());
-            Assert.assertEquals("Expected and actual values should be the same.", permission, subjectUnauthorizedExceptionInfo.getPermission());
+            SelfManagedOnlyExceptionInfo selfManagedOnlyExceptionInfo = new SelfManagedOnlyExceptionInfo(statusList[i].getStatusCode(), selfManagedOnlyException, false);
+            Assert.assertEquals("Expected and actual values should be the same.", "SELF_MANAGED_ONLY", selfManagedOnlyExceptionInfo.getKapuaErrorCode());
+            Assert.assertEquals("Expected and actual values should be the same.", expectedStatusCodes[i], selfManagedOnlyExceptionInfo.getHttpErrorCode());
+            Assert.assertEquals("Expected and actual values should be the same.", "User cannot perform this action on behalf of another user. This action can be performed only in self-management.", selfManagedOnlyExceptionInfo.getMessage());
         }
     }
 
     @Test(expected = NullPointerException.class)
-    public void subjectUnauthorizedExceptionInfoNullStatusTest() {
-        new SubjectUnauthorizedExceptionInfo(null, subjectUnauthorizedException, false);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void subjectUnauthorizedExceptionInfoNullExceptionTest() {
-        new SubjectUnauthorizedExceptionInfo(Response.Status.OK, null, false);
+    public void selfManagedOnlyExceptionInfStatusNullExceptionTest() {
+        new SelfManagedOnlyExceptionInfo(Response.Status.OK.getStatusCode(), null, false);
     }
 } 

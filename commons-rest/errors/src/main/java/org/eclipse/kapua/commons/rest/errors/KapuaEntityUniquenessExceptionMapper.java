@@ -40,7 +40,7 @@ public class KapuaEntityUniquenessExceptionMapper implements ExceptionMapper<Kap
         LOG.error(kapuaEntityUniquenessException.getMessage(), kapuaEntityUniquenessException);
         return Response
                 .status(Status.fromStatusCode(409))
-                .entity(new EntityUniquenessExceptionInfo(Status.fromStatusCode(409), kapuaEntityUniquenessException, showStackTrace))
+                .entity(new EntityUniquenessExceptionInfo(409, kapuaEntityUniquenessException, showStackTrace))
                 .build();
     }
 

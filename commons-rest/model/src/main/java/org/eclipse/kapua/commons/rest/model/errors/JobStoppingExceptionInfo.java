@@ -16,7 +16,6 @@ import org.eclipse.kapua.job.engine.exception.JobStoppingException;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.id.KapuaIdAdapter;
 
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -47,7 +46,7 @@ public class JobStoppingExceptionInfo extends JobScopedEngineExceptionInfo {
      * @since 1.0.0
      */
     public JobStoppingExceptionInfo(JobStoppingException jobStoppingException, boolean showStackTrace) {
-        super(Status.INTERNAL_SERVER_ERROR, jobStoppingException, showStackTrace);
+        super(500/*Status.INTERNAL_SERVER_ERROR*/, jobStoppingException, showStackTrace);
 
         this.executionId = jobStoppingException.getJobExecutionId();
     }

@@ -43,7 +43,7 @@ public class KapuaAuthenticationExceptionMapper implements ExceptionMapper<Kapua
         if (kapuaAuthenticationException.getCode().equals(KapuaAuthenticationErrorCodes.REQUIRE_MFA_CREDENTIALS)) {
             return Response
                     .status(Status.FORBIDDEN)
-                    .entity(new MfaRequiredExceptionInfo(Status.FORBIDDEN, kapuaAuthenticationException, showStackTrace))
+                    .entity(new MfaRequiredExceptionInfo(Status.FORBIDDEN.getStatusCode(), kapuaAuthenticationException, showStackTrace))
                     .build();
         }
 

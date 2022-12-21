@@ -40,7 +40,7 @@ public class KapuaIllegalNullArgumentExceptionMapper implements ExceptionMapper<
         LOG.error(kapuaIllegalNullArgumentException.getMessage(), kapuaIllegalNullArgumentException);
         return Response
                 .status(Status.BAD_REQUEST)
-                .entity(new IllegalNullArgumentExceptionInfo(Status.BAD_REQUEST, kapuaIllegalNullArgumentException, showStackTrace))
+                .entity(new IllegalNullArgumentExceptionInfo(Status.BAD_REQUEST.getStatusCode(), kapuaIllegalNullArgumentException, showStackTrace))
                 .build();
     }
 }

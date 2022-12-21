@@ -14,8 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.KapuaIllegalNullArgumentException;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -40,12 +38,12 @@ public class IllegalNullArgumentExceptionInfo extends ExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus                        The {@link Status} of the {@link Response}
+     * @param httpStatusCode                    The http status code of the response containing this info
      * @param kapuaIllegalNullArgumentException The root exception.
      * @since 1.0.0
      */
-    public IllegalNullArgumentExceptionInfo(Status httpStatus, KapuaIllegalNullArgumentException kapuaIllegalNullArgumentException, boolean showStackTrace) {
-        super(httpStatus, kapuaIllegalNullArgumentException, showStackTrace);
+    public IllegalNullArgumentExceptionInfo(int httpStatusCode, KapuaIllegalNullArgumentException kapuaIllegalNullArgumentException, boolean showStackTrace) {
+        super(httpStatusCode, kapuaIllegalNullArgumentException, showStackTrace);
 
         this.argumentName = kapuaIllegalNullArgumentException.getArgumentName();
     }

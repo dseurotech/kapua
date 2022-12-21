@@ -17,7 +17,6 @@ import org.eclipse.kapua.model.id.KapuaIdAdapter;
 import org.eclipse.kapua.service.device.management.exception.DeviceNotConnectedException;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionStatus;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -51,7 +50,7 @@ public class DeviceNotConnectedExceptionInfo extends ExceptionInfo {
      * @since 1.0.0
      */
     public DeviceNotConnectedExceptionInfo(DeviceNotConnectedException deviceNotConnectedException, boolean showStackTrace) {
-        super(Response.Status.INTERNAL_SERVER_ERROR, deviceNotConnectedException, showStackTrace);
+        super(500/*Response.Status.INTERNAL_SERVER_ERROR*/, deviceNotConnectedException, showStackTrace);
 
         this.deviceId = deviceNotConnectedException.getDeviceId();
         this.connectionStatus = deviceNotConnectedException.getCurrentConnectionStatus();

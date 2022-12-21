@@ -16,7 +16,6 @@ import org.eclipse.kapua.commons.configuration.exception.ServiceConfigurationLim
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.config.KapuaConfigurableService;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -52,7 +51,7 @@ public class ServiceConfigurationLimitExceededExceptionInfo extends ExceptionInf
      * @since 1.0.0
      */
     public ServiceConfigurationLimitExceededExceptionInfo(ServiceConfigurationLimitExceededException serviceConfigurationLimitExceededException, boolean showStackTrace) {
-        super(Response.Status.BAD_REQUEST, serviceConfigurationLimitExceededException, showStackTrace);
+        super(400/*Response.Status.BAD_REQUEST*/, serviceConfigurationLimitExceededException, showStackTrace);
 
         this.servicePid = serviceConfigurationLimitExceededException.getServicePid();
         this.scopeId = serviceConfigurationLimitExceededException.getScopeId();

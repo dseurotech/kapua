@@ -14,7 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.job.engine.exception.JobRunningException;
 
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,7 +38,7 @@ public class JobRunningExceptionInfo extends JobScopedEngineExceptionInfo {
      * @since 1.0.0
      */
     public JobRunningExceptionInfo(JobRunningException jobRunningException, boolean showStackTrace) {
-        super(Status.INTERNAL_SERVER_ERROR, jobRunningException, showStackTrace);
+        super(500/*Status.INTERNAL_SERVER_ERROR*/, jobRunningException, showStackTrace);
     }
 
 }

@@ -41,7 +41,7 @@ public class JobScopedEngineExceptionMapper implements ExceptionMapper<JobScoped
 
         return Response
                 .status(Status.INTERNAL_SERVER_ERROR)
-                .entity(new JobScopedEngineExceptionInfo(Status.INTERNAL_SERVER_ERROR, jobScopedEngineException, showStackTrace))
+                .entity(new JobScopedEngineExceptionInfo(Status.INTERNAL_SERVER_ERROR.getStatusCode(), jobScopedEngineException, showStackTrace))
                 .build();
     }
 

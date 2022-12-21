@@ -15,7 +15,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 import org.eclipse.kapua.service.device.management.exception.DeviceManagementSendException;
 import org.eclipse.kapua.service.device.management.message.request.KapuaRequestMessage;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -42,7 +41,7 @@ public class DeviceManagementSendExceptionInfo extends ExceptionInfo {
      * @since 1.0.0
      */
     public DeviceManagementSendExceptionInfo(DeviceManagementSendException deviceManagementSendException, boolean showStackTrace) {
-        super(Response.Status.INTERNAL_SERVER_ERROR, deviceManagementSendException, showStackTrace);
+        super(500/*Response.Status.INTERNAL_SERVER_ERROR*/, deviceManagementSendException, showStackTrace);
 
         this.kapuaRequestMessage = deviceManagementSendException.getRequestMessage();
     }

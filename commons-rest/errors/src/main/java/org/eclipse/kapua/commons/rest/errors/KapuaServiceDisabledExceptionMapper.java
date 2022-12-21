@@ -38,7 +38,7 @@ public class KapuaServiceDisabledExceptionMapper implements ExceptionMapper<Kapu
         LOG.error(kapuaServiceDisabledException.getMessage(), kapuaServiceDisabledException);
         return Response
                 .status(STATUS)
-                .entity(new ExceptionInfo(STATUS, kapuaServiceDisabledException, showStackTrace))
+                .entity(new ExceptionInfo(STATUS.getStatusCode(), kapuaServiceDisabledException, showStackTrace))
                 .build();
     }
 

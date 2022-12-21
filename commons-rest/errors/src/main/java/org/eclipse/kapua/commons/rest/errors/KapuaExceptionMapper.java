@@ -40,7 +40,7 @@ public class KapuaExceptionMapper implements ExceptionMapper<KapuaException> {
         LOG.error(kapuaException.getMessage(), kapuaException);
         return Response
                 .serverError()
-                .entity(new ExceptionInfo(Status.INTERNAL_SERVER_ERROR, kapuaException, showStackTrace))
+                .entity(new ExceptionInfo(Status.INTERNAL_SERVER_ERROR.getStatusCode(), kapuaException, showStackTrace))
                 .build();
     }
 

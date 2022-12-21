@@ -15,7 +15,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 import org.eclipse.kapua.service.device.management.exception.DeviceManagementResponseContentException;
 import org.eclipse.kapua.service.device.management.message.response.KapuaResponsePayload;
 
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -44,7 +43,7 @@ public class DeviceManagementResponseContentExceptionInfo extends ExceptionInfo 
      * @since 1.0.0
      */
     public DeviceManagementResponseContentExceptionInfo(DeviceManagementResponseContentException deviceManagementResponseContentException, boolean showStackTrace) {
-        super(Status.INTERNAL_SERVER_ERROR, deviceManagementResponseContentException, showStackTrace);
+        super(500/*Status.INTERNAL_SERVER_ERROR*/, deviceManagementResponseContentException, showStackTrace);
 
         this.responsePayload = deviceManagementResponseContentException.getResponsePayload();
     }

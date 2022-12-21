@@ -16,8 +16,6 @@ import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.id.KapuaIdAdapter;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -47,12 +45,12 @@ public class EntityNotFoundExceptionInfo extends ExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus                   The {@link Status} of the {@link Response}
+     * @param httpStatusCode               The http status code of the response containing this info
      * @param kapuaEntityNotFoundException The root exception.
      * @since 1.0.0
      */
-    public EntityNotFoundExceptionInfo(Status httpStatus, KapuaEntityNotFoundException kapuaEntityNotFoundException, boolean showStackTrace) {
-        super(httpStatus, kapuaEntityNotFoundException, showStackTrace);
+    public EntityNotFoundExceptionInfo(int httpStatusCode, KapuaEntityNotFoundException kapuaEntityNotFoundException, boolean showStackTrace) {
+        super(httpStatusCode, kapuaEntityNotFoundException, showStackTrace);
 
         this.entityType = kapuaEntityNotFoundException.getEntityType();
         this.entityId = kapuaEntityNotFoundException.getEntityId();

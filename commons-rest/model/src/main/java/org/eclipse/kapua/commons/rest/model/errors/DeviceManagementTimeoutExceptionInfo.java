@@ -14,7 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.service.device.management.exception.DeviceManagementTimeoutException;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +40,7 @@ public class DeviceManagementTimeoutExceptionInfo extends ExceptionInfo {
      * @since 1.0.0
      */
     public DeviceManagementTimeoutExceptionInfo(DeviceManagementTimeoutException deviceManagementTimeoutException, boolean showStackTrace) {
-        super(Response.Status.INTERNAL_SERVER_ERROR, deviceManagementTimeoutException, showStackTrace);
+        super(500/*Response.Status.INTERNAL_SERVER_ERROR*/, deviceManagementTimeoutException, showStackTrace);
 
         this.timeout = deviceManagementTimeoutException.getTimeout();
     }

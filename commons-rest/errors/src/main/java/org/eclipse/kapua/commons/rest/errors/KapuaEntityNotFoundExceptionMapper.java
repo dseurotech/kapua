@@ -40,7 +40,7 @@ public class KapuaEntityNotFoundExceptionMapper implements ExceptionMapper<Kapua
         LOG.error(kapuaEntityNotFoundException.getMessage(), kapuaEntityNotFoundException);
         return Response
                 .status(Status.NOT_FOUND)
-                .entity(new EntityNotFoundExceptionInfo(Status.NOT_FOUND, kapuaEntityNotFoundException, showStackTrace))
+                .entity(new EntityNotFoundExceptionInfo(Status.NOT_FOUND.getStatusCode(), kapuaEntityNotFoundException, showStackTrace))
                 .build();
     }
 }

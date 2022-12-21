@@ -15,7 +15,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 import org.eclipse.kapua.service.device.management.exception.DeviceManagementResponseCodeException;
 import org.eclipse.kapua.service.device.management.message.response.KapuaResponseCode;
 
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -51,7 +50,7 @@ public class DeviceManagementResponseCodeExceptionInfo extends ExceptionInfo {
      * @since 1.0.0
      */
     public DeviceManagementResponseCodeExceptionInfo(DeviceManagementResponseCodeException deviceManagementResponseCodeException, boolean showStackTrace) {
-        super(Status.INTERNAL_SERVER_ERROR, deviceManagementResponseCodeException, showStackTrace);
+        super(500/*Status.INTERNAL_SERVER_ERROR*/, deviceManagementResponseCodeException, showStackTrace);
 
         this.responseCode = deviceManagementResponseCodeException.getResponseCode();
         this.errorMessage = deviceManagementResponseCodeException.getErrorMessage();

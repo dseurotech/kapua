@@ -14,7 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.job.engine.exception.JobEngineException;
 
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -38,7 +37,7 @@ public class JobEngineExceptionInfo extends ExceptionInfo {
      * @param jobEngineException The root exception.
      * @since 1.0.0
      */
-    public JobEngineExceptionInfo(Status httpStatus, JobEngineException jobEngineException, boolean showStackTrace) {
-        super(httpStatus, jobEngineException, showStackTrace);
+    public JobEngineExceptionInfo(int httpStatusCode, JobEngineException jobEngineException, boolean showStackTrace) {
+        super(httpStatusCode, jobEngineException, showStackTrace);
     }
 }

@@ -40,7 +40,7 @@ public class InternalUserOnlyExceptionMapper implements ExceptionMapper<Internal
         LOG.error("Only internal users allowed!", exception);
         return Response//
                 .status(Status.FORBIDDEN) //
-                .entity(new InternalUserOnlyExceptionInfo(Status.FORBIDDEN, exception, showStackTrace)) //
+                .entity(new InternalUserOnlyExceptionInfo(Status.FORBIDDEN.getStatusCode(), exception, showStackTrace)) //
                 .build();
     }
 }

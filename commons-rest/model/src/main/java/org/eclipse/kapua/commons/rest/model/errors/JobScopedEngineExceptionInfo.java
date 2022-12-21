@@ -16,8 +16,6 @@ import org.eclipse.kapua.job.engine.exception.JobScopedEngineException;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.id.KapuaIdAdapter;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -48,12 +46,12 @@ public class JobScopedEngineExceptionInfo extends JobEngineExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus               The {@link Status} of the {@link Response}
+     * @param httpStatusCode           The http status code of the response containing this info
      * @param jobScopedEngineException The root exception.
      * @since 1.0.0
      */
-    public JobScopedEngineExceptionInfo(Status httpStatus, JobScopedEngineException jobScopedEngineException, boolean showStackTrace) {
-        super(httpStatus, jobScopedEngineException, showStackTrace);
+    public JobScopedEngineExceptionInfo(int httpStatusCode, JobScopedEngineException jobScopedEngineException, boolean showStackTrace) {
+        super(httpStatusCode, jobScopedEngineException, showStackTrace);
 
         this.scopeId = jobScopedEngineException.getScopeId();
         this.jobId = jobScopedEngineException.getJobId();

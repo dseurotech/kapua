@@ -16,7 +16,6 @@ import org.eclipse.kapua.commons.configuration.exception.ServiceConfigurationPar
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.config.KapuaConfigurableService;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -53,7 +52,7 @@ public class ServiceConfigurationParentLimitExceededExceptionInfo extends Except
      * @since 1.0.0
      */
     public ServiceConfigurationParentLimitExceededExceptionInfo(ServiceConfigurationParentLimitExceededException serviceConfigurationParentLimitExceededException, boolean showStackTrace) {
-        super(Response.Status.BAD_REQUEST, serviceConfigurationParentLimitExceededException, showStackTrace);
+        super(400/*Response.Status.BAD_REQUEST*/, serviceConfigurationParentLimitExceededException, showStackTrace);
 
         this.servicePid = serviceConfigurationParentLimitExceededException.getServicePid();
         this.parentScopeId = serviceConfigurationParentLimitExceededException.getScopeId();

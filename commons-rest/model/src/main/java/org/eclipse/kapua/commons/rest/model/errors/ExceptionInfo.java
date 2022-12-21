@@ -14,8 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.KapuaException;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -40,12 +38,12 @@ public class ExceptionInfo extends ThrowableInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus The {@link Status} of the {@link Response}
-     * @param exception  The cause of the error.
+     * @param httpStatusCode The http status code of the response containing this info
+     * @param exception      The cause of the error.
      * @since 2.0.0
      */
-    public ExceptionInfo(Status httpStatus, KapuaException exception, boolean showStackTrace) {
-        super(httpStatus, exception, showStackTrace);
+    public ExceptionInfo(int httpStatusCode, KapuaException exception, boolean showStackTrace) {
+        super(httpStatusCode, exception, showStackTrace);
 
         this.kapuaErrorCode = exception.getCode().name();
     }

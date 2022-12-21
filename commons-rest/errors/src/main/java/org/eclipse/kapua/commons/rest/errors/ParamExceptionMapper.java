@@ -53,7 +53,7 @@ public class ParamExceptionMapper implements ExceptionMapper<ParamException> {
         LOG.error(paramException.getMessage(), paramException);
         return Response
                 .status(Status.BAD_REQUEST)
-                .entity(new IllegalArgumentExceptionInfo(Status.BAD_REQUEST, kapuaIllegalArgumentException, showStackTrace))
+                .entity(new IllegalArgumentExceptionInfo(Status.BAD_REQUEST.getStatusCode(), kapuaIllegalArgumentException, showStackTrace))
                 .build();
     }
 }

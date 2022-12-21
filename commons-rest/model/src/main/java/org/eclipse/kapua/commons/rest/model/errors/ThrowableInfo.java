@@ -12,9 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.rest.model.errors;
 
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -46,12 +43,12 @@ public class ThrowableInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus The {@link Status} of the {@link Response}
-     * @param throwable  The cause of the error.
+     * @param httpStatusCode The http status code of the response containing this info
+     * @param throwable      The cause of the error.
      * @since 1.0.0
      */
-    public ThrowableInfo(@NotNull Status httpStatus, Throwable throwable, boolean showStackTrace) {
-        this.httpErrorCode = httpStatus.getStatusCode();
+    public ThrowableInfo(int httpStatusCode, Throwable throwable, boolean showStackTrace) {
+        this.httpErrorCode = httpStatusCode;
 
         if (throwable != null) {
             this.message = throwable.getMessage();
@@ -66,9 +63,9 @@ public class ThrowableInfo {
     }
 
     /**
-     * Gets the {@link Status#getStatusCode()} of the {@link Response}.
+     * Gets the http status code of the response containing this info.
      *
-     * @return The {@link Status#getStatusCode()} of the {@link Response}.
+     * @return The the http status code of the response containing this info.
      * @since 1.0.0
      */
     public int getHttpErrorCode() {
@@ -76,13 +73,13 @@ public class ThrowableInfo {
     }
 
     /**
-     * Sets the {@link Status#getStatusCode()} of the {@link Response}.
+     * Sets the http status code of the response containing this info.
      *
-     * @param httpErrorCode The {@link Status#getStatusCode()} of the {@link Response}.
+     * @param httpStatusCode the http status code of the response containing this info.
      * @since 1.0.0
      */
-    public void setHttpErrorCode(Status httpErrorCode) {
-        this.httpErrorCode = httpErrorCode.getStatusCode();
+    public void setHttpErrorCode(int httpStatusCode) {
+        this.httpErrorCode = httpStatusCode;
     }
 
     /**

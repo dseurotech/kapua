@@ -14,7 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.job.engine.exception.CleanJobDataException;
 
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -39,6 +38,6 @@ public class CleanJobDataExceptionInfo extends JobScopedEngineExceptionInfo {
      * @since 1.0.0
      */
     public CleanJobDataExceptionInfo(CleanJobDataException cleanJobDataException, boolean showStackTrace) {
-        super(Status.INTERNAL_SERVER_ERROR, cleanJobDataException, showStackTrace);
+        super(500/*Status.INTERNAL_SERVER_ERROR*/, cleanJobDataException, showStackTrace);
     }
 }

@@ -15,8 +15,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 import org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException;
 import org.eclipse.kapua.service.authorization.permission.Permission;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -41,12 +39,12 @@ public class SubjectUnauthorizedExceptionInfo extends ExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus                   The {@link Response.Status} of the {@link Response}
+     * @param httpStatusCode               The http status code of the response containing this info
      * @param subjectUnauthorizedException The root exception.
      * @since 1.0.0
      */
-    public SubjectUnauthorizedExceptionInfo(Status httpStatus, SubjectUnauthorizedException subjectUnauthorizedException, boolean showStackTrace) {
-        super(httpStatus, subjectUnauthorizedException, showStackTrace);
+    public SubjectUnauthorizedExceptionInfo(int httpStatusCode, SubjectUnauthorizedException subjectUnauthorizedException, boolean showStackTrace) {
+        super(httpStatusCode, subjectUnauthorizedException, showStackTrace);
 
         this.permission = subjectUnauthorizedException.getPermission();
     }

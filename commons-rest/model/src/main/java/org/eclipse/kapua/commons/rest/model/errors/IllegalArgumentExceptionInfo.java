@@ -14,8 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.KapuaIllegalArgumentException;
 
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -43,12 +41,12 @@ public class IllegalArgumentExceptionInfo extends ExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus                    The {@link Status} of the {@link Response}
+     * @param httpStatusCode                The http status code of the response containing this info
      * @param kapuaIllegalArgumentException The root exception.
      * @since 1.0.0
      */
-    public IllegalArgumentExceptionInfo(Status httpStatus, KapuaIllegalArgumentException kapuaIllegalArgumentException, boolean showStackTrace) {
-        super(httpStatus, kapuaIllegalArgumentException, showStackTrace);
+    public IllegalArgumentExceptionInfo(int httpStatusCode, KapuaIllegalArgumentException kapuaIllegalArgumentException, boolean showStackTrace) {
+        super(httpStatusCode, kapuaIllegalArgumentException, showStackTrace);
 
         this.argumentName = kapuaIllegalArgumentException.getArgumentName();
         this.argumentValue = kapuaIllegalArgumentException.getArgumentValue();

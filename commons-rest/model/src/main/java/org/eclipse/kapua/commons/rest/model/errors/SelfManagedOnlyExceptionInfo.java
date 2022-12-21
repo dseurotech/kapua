@@ -14,7 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.service.authentication.exception.SelfManagedOnlyException;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,12 +34,12 @@ public class SelfManagedOnlyExceptionInfo extends ExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus               The {@link Response.Status} of the {@link Response}
+     * @param httpStatusCode           The http status code of the response containing this info
      * @param selfManagedOnlyException The root exception.
      * @since 1.0.0
      */
-    public SelfManagedOnlyExceptionInfo(Response.Status httpStatus, SelfManagedOnlyException selfManagedOnlyException, boolean showStackTrace) {
-        super(httpStatus, selfManagedOnlyException, showStackTrace);
+    public SelfManagedOnlyExceptionInfo(int httpStatusCode, SelfManagedOnlyException selfManagedOnlyException, boolean showStackTrace) {
+        super(httpStatusCode, selfManagedOnlyException, showStackTrace);
     }
 
 }

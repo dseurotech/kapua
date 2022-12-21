@@ -14,7 +14,6 @@ package org.eclipse.kapua.commons.rest.model.errors;
 
 import org.eclipse.kapua.service.authentication.exception.InternalUserOnlyException;
 
-import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -35,12 +34,11 @@ public class InternalUserOnlyExceptionInfo extends ExceptionInfo {
     /**
      * Constructor.
      *
-     * @param httpStatus                The {@link Response.Status} of the {@link Response}
-     * @param internalUserOnlyException The root exception.
+     * @param httpStatusCode The http status code of the response containing this info
      * @since 1.0.0
      */
-    public InternalUserOnlyExceptionInfo(Response.Status httpStatus, InternalUserOnlyException internalUserOnlyException, boolean showStackTrace) {
-        super(httpStatus, internalUserOnlyException, showStackTrace);
+    public InternalUserOnlyExceptionInfo(int httpStatusCode, InternalUserOnlyException internalUserOnlyException, boolean showStackTrace) {
+        super(httpStatusCode, internalUserOnlyException, showStackTrace);
     }
 
 }

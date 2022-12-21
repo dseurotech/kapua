@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
@@ -39,7 +38,7 @@ public class ThrowableMapper implements ExceptionMapper<Throwable> {
         LOG.error(throwable.getMessage(), throwable);
         return Response
                 .serverError()
-                .entity(new ThrowableInfo(Status.INTERNAL_SERVER_ERROR, throwable, showStackTrace))
+                .entity(new ThrowableInfo(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), throwable, showStackTrace))
                 .build();
     }
 }
