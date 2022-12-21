@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.job.engine.app.web;
 
+import org.eclipse.kapua.commons.rest.errors.ExceptionConfigurationProvider;
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
 import org.eclipse.kapua.job.engine.app.web.jaxb.JobEngineJAXBContextProvider;
-import org.eclipse.kapua.job.engine.rest.service.errors.ExceptionConfigurationProvider;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -39,7 +39,7 @@ public class JobEngineApplication extends ResourceConfig {
                         .in(Singleton.class);
             }
         });
-        packages("org.eclipse.kapua.job.engine.rest.service", "org.eclipse.kapua.job.engine.app", "org.eclipse.kapua.app.api.core");
+        packages("org.eclipse.kapua.commons.rest", "org.eclipse.kapua.job.engine.app", "org.eclipse.kapua.app.api.core");
 
         // Bind media type to resource extension
         HashMap<String, MediaType> mappedMediaTypes = new HashMap<>();

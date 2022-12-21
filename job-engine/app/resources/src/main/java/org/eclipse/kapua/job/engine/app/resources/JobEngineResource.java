@@ -13,11 +13,11 @@
 package org.eclipse.kapua.job.engine.app.resources;
 
 import org.eclipse.kapua.KapuaException;
+import org.eclipse.kapua.commons.rest.model.IsJobRunningMultipleResponse;
+import org.eclipse.kapua.commons.rest.model.IsJobRunningResponse;
+import org.eclipse.kapua.commons.rest.model.MultipleJobIdRequest;
 import org.eclipse.kapua.job.engine.JobEngineService;
 import org.eclipse.kapua.job.engine.JobStartOptions;
-import org.eclipse.kapua.job.engine.rest.model.IsJobRunningMultipleResponse;
-import org.eclipse.kapua.job.engine.rest.model.IsJobRunningResponse;
-import org.eclipse.kapua.job.engine.rest.model.MultipleJobIdRequest;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.glassfish.jersey.process.internal.RequestScoped;

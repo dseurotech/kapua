@@ -15,8 +15,8 @@ package org.eclipse.kapua.app.api.web;
 import org.eclipse.kapua.app.api.core.KapuaSerializableBodyWriter;
 import org.eclipse.kapua.app.api.core.ListBodyWriter;
 import org.eclipse.kapua.app.api.core.MoxyJsonConfigContextResolver;
+import org.eclipse.kapua.commons.rest.errors.ExceptionConfigurationProvider;
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
-import org.eclipse.kapua.job.engine.rest.service.errors.ExceptionConfigurationProvider;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -42,7 +42,7 @@ public class RestApisApplication extends ResourceConfig {
             }
         });
 
-        packages("org.eclipse.kapua.job.engine.rest.service",
+        packages("org.eclipse.kapua.commons.rest",
                 "org.eclipse.kapua.app.api",
                 "org.eclipse.kapua.service");
 

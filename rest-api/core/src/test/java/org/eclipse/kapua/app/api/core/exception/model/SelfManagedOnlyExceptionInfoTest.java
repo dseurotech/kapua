@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.core.exception.model;
 
-import org.eclipse.kapua.job.engine.rest.model.errors.SelfManagedOnlyExceptionInfo;
+import org.eclipse.kapua.commons.rest.model.errors.SelfManagedOnlyExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.eclipse.kapua.service.authentication.exception.SelfManagedOnlyException;
 import org.junit.Assert;

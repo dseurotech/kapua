@@ -13,11 +13,11 @@
 package org.eclipse.kapua.job.engine.app.core.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.eclipse.kapua.commons.rest.model.IsJobRunningResponse;
 import org.eclipse.kapua.job.engine.JobStartOptions;
 import org.eclipse.kapua.job.engine.app.core.jackson.mixin.IsJobRunningResponseMixin;
 import org.eclipse.kapua.job.engine.app.core.jackson.mixin.JobStartOptionsMixin;
 import org.eclipse.kapua.job.engine.app.core.jackson.mixin.KapuaIdMixin;
-import org.eclipse.kapua.job.engine.rest.model.IsJobRunningResponse;
 import org.eclipse.kapua.model.id.KapuaId;
 
 import javax.ws.rs.ext.ContextResolver;

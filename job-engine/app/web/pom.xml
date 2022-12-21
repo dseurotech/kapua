@@ -85,11 +85,15 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.kapua</groupId>
-            <artifactId>kapua-job-engine-rest-model</artifactId>
+            <artifactId>kapua-commons-rest-model</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.kapua</groupId>
-            <artifactId>kapua-job-engine-rest-service</artifactId>
+            <artifactId>kapua-commons-rest-errors</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kapua</groupId>
+            <artifactId>kapua-commons-rest-filters</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.kapua</groupId>

@@ -13,8 +13,8 @@
 package org.eclipse.kapua.app.api.core.exception.model;
 
 import org.eclipse.kapua.KapuaIllegalNullArgumentException;
-import org.eclipse.kapua.job.engine.rest.model.errors.IllegalArgumentExceptionInfo;
-import org.eclipse.kapua.job.engine.rest.model.errors.IllegalNullArgumentExceptionInfo;
+import org.eclipse.kapua.commons.rest.model.errors.IllegalArgumentExceptionInfo;
+import org.eclipse.kapua.commons.rest.model.errors.IllegalNullArgumentExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.junit.Assert;
 import org.junit.Before;

@@ -154,7 +154,12 @@
         </dependency>
         <dependency>
             <groupId>org.eclipse.kapua</groupId>
-            <artifactId>kapua-job-engine-rest-service</artifactId>
+            <artifactId>kapua-commons-rest-errors</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.kapua</groupId>
+            <artifactId>kapua-commons-rest-filters</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

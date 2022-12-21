@@ -12,7 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.core.exception.model;
 
-import org.eclipse.kapua.job.engine.rest.model.errors.InternalUserOnlyExceptionInfo;
+import org.eclipse.kapua.commons.rest.model.errors.InternalUserOnlyExceptionInfo;
 import org.eclipse.kapua.qa.markers.junit.JUnitTests;
 import org.eclipse.kapua.service.authentication.exception.InternalUserOnlyException;
 import org.junit.Assert;

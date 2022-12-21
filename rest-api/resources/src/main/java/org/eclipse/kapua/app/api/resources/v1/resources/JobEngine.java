@@ -16,11 +16,11 @@ import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.app.api.core.model.EntityId;
 import org.eclipse.kapua.app.api.core.model.ScopeId;
 import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
+import org.eclipse.kapua.commons.rest.model.IsJobRunningMultipleResponse;
+import org.eclipse.kapua.commons.rest.model.IsJobRunningResponse;
+import org.eclipse.kapua.commons.rest.model.MultipleJobIdRequest;
 import org.eclipse.kapua.job.engine.JobEngineService;
 import org.eclipse.kapua.job.engine.JobStartOptions;
-import org.eclipse.kapua.job.engine.rest.model.IsJobRunningMultipleResponse;
-import org.eclipse.kapua.job.engine.rest.model.IsJobRunningResponse;
-import org.eclipse.kapua.job.engine.rest.model.MultipleJobIdRequest;
 import org.eclipse.kapua.locator.KapuaLocator;
 
 import javax.ws.rs.Consumes;
