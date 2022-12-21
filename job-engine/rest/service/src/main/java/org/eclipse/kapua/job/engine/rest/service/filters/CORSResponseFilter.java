@@ -10,7 +10,7 @@
  * Contributors:
  *     Eurotech - initial API and implementation
  *******************************************************************************/
-package org.eclipse.kapua.app.api.core.filter;
+package org.eclipse.kapua.job.engine.rest.service.filters;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -18,9 +18,9 @@ import com.google.common.net.HttpHeaders;
 import liquibase.util.StringUtils;
 import org.apache.shiro.web.util.WebUtils;
 import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.app.api.core.settings.KapuaApiCoreSetting;
-import org.eclipse.kapua.app.api.core.settings.KapuaApiCoreSettingKeys;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
+import org.eclipse.kapua.job.engine.rest.settings.KapuaRestFiltersSetting;
+import org.eclipse.kapua.job.engine.rest.settings.KapuaRestFiltersSettingKeys;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.account.AccountFactory;
@@ -74,12 +74,12 @@ public class CORSResponseFilter implements Filter {
     private ScheduledFuture<?> refreshTask;
 
     private Multimap<String, KapuaId> allowedOrigins = HashMultimap.create();
-    private final List<String> allowedSystemOrigins = KapuaApiCoreSetting.getInstance().getList(String.class, KapuaApiCoreSettingKeys.API_CORS_ORIGINS_ALLOWED);
+    private final List<String> allowedSystemOrigins = KapuaRestFiltersSetting.getInstance().getList(String.class, KapuaRestFiltersSettingKeys.API_CORS_ORIGINS_ALLOWED);
 
     @Override
     public void init(FilterConfig filterConfig) {
         logger.info("Initializing with FilterConfig: {}...", filterConfig);
-        int intervalSecs = KapuaApiCoreSetting.getInstance().getInt(KapuaApiCoreSettingKeys.API_CORS_REFRESH_INTERVAL, 60);
+        int intervalSecs = KapuaRestFiltersSetting.getInstance().getInt(KapuaRestFiltersSettingKeys.API_CORS_REFRESH_INTERVAL, 60);
         initRefreshThread(intervalSecs);
         logger.info("Initializing with FilterConfig: {}... DONE!", filterConfig);
     }
