@@ -60,7 +60,7 @@ public class ThrowableInfo {
             if (showStackTrace) {
                 StringWriter stringWriter = new StringWriter();
                 throwable.printStackTrace(new PrintWriter(stringWriter));
-                setStackTrace(stringWriter.toString());
+                this.stackTrace = stringWriter.toString();
             }
         }
     }
@@ -114,15 +114,4 @@ public class ThrowableInfo {
     public String getStackTrace() {
         return stackTrace;
     }
-
-    /**
-     * Sets the {@link Throwable#getStackTrace()}.
-     *
-     * @param stackTrace The {@link Throwable#getStackTrace()}.
-     * @since 1.0.0
-     */
-    private void setStackTrace(String stackTrace) {
-        this.stackTrace = stackTrace;
-    }
-
 }

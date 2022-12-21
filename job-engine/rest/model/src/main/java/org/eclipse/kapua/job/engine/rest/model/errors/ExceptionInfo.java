@@ -12,7 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.job.engine.rest.model.errors;
 
-import org.eclipse.kapua.KapuaErrorCode;
 import org.eclipse.kapua.KapuaException;
 
 import javax.ws.rs.core.Response;
@@ -48,23 +47,7 @@ public class ExceptionInfo extends ThrowableInfo {
     public ExceptionInfo(Status httpStatus, KapuaException exception, boolean showStackTrace) {
         super(httpStatus, exception, showStackTrace);
 
-        setKapuaErrorCode(exception.getCode());
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param httpStatus     The {@link Status} of the {@link Response}
-     * @param kapuaErrorCode The associated {@link KapuaErrorCode}.
-     * @param exception      The cause of the error.
-     * @since 1.0.0
-     * @deprecated Since 1.6.0. Please make use of {@link #ExceptionInfo(Status, KapuaException, boolean)} to avoid misalignment of {@link #getKapuaErrorCode()}.
-     */
-    @Deprecated
-    public ExceptionInfo(Status httpStatus, KapuaErrorCode kapuaErrorCode, KapuaException exception, boolean showStackTrace) {
-        super(httpStatus, exception, showStackTrace);
-
-        setKapuaErrorCode(kapuaErrorCode);
+        this.kapuaErrorCode = exception.getCode().name();
     }
 
     /**
@@ -75,15 +58,5 @@ public class ExceptionInfo extends ThrowableInfo {
      */
     public String getKapuaErrorCode() {
         return kapuaErrorCode;
-    }
-
-    /**
-     * Sets the {@link KapuaException#getCode()}.
-     *
-     * @param kapuaErrorCode The {@link KapuaException#getCode()}.
-     * @since 1.0.0
-     */
-    private void setKapuaErrorCode(KapuaErrorCode kapuaErrorCode) {
-        this.kapuaErrorCode = kapuaErrorCode.name();
     }
 }
