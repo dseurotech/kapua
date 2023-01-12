@@ -52,7 +52,7 @@
     <bean id="dataStorageMessageProcessor" class="org.eclipse.kapua.consumer.telemetry.listener.DataStorageMessageProcessor"/>
     <bean id="errorMessageListener" class="org.eclipse.kapua.consumer.commons.listener.error.ErrorMessageListener"/>
 
-    <bean id="jaxbContextLoader" class="org.eclipse.kapua.consumer.commons.xml.ConsumerJAXBContextLoader"
+    <bean id="jaxbContextLoader" class="org.eclipse.kapua.consumer.telemetry.TelemetryJAXBContextLoader"
           init-method="init"/>
 
     <bean id="databaseCheckUpdate" class="org.eclipse.kapua.consumer.commons.DatabaseCheckUpdate"

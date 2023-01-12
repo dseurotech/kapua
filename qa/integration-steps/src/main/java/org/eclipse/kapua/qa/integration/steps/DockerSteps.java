@@ -339,12 +339,12 @@ public class DockerSteps {
 
     @Given("Stop full docker environment")
     public void stopFullDockerEnvironment() throws DockerException, InterruptedException, SQLException {
-        stopFullDockerEnvironmentInternal();
+//        stopFullDockerEnvironmentInternal();
     }
 
     @Given("Stop base docker environment")
     public void stopBaseDockerEnvironment() throws DockerException, InterruptedException, SQLException {
-        stopFullDockerEnvironmentInternal();
+//        stopFullDockerEnvironmentInternal();
     }
 
     private void stopFullDockerEnvironmentInternal() throws SQLException, DockerException, InterruptedException {

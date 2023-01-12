@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.consumer.telemetry;
 
+import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.util.xml.JAXBContextProvider;
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
 import org.eclipse.kapua.locator.KapuaLocator;
@@ -24,5 +25,11 @@ public class TelemetryJAXBContextLoader {
 
         final JAXBContextProvider factory = KapuaLocator.getInstance().getFactory(JAXBContextProvider.class);
         XmlUtil.setContextProvider(factory);
+        try {
+            XmlUtil.getContextProvider().getJAXBContext();
+        } catch (KapuaException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
