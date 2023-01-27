@@ -81,7 +81,6 @@ public class MessageStoreServiceImpl extends KapuaConfigurableServiceBase implem
     protected static final Integer MAX_ENTRIES_ON_DELETE = DatastoreSettings.getInstance().getInt(DatastoreSettingsKey.CONFIG_MAX_ENTRIES_ON_DELETE);
 
     protected final MessageStoreFacade messageStoreFacade;
-    private ServiceConfigurationManager serviceConfigurationManager;
 
     /**
      * Constructor.
