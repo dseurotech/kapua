@@ -64,11 +64,12 @@ public class EndpointInfoServiceImpl
 
     @Inject
     public EndpointInfoServiceImpl(
-            AccountRepository accountRepository,
             AuthorizationService authorizationService,
             PermissionFactory permissionFactory,
             EndpointInfoFactory endpointInfoFactory,
-            EndpointInfoRepository endpointInfoRepository, TxManager txManager) {
+            TxManager txManager,
+            AccountRepository accountRepository,
+            EndpointInfoRepository endpointInfoRepository) {
         this.accountRepository = accountRepository;
         this.authorizationService = authorizationService;
         this.permissionFactory = permissionFactory;
