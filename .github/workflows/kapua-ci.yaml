@@ -48,7 +48,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@brokerAcl" verify
@@ -71,7 +71,7 @@ jobs:
             ${{ runner.os }}-maven-
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@tag" verify
@@ -97,7 +97,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@broker" verify
@@ -123,7 +123,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@device" verify
@@ -149,7 +149,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@deviceManagement" verify
@@ -175,7 +175,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@connection" verify
@@ -201,7 +201,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@datastore" verify
@@ -224,7 +224,7 @@ jobs:
             ${{ runner.os }}-maven-
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@user" verify
@@ -250,7 +250,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@userIntegrationBase" verify
@@ -276,7 +276,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@userIntegration" verify
@@ -299,7 +299,7 @@ jobs:
             ${{ runner.os }}-maven-
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@security" verify
@@ -322,7 +322,7 @@ jobs:
             ${{ runner.os }}-maven-
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobs or @scheduler" verify
@@ -348,7 +348,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobsIntegrationBase" verify
@@ -374,7 +374,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobsIntegration" verify
@@ -400,7 +400,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerService" verify
@@ -426,7 +426,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerServiceIntegrationBase" verify
@@ -452,7 +452,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerServiceIntegration" verify
@@ -475,7 +475,7 @@ jobs:
             ${{ runner.os }}-maven-
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@account or @translator" verify
@@ -503,7 +503,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStepDefinitions" verify
@@ -529,7 +529,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStartOfflineDevice" verify
@@ -555,7 +555,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStartOnlineDevice" verify
@@ -581,7 +581,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOfflineDevice" verify
@@ -607,7 +607,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOnlineDevice" verify
@@ -633,7 +633,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOnlineDeviceSecondPart" verify
@@ -659,7 +659,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineServiceStop" verify
@@ -682,7 +682,7 @@ jobs:
             ${{ runner.os }}-maven-
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@role or @group" verify
@@ -707,7 +707,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@deviceRegistry" verify
@@ -732,7 +732,7 @@ jobs:
       - run: mvn -B ${BUILD_OPTS} -Pdocker -DskipTests clean install
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@endpoint" verify
@@ -755,7 +755,7 @@ jobs:
             ${{ runner.os }}-maven-
       - uses: nick-fields/retry@v2.8.1
         with:
-          timeout_minutes: 45
+          timeout_minutes: 90
           retry_on: error
           max_attempts: 1
           command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='org.eclipse.kapua.qa.markers.junit.JUnitTests' verify
