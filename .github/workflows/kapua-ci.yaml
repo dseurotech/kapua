@@ -51,7 +51,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@brokerAcl" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@brokerAcl" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-tag:
     needs: build
@@ -74,7 +74,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@tag" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@tag" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-broker:
     needs: build
@@ -100,7 +100,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@broker" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@broker" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-device:
     needs: build
@@ -126,7 +126,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@device" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@device" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-device-management:
     needs: build
@@ -152,7 +152,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@deviceManagement" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@deviceManagement" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-connection:
     needs: build
@@ -178,7 +178,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@connection" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@connection" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-datastore:
     needs: build
@@ -204,7 +204,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@datastore" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@datastore" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-user:
     needs: build
@@ -227,7 +227,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@user" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@user" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-userIntegrationBase:
     needs: build
@@ -253,7 +253,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@userIntegrationBase" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@userIntegrationBase" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-userIntegration:
     needs: build
@@ -279,7 +279,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@userIntegration" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@userIntegration" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-security:
     needs: build
@@ -302,7 +302,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@security" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@security" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobsAndScheduler:
     needs: build
@@ -325,7 +325,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobs or @scheduler" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobs or @scheduler" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobsIntegrationBase:
     needs: build
@@ -351,7 +351,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobsIntegrationBase" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobsIntegrationBase" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobsIntegration:
     needs: build
@@ -377,7 +377,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobsIntegration" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobsIntegration" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-triggerService:
     needs: build
@@ -403,7 +403,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerService" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerService" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-triggerServiceIntegrationBase:
     needs: build
@@ -429,7 +429,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerServiceIntegrationBase" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerServiceIntegrationBase" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-triggerServiceIntegration:
     needs: build
@@ -455,7 +455,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerServiceIntegration" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@triggerServiceIntegration" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-accountAndTranslator:
     needs: build
@@ -478,7 +478,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@account or @translator" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@account or @translator" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobEngineStepDefinitions:
     needs: build
@@ -506,7 +506,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStepDefinitions" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStepDefinitions" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobEngineStartOfflineDevice:
     needs: build
@@ -532,7 +532,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStartOfflineDevice" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStartOfflineDevice" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobEngineStartOnlineDevice:
     needs: build
@@ -558,7 +558,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStartOnlineDevice" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineStartOnlineDevice" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobEngineRestartOfflineDevice:
     needs: build
@@ -584,7 +584,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOfflineDevice" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOfflineDevice" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobEngineRestartOnlineDevice:
     needs: build
@@ -610,7 +610,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOnlineDevice" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOnlineDevice" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobEngineRestartOnlineDeviceSecondPart:
     needs: build
@@ -636,7 +636,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOnlineDeviceSecondPart" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineRestartOnlineDeviceSecondPart" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-jobEngineServiceStop:
     needs: build
@@ -662,7 +662,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineServiceStop" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@jobEngineServiceStop" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-RoleAndGroup:
     needs: build
@@ -685,7 +685,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@role or @group" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@role or @group" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-deviceRegistry:
     needs: build
@@ -710,7 +710,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@deviceRegistry" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@deviceRegistry" verify
       - run: bash <(curl -s https://codecov.io/bash)
   test-endpoint:
     needs: build
@@ -735,7 +735,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@endpoint" verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='!org.eclipse.kapua.qa.markers.junit.JUnitTests' -Dcucumber.filter.tags="@endpoint" verify
       - run: bash <(curl -s https://codecov.io/bash)
   junit-tests:
     needs: build
@@ -758,7 +758,7 @@ jobs:
           timeout_minutes: 45
           retry_on: error
           max_attempts: 1
-          command: ./ci-output.sh mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='org.eclipse.kapua.qa.markers.junit.JUnitTests' verify
+          command: mvn -B ${BUILD_OPTS} ${CONFIG_OVERRIDES} -Dgroups='org.eclipse.kapua.qa.markers.junit.JUnitTests' verify
       - run: bash <(curl -s https://codecov.io/bash)
   build-javadoc:
     needs: build
