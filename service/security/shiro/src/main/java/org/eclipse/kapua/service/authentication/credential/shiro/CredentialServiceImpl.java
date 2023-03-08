@@ -104,9 +104,8 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceLinker implem
         if (credentialCreator.getCredentialType() != CredentialType.API_KEY) {
             ArgumentValidator.notEmptyOrNull(credentialCreator.getCredentialPlainKey(), "credentialCreator.credentialKey");
         }
-        AtomicReference<String> fullKey = new AtomicReference<>(null);
-
-        Credential newCredential = txManager.executeWithResult(tx -> {
+        final AtomicReference<String> fullKey = new AtomicReference<>(null);
+        final Credential res = txManager.executeWithResult(tx -> {
             if (credentialCreator.getCredentialType() == CredentialType.PASSWORD) {
                 //
                 //
@@ -167,7 +166,6 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceLinker implem
                 default:
                     // Don't do anything special
                     break;
-
             }
 
             //
@@ -200,13 +198,13 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceLinker implem
         // Do post persist magic on key values
         switch (credentialCreator.getCredentialType()) {
             case API_KEY:
-                newCredential.setCredentialKey(fullKey.get());
+                res.setCredentialKey(fullKey.get());
                 break;
             case PASSWORD:
             default:
-                newCredential.setCredentialKey(null);
+                res.setCredentialKey(null);
         }
-        return newCredential;
+        return res;
     }
 
     @Override
