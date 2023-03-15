@@ -16,14 +16,17 @@ import com.codahale.metrics.Counter;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.eclipse.kapua.commons.core.InterceptorBind;
+import org.eclipse.kapua.commons.jpa.JpaTxManager;
+import org.eclipse.kapua.commons.jpa.KapuaEntityManagerFactory;
 import org.eclipse.kapua.commons.metric.MetricServiceFactory;
 import org.eclipse.kapua.commons.metric.MetricsService;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.commons.security.KapuaSession;
+import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecord;
+import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordRepository;
 import org.eclipse.kapua.commons.service.event.store.api.ServiceEventUtil;
-import org.eclipse.kapua.commons.service.event.store.internal.EventStoreDAO;
-import org.eclipse.kapua.commons.service.internal.AbstractKapuaService;
+import org.eclipse.kapua.commons.service.event.store.internal.EventStoreRecordImplJpaRepository;
 import org.eclipse.kapua.event.RaiseServiceEvent;
 import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.event.ServiceEvent.EventStatus;
@@ -32,6 +35,7 @@ import org.eclipse.kapua.locator.KapuaProvider;
 import org.eclipse.kapua.model.KapuaEntity;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.KapuaService;
+import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +61,8 @@ public class RaiseServiceEventInterceptor implements MethodInterceptor {
     private static final String COMPONENT = "service_event";
     private static final String ACTION = "event_data_filler";
     private static final String COUNT = "count";
-
+    private final TxManager txManager = new JpaTxManager(new KapuaEntityManagerFactory("kapua-events"));
+    private final EventStoreRecordRepository repository = new EventStoreRecordImplJpaRepository();
 
     private static final MetricsService METRIC_SERVICE = MetricServiceFactory.getInstance();
 
@@ -89,7 +94,7 @@ public class RaiseServiceEventInterceptor implements MethodInterceptor {
 
             // Raise service event if the execution is successful
             try {
-                sendEvent(invocation, serviceEvent, returnObject);
+                sendEvent(serviceEvent);
             } catch (ServiceEventBusException e) {
                 LOG.warn("Error sending event: {}", e.getMessage(), e);
             }
@@ -232,7 +237,7 @@ public class RaiseServiceEventInterceptor implements MethodInterceptor {
         }
     }
 
-    private void sendEvent(MethodInvocation invocation, ServiceEvent serviceEvent, Object returnedValue) throws ServiceEventBusException {
+    private void sendEvent(ServiceEvent serviceEvent) throws ServiceEventBusException {
         String address = ServiceMap.getAddress(serviceEvent.getService());
         try {
             ServiceEventBusManager.getInstance().publish(address, serviceEvent);
@@ -244,27 +249,25 @@ public class RaiseServiceEventInterceptor implements MethodInterceptor {
                     serviceEvent.getEntityId(),
                     serviceEvent.getContextId());
             // if message was sent successfully then confirm the event in the event table
-            updateEventStatus(invocation, serviceEvent, EventStatus.SENT);
+            updateEventStatus(serviceEvent, EventStatus.SENT);
         } catch (ServiceEventBusException e) {
             LOG.warn("Error sending event", e);
             // mark event status as SEND_ERROR
-            updateEventStatus(invocation, serviceEvent, EventStatus.SEND_ERROR);
+            updateEventStatus(serviceEvent, EventStatus.SEND_ERROR);
         }
     }
 
-    private void updateEventStatus(MethodInvocation invocation, ServiceEvent serviceEventBus, EventStatus newServiceEventStatus) {
-        if (invocation.getThis() instanceof AbstractKapuaService) {
-            try {
-                serviceEventBus.setStatus(newServiceEventStatus);
-                ((AbstractKapuaService) invocation.getThis()).getEntityManagerSession().doTransactedAction(em -> {
-                    return EventStoreDAO.update(em,
-                            ServiceEventUtil.mergeToEntity(EventStoreDAO.find(em, serviceEventBus.getScopeId(), KapuaEid.parseCompactId(serviceEventBus.getId())), serviceEventBus));
-                });
-            } catch (Throwable t) {
-                // this may be a valid condition if the HouseKeeper is doing the update concurrently with this task
-                LOG.warn("Error updating event status: {}", t.getMessage(), t);
-            }
+    private void updateEventStatus(ServiceEvent serviceEventBus, EventStatus newServiceEventStatus) {
+        try {
+            serviceEventBus.setStatus(newServiceEventStatus);
+            txManager.executeNoResult(tx -> {
+                final EventStoreRecord eventStoreRecord = repository.find(tx, serviceEventBus.getScopeId(), KapuaEid.parseCompactId(serviceEventBus.getId()));
+                final EventStoreRecord updatedEventStoreRecord = ServiceEventUtil.mergeToEntity(eventStoreRecord, serviceEventBus);
+                repository.update(tx, eventStoreRecord, updatedEventStoreRecord);
+            });
+        } catch (Throwable t) {
+            // this may be a valid condition if the HouseKeeper is doing the update concurrently with this task
+            LOG.warn("Error updating event status: {}", t.getMessage(), t);
         }
     }
-
 }
