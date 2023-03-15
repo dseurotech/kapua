@@ -61,7 +61,6 @@ public class RaiseServiceEventInterceptor implements MethodInterceptor {
     private static final String COMPONENT = "service_event";
     private static final String ACTION = "event_data_filler";
     private static final String COUNT = "count";
-    private final TxManager txManager = new JpaTxManager(new KapuaEntityManagerFactory("kapua-events"));
     private final EventStoreRecordRepository repository = new EventStoreRecordImplJpaRepository();
 
     private static final MetricsService METRIC_SERVICE = MetricServiceFactory.getInstance();
@@ -259,6 +258,8 @@ public class RaiseServiceEventInterceptor implements MethodInterceptor {
 
     private void updateEventStatus(ServiceEvent serviceEventBus, EventStatus newServiceEventStatus) {
         try {
+            final TxManager txManager = new JpaTxManager(new KapuaEntityManagerFactory("kapua-events"));
+
             serviceEventBus.setStatus(newServiceEventStatus);
             txManager.executeNoResult(tx -> {
                 final EventStoreRecord eventStoreRecord = repository.find(tx, serviceEventBus.getScopeId(), KapuaEid.parseCompactId(serviceEventBus.getId()));
