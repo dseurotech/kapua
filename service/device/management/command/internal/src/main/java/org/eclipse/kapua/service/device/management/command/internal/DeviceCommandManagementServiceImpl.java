@@ -69,18 +69,13 @@ public class DeviceCommandManagementServiceImpl extends AbstractDeviceManagement
     @Override
     public DeviceCommandOutput exec(KapuaId scopeId, KapuaId deviceId, DeviceCommandInput commandInput, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, "scopeId");
         ArgumentValidator.notNull(deviceId, "deviceId");
         ArgumentValidator.notNull(commandInput, "commandInput");
         ArgumentValidator.notNull(commandInput.getTimeout(), "commandInput.timeout");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.execute, scopeId));
-
-        //
         // Prepare the request
         CommandRequestChannel commandRequestChannel = new CommandRequestChannel();
         commandRequestChannel.setAppName(CommandAppProperties.APP_NAME);
@@ -104,17 +99,11 @@ public class DeviceCommandManagementServiceImpl extends AbstractDeviceManagement
         commandRequestMessage.setCapturedOn(new Date());
         commandRequestMessage.setPayload(commandRequestPayload);
         commandRequestMessage.setChannel(commandRequestChannel);
-
-        //
         // Do exec
         DeviceCallExecutor<?, ?, ?, CommandResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(commandRequestMessage, timeout);
         CommandResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, commandRequestMessage, responseMessage);
-
-        //
         // Check response
         return checkResponseAcceptedOrThrowError(responseMessage, () -> {
             CommandResponsePayload responsePayload = responseMessage.getPayload();

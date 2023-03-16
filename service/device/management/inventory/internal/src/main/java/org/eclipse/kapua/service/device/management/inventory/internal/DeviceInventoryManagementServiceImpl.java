@@ -87,16 +87,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
     @Override
     public DeviceInventory getInventory(KapuaId scopeId, KapuaId deviceId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.read, scopeId));
-
-        //
         // Prepare the request
         InventoryRequestChannel inventoryRequestChannel = new InventoryRequestChannel();
         inventoryRequestChannel.setAppName(DeviceInventoryAppProperties.APP_NAME);
@@ -118,17 +113,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
         inventoryRequestMessage.setCapturedOn(new Date());
         inventoryRequestMessage.setPayload(inventoryRequestPayload);
         inventoryRequestMessage.setChannel(inventoryRequestChannel);
-
-        //
         // Do get
         DeviceCallExecutor<?, ?, ?, InventoryListResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(inventoryRequestMessage, timeout);
         InventoryListResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, inventoryRequestMessage, responseMessage);
-
-        //
         // Check response
         return checkResponseAcceptedOrThrowError(responseMessage, () -> responseMessage.getPayload().getDeviceInventory());
     }
@@ -136,16 +125,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
     @Override
     public DeviceInventoryBundles getBundles(KapuaId scopeId, KapuaId deviceId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.read, scopeId));
-
-        //
         // Prepare the request
         InventoryRequestChannel inventoryRequestChannel = new InventoryRequestChannel();
         inventoryRequestChannel.setAppName(DeviceInventoryAppProperties.APP_NAME);
@@ -167,36 +151,25 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
         inventoryRequestMessage.setCapturedOn(new Date());
         inventoryRequestMessage.setPayload(inventoryRequestPayload);
         inventoryRequestMessage.setChannel(inventoryRequestChannel);
-
-        //
         // Do get
         DeviceCallExecutor<?, ?, ?, InventoryBundlesResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(inventoryRequestMessage, timeout);
         InventoryBundlesResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, inventoryRequestMessage, responseMessage);
-
-        //
         // Check response
         return checkResponseAcceptedOrThrowError(responseMessage, () -> responseMessage.getPayload().getDeviceInventoryBundles());
     }
 
     @Override
     public void execBundle(KapuaId scopeId, KapuaId deviceId, DeviceInventoryBundle deviceInventoryBundle, DeviceInventoryBundleAction deviceInventoryBundleAction, Long timeout) throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
         ArgumentValidator.notNull(deviceInventoryBundle, "deviceInventoryBundle");
         ArgumentValidator.notNull(deviceInventoryBundle.getName(), "deviceInventoryBundle.name");
         ArgumentValidator.notNull(deviceInventoryBundleAction, "deviceInventoryBundleAction");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.write, scopeId));
-
-        //
         // Prepare the request
         InventoryRequestChannel inventoryRequestChannel = new InventoryRequestChannel();
         inventoryRequestChannel.setAppName(DeviceInventoryAppProperties.APP_NAME);
@@ -224,17 +197,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
         inventoryRequestMessage.setCapturedOn(new Date());
         inventoryRequestMessage.setPayload(inventoryRequestPayload);
         inventoryRequestMessage.setChannel(inventoryRequestChannel);
-
-        //
         // Do exec
         DeviceCallExecutor<?, ?, ?, InventoryNoContentResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(inventoryRequestMessage, timeout);
         InventoryNoContentResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, inventoryRequestMessage, responseMessage);
-
-        //
         // Check response
         checkResponseAcceptedOrThrowError(responseMessage);
     }
@@ -242,16 +209,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
     @Override
     public DeviceInventoryContainers getContainers(KapuaId scopeId, KapuaId deviceId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.read, scopeId));
-
-        //
         // Prepare the request
         InventoryRequestChannel inventoryRequestChannel = new InventoryRequestChannel();
         inventoryRequestChannel.setAppName(DeviceInventoryAppProperties.APP_NAME);
@@ -273,24 +235,17 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
         inventoryRequestMessage.setCapturedOn(new Date());
         inventoryRequestMessage.setPayload(inventoryRequestPayload);
         inventoryRequestMessage.setChannel(inventoryRequestChannel);
-
-        //
         // Do get
         DeviceCallExecutor<?, ?, ?, InventoryContainersResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(inventoryRequestMessage, timeout);
         InventoryContainersResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, inventoryRequestMessage, responseMessage);
-
-        //
         // Check response
         return checkResponseAcceptedOrThrowError(responseMessage, () -> responseMessage.getPayload().getDeviceInventoryContainers());
     }
 
     @Override
     public void execContainer(KapuaId scopeId, KapuaId deviceId, DeviceInventoryContainer deviceInventoryContainer, DeviceInventoryContainerAction deviceInventoryContainerAction, Long timeout) throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
@@ -299,12 +254,8 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
         ArgumentValidator.notNull(deviceInventoryContainer.getVersion(), "deviceInventoryContainer.version");
         ArgumentValidator.notNull(deviceInventoryContainer.getContainerType(), "deviceInventoryContainer.type");
         ArgumentValidator.notNull(deviceInventoryContainerAction, "deviceInventoryContainerAction");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.write, scopeId));
-
-        //
         // Prepare the request
         InventoryRequestChannel inventoryRequestChannel = new InventoryRequestChannel();
         inventoryRequestChannel.setAppName(DeviceInventoryAppProperties.APP_NAME);
@@ -332,17 +283,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
         inventoryRequestMessage.setCapturedOn(new Date());
         inventoryRequestMessage.setPayload(inventoryRequestPayload);
         inventoryRequestMessage.setChannel(inventoryRequestChannel);
-
-        //
         // Do exec
         DeviceCallExecutor<?, ?, ?, InventoryNoContentResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(inventoryRequestMessage, timeout);
         InventoryNoContentResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, inventoryRequestMessage, responseMessage);
-
-        //
         // Check response
         checkResponseAcceptedOrThrowError(responseMessage);
     }
@@ -350,16 +295,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
     @Override
     public DeviceInventorySystemPackages getSystemPackages(KapuaId scopeId, KapuaId deviceId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.read, scopeId));
-
-        //
         // Prepare the request
         InventoryRequestChannel inventoryRequestChannel = new InventoryRequestChannel();
         inventoryRequestChannel.setAppName(DeviceInventoryAppProperties.APP_NAME);
@@ -381,17 +321,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
         inventoryRequestMessage.setCapturedOn(new Date());
         inventoryRequestMessage.setPayload(inventoryRequestPayload);
         inventoryRequestMessage.setChannel(inventoryRequestChannel);
-
-        //
         // Do get
         DeviceCallExecutor<?, ?, ?, InventorySystemPackagesResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(inventoryRequestMessage, timeout);
         InventorySystemPackagesResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, inventoryRequestMessage, responseMessage);
-
-        //
         // Check response
         return checkResponseAcceptedOrThrowError(responseMessage, () -> responseMessage.getPayload().getDeviceInventorySystemPackages());
     }
@@ -399,16 +333,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
     @Override
     public DeviceInventoryPackages getDeploymentPackages(KapuaId scopeId, KapuaId deviceId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.read, scopeId));
-
-        //
         // Prepare the request
         InventoryRequestChannel inventoryRequestChannel = new InventoryRequestChannel();
         inventoryRequestChannel.setAppName(DeviceInventoryAppProperties.APP_NAME);
@@ -430,17 +359,11 @@ public class DeviceInventoryManagementServiceImpl extends AbstractDeviceManageme
         inventoryRequestMessage.setCapturedOn(new Date());
         inventoryRequestMessage.setPayload(inventoryRequestPayload);
         inventoryRequestMessage.setChannel(inventoryRequestChannel);
-
-        //
         // Do get
         DeviceCallExecutor<?, ?, ?, InventoryPackagesResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(inventoryRequestMessage, timeout);
         InventoryPackagesResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, inventoryRequestMessage, responseMessage);
-
-        //
         // Check response
         return checkResponseAcceptedOrThrowError(responseMessage, () -> responseMessage.getPayload().getDeviceInventoryPackages());
     }

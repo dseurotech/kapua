@@ -165,16 +165,12 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
                 deleteButton.setEnabled(grid.getSelectionModel().getSelectedItem() != null);
             }
         });
-
-        //
         // Add Menu
         addItemButton = new SplitButton("Add", new KapuaIcon(IconSet.PLUS));
         addItemButton.setEnabled(getSelectedEntity() != null);
 
         Menu addItemMenu = new Menu();
         addItemButton.setMenu(addItemMenu);
-
-        //
         // Add Certificate Raw Menu Item
         KapuaMenuItem addCertificateRawMenuItem = new KapuaMenuItem("Certificate Raw", IconSet.EDIT, new SelectionListener<MenuEvent>() {
             @Override
@@ -193,8 +189,6 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
             }
         });
         addItemMenu.add(addCertificateRawMenuItem);
-
-        //
         // Add Certificate Raw Menu Item
         final KapuaMenuItem addCertificateInfoMenuItem = new KapuaMenuItem("Certificate", IconSet.CERTIFICATE, new SelectionListener<MenuEvent>() {
             @Override
@@ -225,8 +219,6 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
                 addCertificateInfoMenuItem.setVisible(result);
             }
         });
-
-        //
         // Add Keypair Menu Item
         KapuaMenuItem addKeypairMenuItem = new KapuaMenuItem("Keypair", IconSet.KEY, new SelectionListener<MenuEvent>() {
             @Override
@@ -245,8 +237,6 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
             }
         });
         addItemMenu.add(addKeypairMenuItem);
-
-        //
         // Details button
         detailsButton = new KeystoreItemDetailsButton(new SelectionListener<ButtonEvent>() {
             @Override
@@ -256,8 +246,6 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
             }
         });
         detailsButton.disable();
-
-        //
         // CSR Button
         csrButton = new KeystoreItemCsrButton(new SelectionListener<ButtonEvent>() {
             @Override
@@ -276,8 +264,6 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
             }
         });
         csrButton.disable();
-
-        //
         // Refresh button
         refreshButton = new RefreshButton(new SelectionListener<ButtonEvent>() {
             @Override
@@ -288,8 +274,6 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
             }
         });
         refreshButton.setEnabled(getSelectedEntity() != null);
-
-        //
         // Delete button
         deleteButton = new KeystoreItemDeleteButton(new SelectionListener<ButtonEvent>() {
             @Override
@@ -308,8 +292,6 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
             }
         });
         deleteButton.disable();
-
-        //
         // Toolbar
         ToolBar toolBar = new ToolBar();
         toolBar.setBorders(true);
@@ -321,8 +303,6 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
         deviceKeystorePanel.setTopComponent(toolBar);
 
         initialized = true;
-
-        //
         // Init
         if (getSelectedEntity() != null) {
             setDirty(true);
@@ -330,9 +310,7 @@ public class DeviceTabKeystore extends KapuaTabItem<GwtDevice> {
         }
     }
 
-    //
     // REFRESHER
-    //
     @Override
     public void doRefresh() {
         if (initialized && getSelectedEntity() != null) {

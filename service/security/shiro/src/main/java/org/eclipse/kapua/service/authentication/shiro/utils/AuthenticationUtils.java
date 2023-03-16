@@ -56,11 +56,8 @@ public class AuthenticationUtils {
      */
     public static String cryptCredential(CryptAlgorithm algorithm, String plainValue)
             throws KapuaException {
-        //
         // Argument validator
         ArgumentValidator.notEmptyOrNull(plainValue, "plainValue");
-
-        //
         // Do crypt
         String cryptedValue;
         switch (algorithm) {
@@ -79,20 +76,15 @@ public class AuthenticationUtils {
 
     private static String doSha(String plainValue) {
         try {
-            //
             // Retrieve Crypt Settings
             KapuaCryptoSetting settings = KapuaCryptoSetting.getInstance();
             int saltLength = settings.getInt(KapuaCryptoSettingKeys.CRYPTO_SHA_SALT_LENGTH);
             String shaAlgorithm = settings.getString(KapuaCryptoSettingKeys.CRYPTO_SHA_ALGORITHM);
-
-            //
             // Generate salt
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             byte[] bSalt = new byte[saltLength];
             random.nextBytes(bSalt);
             String salt = Base64.encodeToString(bSalt);
-
-            //
             // Hash value
             String hashedValue;
             switch (shaAlgorithm) {
@@ -104,8 +96,6 @@ public class AuthenticationUtils {
                     hashedValue = (new Sha512Hash(plainValue, salt)).toHex();
                     break;
             }
-
-            //
             // Return value
             return salt + ":" + hashedValue;
         } catch (NoSuchAlgorithmException e) {
@@ -115,17 +105,12 @@ public class AuthenticationUtils {
 
     private static String doBCrypt(String plainValue) {
         try {
-            //
             // Retrieve Crypt Settings
             KapuaCryptoSetting settings = KapuaCryptoSetting.getInstance();
             int logRound = settings.getInt(KapuaCryptoSettingKeys.CRYPTO_BCRYPT_LOG_ROUNDS);
-
-            //
             // Generate salt
             SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
             String salt = BCrypt.gensalt(logRound, random);
-
-            //
             // Hash and return value
             return BCrypt.hashpw(plainValue, salt);
         } catch (NoSuchAlgorithmException e) {

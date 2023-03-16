@@ -111,8 +111,6 @@ public class JobDefinitionBuildUtils {
         enqueueProperty.setName(JobContextPropertyNames.ENQUEUE);
         enqueueProperty.setValue(String.valueOf(jobStartOptions.getEnqueue()));
         jslPropertyList.add(enqueueProperty);
-
-        //
         // Add them to the JBatch properties
         JSLProperties jslProperties = new JSLProperties();
         jslProperties.getPropertyList().addAll(jslPropertyList);

@@ -92,16 +92,11 @@ public class DeviceConfigurationManagementServiceImpl extends AbstractDeviceMana
     @Override
     public DeviceConfiguration get(KapuaId scopeId, KapuaId deviceId, String configurationId, String configurationComponentPid, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.read, scopeId));
-
-        //
         // Prepare the request
         ConfigurationRequestChannel configurationRequestChannel = new ConfigurationRequestChannel();
         configurationRequestChannel.setAppName(DeviceConfigurationAppProperties.APP_NAME);
@@ -118,23 +113,15 @@ public class DeviceConfigurationManagementServiceImpl extends AbstractDeviceMana
         configurationRequestMessage.setCapturedOn(new Date());
         configurationRequestMessage.setPayload(configurationRequestPayload);
         configurationRequestMessage.setChannel(configurationRequestChannel);
-
-        //
         // Do get
         DeviceCallExecutor<?, ?, ?, ConfigurationResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(configurationRequestMessage, timeout);
 
         if (isDeviceConnected(scopeId, deviceId)) {
             ConfigurationResponseMessage responseMessage = deviceApplicationCall.send();
-
-            //
             // Create event
             createDeviceEvent(scopeId, deviceId, configurationRequestMessage, responseMessage);
-
-            //
             // Check response
             DeviceConfiguration onlineDeviceConfiguration = checkResponseAcceptedOrThrowError(responseMessage, () -> responseMessage.getPayload().getDeviceConfigurations());
-
-            //
             // Store config and return
             if (deviceConfigurationStoreService.isServiceEnabled(scopeId) &&
                     deviceConfigurationStoreService.isApplicationEnabled(scopeId, deviceId)) {
@@ -161,18 +148,13 @@ public class DeviceConfigurationManagementServiceImpl extends AbstractDeviceMana
     @Override
     public void put(KapuaId scopeId, KapuaId deviceId, DeviceComponentConfiguration deviceComponentConfiguration, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
         ArgumentValidator.notNull(deviceComponentConfiguration, "componentConfiguration");
         ArgumentValidator.notEmptyOrNull(deviceComponentConfiguration.getId(), "componentConfiguration.componentId");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.write, scopeId));
-
-        //
         // Prepare the request
         ConfigurationRequestChannel configurationRequestChannel = new ConfigurationRequestChannel();
         configurationRequestChannel.setAppName(DeviceConfigurationAppProperties.APP_NAME);
@@ -197,17 +179,11 @@ public class DeviceConfigurationManagementServiceImpl extends AbstractDeviceMana
         configurationRequestMessage.setCapturedOn(new Date());
         configurationRequestMessage.setPayload(configurationRequestPayload);
         configurationRequestMessage.setChannel(configurationRequestChannel);
-
-        //
         // Do put
         DeviceCallExecutor<?, ?, ?, ConfigurationResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(configurationRequestMessage, timeout);
         ConfigurationResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, configurationRequestMessage, responseMessage);
-
-        //
         // Check response
         checkResponseAcceptedOrThrowError(responseMessage);
     }
@@ -228,17 +204,12 @@ public class DeviceConfigurationManagementServiceImpl extends AbstractDeviceMana
     @Override
     public void put(KapuaId scopeId, KapuaId deviceId, DeviceConfiguration deviceConfiguration, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
         ArgumentValidator.notNull(deviceConfiguration, "componentConfiguration");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.write, scopeId));
-
-        //
         // Prepare the request
         ConfigurationRequestChannel configurationRequestChannel = new ConfigurationRequestChannel();
         configurationRequestChannel.setAppName(DeviceConfigurationAppProperties.APP_NAME);
@@ -259,17 +230,11 @@ public class DeviceConfigurationManagementServiceImpl extends AbstractDeviceMana
         configurationRequestMessage.setCapturedOn(new Date());
         configurationRequestMessage.setPayload(configurationRequestPayload);
         configurationRequestMessage.setChannel(configurationRequestChannel);
-
-        //
         // Do put
         DeviceCallExecutor<?, ?, ?, ConfigurationResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(configurationRequestMessage, timeout);
         ConfigurationResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, configurationRequestMessage, responseMessage);
-
-        //
         // Check response
         checkResponseAcceptedOrThrowError(responseMessage);
     }

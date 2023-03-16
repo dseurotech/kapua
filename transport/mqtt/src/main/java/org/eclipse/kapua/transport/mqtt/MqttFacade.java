@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.eclipse.kapua.transport.mqtt;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.eclipse.kapua.transport.TransportFacade;
 import org.eclipse.kapua.transport.exception.TransportClientGetException;
 import org.eclipse.kapua.transport.exception.TransportSendException;
@@ -23,7 +24,6 @@ import org.eclipse.kapua.transport.mqtt.exception.MqttClientCallbackSetException
 import org.eclipse.kapua.transport.mqtt.exception.MqttClientSubscribeException;
 import org.eclipse.kapua.transport.mqtt.pooling.MqttClientPool;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +55,6 @@ public class MqttFacade implements TransportFacade<MqttTopic, MqttPayload, MqttM
      */
     public MqttFacade(@NotNull String nodeUri) throws TransportClientGetException {
         this.nodeUri = nodeUri;
-
-        //
         // Get the client form the pool
         try {
             borrowedClient = MqttClientPool.getInstance(nodeUri).borrowObject();
@@ -64,10 +62,7 @@ public class MqttFacade implements TransportFacade<MqttTopic, MqttPayload, MqttM
             throw new TransportClientGetException(e, nodeUri);
         }
     }
-
-    //
     // Message management
-    //
 
     @Override
     public void sendAsync(@NotNull MqttMessage mqttMessage) throws TransportTimeoutException, TransportSendException {
@@ -146,10 +141,7 @@ public class MqttFacade implements TransportFacade<MqttTopic, MqttPayload, MqttM
             borrowedClient = null;
         }
     }
-
-    //
     // Private methods
-    //
 
     /**
      * Publish the given {@link MqttMessage} using the {@link MqttClient}.

@@ -100,16 +100,12 @@ public class EndpointInfoServiceImpl
 
         ArgumentValidator.notNegative(endpointInfoCreator.getPort(), "endpointInfoCreator.port");
         ArgumentValidator.numRange(endpointInfoCreator.getPort(), 1, 65535, "endpointInfoCreator.port");
-
-        //
         // Check Access
         KapuaId scopeIdPermission = endpointInfoCreator.getEndpointType().equals(EndpointInfo.ENDPOINT_TYPE_CORS) ?
                 endpointInfoCreator.getScopeId() : null;
         authorizationService.checkPermission(
                 permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.write, scopeIdPermission)
         );
-
-        //
         // Check duplicate endpoint
         checkDuplicateEndpointInfo(
                 endpointInfoCreator.getScopeId(),
@@ -117,8 +113,6 @@ public class EndpointInfoServiceImpl
                 endpointInfoCreator.getSchema(),
                 endpointInfoCreator.getDns(),
                 endpointInfoCreator.getPort());
-
-        //
         // Do create
 
         final EndpointInfo endpointInfo = new EndpointInfoImpl(endpointInfoCreator.getScopeId());
@@ -147,16 +141,12 @@ public class EndpointInfoServiceImpl
 
         ArgumentValidator.notNegative(endpointInfo.getPort(), "endpointInfo.port");
         ArgumentValidator.numRange(endpointInfo.getPort(), 1, 65535, "endpointInfo.port");
-
-        //
         // Check Access
         KapuaId scopeIdPermission = endpointInfo.getEndpointType().equals(EndpointInfo.ENDPOINT_TYPE_CORS) ?
                 endpointInfo.getScopeId() : null;
         authorizationService.checkPermission(
                 permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.write, scopeIdPermission)
         );
-
-        //
         // Check duplicate endpoint
         checkDuplicateEndpointInfo(
                 endpointInfo.getScopeId(),
@@ -164,8 +154,6 @@ public class EndpointInfoServiceImpl
                 endpointInfo.getSchema(),
                 endpointInfo.getDns(),
                 endpointInfo.getPort());
-
-        //
         // Do update
         return txManager.execute(tx -> repository.update(tx, endpointInfo));
     }
@@ -174,8 +162,6 @@ public class EndpointInfoServiceImpl
     public void delete(KapuaId scopeId, KapuaId endpointInfoId) throws KapuaException {
         ArgumentValidator.notNull(scopeId, "scopeId");
         ArgumentValidator.notNull(endpointInfoId, "endpointInfoId");
-
-        //
         // Check Access
         txManager.execute(tx -> {
             EndpointInfo endpointInfoToDelete = repository.find(tx, scopeId, endpointInfoId);
@@ -187,8 +173,6 @@ public class EndpointInfoServiceImpl
             authorizationService.checkPermission(
                     permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.delete, scopeIdPermission)
             );
-
-            //
             // Do delete
             return repository.delete(tx, scopeId, endpointInfoId);
         });
@@ -199,14 +183,11 @@ public class EndpointInfoServiceImpl
             throws KapuaException {
         ArgumentValidator.notNull(scopeId, "scopeId");
         ArgumentValidator.notNull(endpointInfoId, "endpointInfoId");
-
-        //
         // Check Access
         return txManager.execute(tx -> {
             authorizationService.checkPermission(
                     permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.read, scopeId)
             );
-
             EndpointInfo endpointInfoToFind = repository.find(tx, KapuaId.ANY, endpointInfoId); // search the endpoint in any scope
 
             if (endpointInfoToFind == null) {
@@ -233,13 +214,10 @@ public class EndpointInfoServiceImpl
     @Override
     public EndpointInfoListResult query(KapuaQuery query) throws KapuaException {
         ArgumentValidator.notNull(query, "query");
-
-        //
         // Check Access
         authorizationService.checkPermission(
                 permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.read, query.getScopeId())
         );
-        //
         // Do Query
         return txManager.execute(tx -> {
             return doQuery(tx, query, EndpointInfo.ENDPOINT_TYPE_RESOURCE);
@@ -251,13 +229,11 @@ public class EndpointInfoServiceImpl
             throws KapuaException {
         ArgumentValidator.notNull(query, "query");
 
-        //
         // Check Access
         authorizationService.checkPermission(
                 permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.read, query.getScopeId())
         );
 
-        //
         // Do Query
         return txManager.execute(tx -> {
             return doQuery(tx, query, section);
@@ -314,14 +290,10 @@ public class EndpointInfoServiceImpl
 
     private Long doCount(KapuaQuery query, String section) throws KapuaException {
         ArgumentValidator.notNull(query, "query");
-
-        //
         // Check Access
         authorizationService.checkPermission(
                 permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.read, query.getScopeId())
         );
-
-        //
         // Do count
         return txManager.execute(tx -> {
             long endpointInfoCount = repository.count(tx, query);
@@ -353,10 +325,7 @@ public class EndpointInfoServiceImpl
             return endpointInfoCount;
         });
     }
-
-    //
     // Private methods
-    //
 
     /**
      * Checks whether or not another {@link EndpointInfo} already exists with the given values.

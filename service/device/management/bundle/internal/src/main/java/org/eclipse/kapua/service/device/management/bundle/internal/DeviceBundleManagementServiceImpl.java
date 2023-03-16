@@ -71,16 +71,11 @@ public class DeviceBundleManagementServiceImpl extends AbstractDeviceManagementS
     @Override
     public DeviceBundles get(KapuaId scopeId, KapuaId deviceId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.read, scopeId));
-
-        //
         // Prepare the request
         BundleRequestChannel bundleRequestChannel = new BundleRequestChannel();
         bundleRequestChannel.setAppName(DeviceBundleAppProperties.APP_NAME);
@@ -95,17 +90,11 @@ public class DeviceBundleManagementServiceImpl extends AbstractDeviceManagementS
         bundleRequestMessage.setCapturedOn(new Date());
         bundleRequestMessage.setPayload(bundleRequestPayload);
         bundleRequestMessage.setChannel(bundleRequestChannel);
-
-        //
         // Do get
         DeviceCallExecutor<?, ?, ?, BundleResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(bundleRequestMessage, timeout);
         BundleResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, bundleRequestMessage, responseMessage);
-
-        //
         // Check response
         return checkResponseAcceptedOrThrowError(responseMessage, () -> responseMessage.getPayload().getDeviceBundles());
     }
@@ -113,17 +102,12 @@ public class DeviceBundleManagementServiceImpl extends AbstractDeviceManagementS
     @Override
     public void start(KapuaId scopeId, KapuaId deviceId, String bundleId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
         ArgumentValidator.notEmptyOrNull(bundleId, "bundleId");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.execute, scopeId));
-
-        //
         // Prepare the request
         BundleRequestChannel bundleRequestChannel = new BundleRequestChannel();
         bundleRequestChannel.setAppName(DeviceBundleAppProperties.APP_NAME);
@@ -140,17 +124,11 @@ public class DeviceBundleManagementServiceImpl extends AbstractDeviceManagementS
         bundleRequestMessage.setCapturedOn(new Date());
         bundleRequestMessage.setPayload(bundleRequestPayload);
         bundleRequestMessage.setChannel(bundleRequestChannel);
-
-        //
         // Do start
         DeviceCallExecutor<?, ?, ?, BundleResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(bundleRequestMessage, timeout);
         BundleResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, bundleRequestMessage, responseMessage);
-
-        //
         // Check response
         checkResponseAcceptedOrThrowError(responseMessage);
     }
@@ -158,17 +136,12 @@ public class DeviceBundleManagementServiceImpl extends AbstractDeviceManagementS
     @Override
     public void stop(KapuaId scopeId, KapuaId deviceId, String bundleId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, SCOPE_ID);
         ArgumentValidator.notNull(deviceId, DEVICE_ID);
         ArgumentValidator.notEmptyOrNull(bundleId, "bundleId");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.execute, scopeId));
-
-        //
         // Prepare the request
         BundleRequestChannel bundleRequestChannel = new BundleRequestChannel();
         bundleRequestChannel.setAppName(DeviceBundleAppProperties.APP_NAME);
@@ -185,17 +158,11 @@ public class DeviceBundleManagementServiceImpl extends AbstractDeviceManagementS
         bundleRequestMessage.setCapturedOn(new Date());
         bundleRequestMessage.setPayload(bundleRequestPayload);
         bundleRequestMessage.setChannel(bundleRequestChannel);
-
-        //
         // Do stop
         DeviceCallExecutor<?, ?, ?, BundleResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(bundleRequestMessage, timeout);
         BundleResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, bundleRequestMessage, responseMessage);
-
-        //
         // Check response
         checkResponseAcceptedOrThrowError(responseMessage);
     }

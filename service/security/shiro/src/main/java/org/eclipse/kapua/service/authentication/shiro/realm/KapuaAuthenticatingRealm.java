@@ -48,8 +48,6 @@ import java.util.Map;
 public abstract class KapuaAuthenticatingRealm extends AuthenticatingRealm {
 
     private static final KapuaLocator LOCATOR = KapuaLocator.getInstance();
-
-    //
     // Session
 
     /**
@@ -67,8 +65,6 @@ public abstract class KapuaAuthenticatingRealm extends AuthenticatingRealm {
         session.setAttribute(ShiroSessionKeys.USER_ID, loginAuthenticationInfo.getUser().getId());
         session.setAttribute(ShiroSessionKeys.USER_NAME, loginAuthenticationInfo.getUser().getName());
     }
-
-    //
     // Account
 
     /**
@@ -108,9 +104,6 @@ public abstract class KapuaAuthenticatingRealm extends AuthenticatingRealm {
 
         return account;
     }
-
-
-    //
     // Credential
 
     /**
@@ -247,8 +240,6 @@ public abstract class KapuaAuthenticatingRealm extends AuthenticatingRealm {
             throw new ShiroException("Unexpected error while looking for the lockout policy", kex);
         }
     }
-
-    //
     // User
 
     /**

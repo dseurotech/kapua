@@ -114,8 +114,6 @@ public class DeviceCallBuilder<C extends KapuaRequestChannel, P extends KapuaReq
     public RS send() throws KapuaEntityNotFoundException, KapuaIllegalArgumentException, DeviceNotConnectedException, DeviceManagementTimeoutException, DeviceManagementSendException {
 
         deviceCallPreChecks();
-
-        //
         // Translate the request from Kapua to Device
         try {
             requestMessage.setSentOn(new Date());
@@ -123,8 +121,6 @@ public class DeviceCallBuilder<C extends KapuaRequestChannel, P extends KapuaReq
             DeviceCall<DeviceRequestMessage<?, ?>, DeviceResponseMessage<?, ?>> deviceCall = DEVICE_CALL_FACTORY.newDeviceCall();
             Translator<RQ, DeviceRequestMessage<?, ?>> tKapuaToClient = Translator.getTranslatorFor(requestMessage.getRequestClass(), deviceCall.getBaseMessageClass());
             DeviceRequestMessage<?, ?> deviceRequestMessage = tKapuaToClient.translate(requestMessage);
-
-            //
             // Send the request
             DeviceResponseMessage<?, ?> responseMessage;
             switch (requestMessage.getChannel().getMethod()) {
@@ -160,8 +156,6 @@ public class DeviceCallBuilder<C extends KapuaRequestChannel, P extends KapuaReq
                 default:
                     throw new DeviceManagementRequestBadMethodException(requestMessage.getChannel().getMethod());
             }
-
-            //
             // Translate the response from Device to Kapua
             Translator<DeviceResponseMessage<?, ?>, RS> tClientToKapua = Translator.getTranslatorFor(deviceCall.getBaseMessageClass(), requestMessage.getResponseClass());
             return tClientToKapua.translate(responseMessage);
@@ -184,8 +178,6 @@ public class DeviceCallBuilder<C extends KapuaRequestChannel, P extends KapuaReq
     public void sendAndForget() throws KapuaEntityNotFoundException, KapuaIllegalArgumentException, DeviceNotConnectedException, DeviceManagementTimeoutException, DeviceManagementSendException {
 
         deviceCallPreChecks();
-
-        //
         // Translate the request from Kapua to Device
         try {
             requestMessage.setSentOn(new Date());
@@ -193,8 +185,6 @@ public class DeviceCallBuilder<C extends KapuaRequestChannel, P extends KapuaReq
             DeviceCall<DeviceRequestMessage<?, ?>, DeviceResponseMessage<?, ?>> deviceCall = DEVICE_CALL_FACTORY.newDeviceCall();
             Translator<RQ, DeviceRequestMessage<?, ?>> tKapuaToClient = Translator.getTranslatorFor(requestMessage.getRequestClass(), deviceCall.getBaseMessageClass());
             DeviceRequestMessage<?, ?> deviceRequestMessage = tKapuaToClient.translate(requestMessage);
-
-            //
             // Send the request
             switch (requestMessage.getChannel().getMethod()) {
                 case CREATE:
@@ -235,11 +225,8 @@ public class DeviceCallBuilder<C extends KapuaRequestChannel, P extends KapuaReq
     }
 
     private void deviceCallPreChecks() throws DeviceManagementSendException, KapuaEntityNotFoundException, DeviceNotConnectedException, KapuaIllegalNullArgumentException {
-        //
         // Validate arguments
         ArgumentValidator.notNull(requestMessage, "requestMessage");
-
-        //
         // Check Device existence
         Device device;
         try {
@@ -250,14 +237,10 @@ public class DeviceCallBuilder<C extends KapuaRequestChannel, P extends KapuaReq
         if (device == null) {
             throw new KapuaEntityNotFoundException(Device.TYPE, requestMessage.getDeviceId());
         }
-
-        //
         // Check Device Connection
         if (device.getConnection() == null) {
             throw new DeviceNeverConnectedException(device.getId());
         }
-
-        //
         // Check Device Connection status
         if (!DeviceConnectionStatus.CONNECTED.equals(device.getConnection().getStatus())) {
             throw new DeviceNotConnectedException(device.getId(), device.getConnection().getStatus());

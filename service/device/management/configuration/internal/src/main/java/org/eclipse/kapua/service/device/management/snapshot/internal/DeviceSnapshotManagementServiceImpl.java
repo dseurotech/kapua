@@ -68,16 +68,11 @@ public class DeviceSnapshotManagementServiceImpl extends AbstractDeviceManagemen
     @Override
     public DeviceSnapshots get(KapuaId scopeId, KapuaId deviceId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, "scopeId");
         ArgumentValidator.notNull(deviceId, "deviceId");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.read, scopeId));
-
-        //
         // Prepare the request
         SnapshotRequestChannel snapshotRequestChannel = new SnapshotRequestChannel();
         snapshotRequestChannel.setAppName(DeviceConfigurationAppProperties.APP_NAME);
@@ -92,17 +87,11 @@ public class DeviceSnapshotManagementServiceImpl extends AbstractDeviceManagemen
         snapshotRequestMessage.setCapturedOn(new Date());
         snapshotRequestMessage.setPayload(snapshotRequestPayload);
         snapshotRequestMessage.setChannel(snapshotRequestChannel);
-
-        //
         // Do get
         DeviceCallExecutor<?, ?, ?, SnapshotResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(snapshotRequestMessage, timeout);
         SnapshotResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, snapshotRequestMessage, responseMessage);
-
-        //
         // Check response
         return checkResponseAcceptedOrThrowError(responseMessage, () -> responseMessage.getPayload().getDeviceSnapshots());
     }
@@ -110,17 +99,12 @@ public class DeviceSnapshotManagementServiceImpl extends AbstractDeviceManagemen
     @Override
     public void rollback(KapuaId scopeId, KapuaId deviceId, String snapshotId, Long timeout)
             throws KapuaException {
-        //
         // Argument Validation
         ArgumentValidator.notNull(scopeId, "scopeId");
         ArgumentValidator.notNull(deviceId, "deviceId");
         ArgumentValidator.notEmptyOrNull(snapshotId, "snapshotId");
-
-        //
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(DeviceManagementDomains.DEVICE_MANAGEMENT_DOMAIN, Actions.execute, scopeId));
-
-        //
         // Prepare the request
         SnapshotRequestChannel snapshotRequestChannel = new SnapshotRequestChannel();
         snapshotRequestChannel.setAppName(DeviceConfigurationAppProperties.APP_NAME);
@@ -136,17 +120,11 @@ public class DeviceSnapshotManagementServiceImpl extends AbstractDeviceManagemen
         snapshotRequestMessage.setCapturedOn(new Date());
         snapshotRequestMessage.setPayload(snapshotRequestPayload);
         snapshotRequestMessage.setChannel(snapshotRequestChannel);
-
-        //
         // Do exec
         DeviceCallExecutor<?, ?, ?, SnapshotResponseMessage> deviceApplicationCall = new DeviceCallExecutor<>(snapshotRequestMessage, timeout);
         SnapshotResponseMessage responseMessage = deviceApplicationCall.send();
-
-        //
         // Create event
         createDeviceEvent(scopeId, deviceId, snapshotRequestMessage, responseMessage);
-
-        //
         // Check response
         checkResponseAcceptedOrThrowError(responseMessage);
     }

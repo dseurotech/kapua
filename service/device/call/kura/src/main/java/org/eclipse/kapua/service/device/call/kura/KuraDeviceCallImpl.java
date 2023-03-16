@@ -14,6 +14,7 @@
 package org.eclipse.kapua.service.device.call.kura;
 
 import com.google.common.base.Strings;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
@@ -42,7 +43,6 @@ import org.eclipse.kapua.transport.exception.TransportClientGetException;
 import org.eclipse.kapua.transport.exception.TransportTimeoutException;
 import org.eclipse.kapua.transport.message.TransportMessage;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashMap;
@@ -118,10 +118,7 @@ public class KuraDeviceCallImpl implements DeviceCall<KuraRequestMessage, KuraRe
     public Class<KuraMessage> getBaseMessageClass() {
         return KuraMessage.class;
     }
-
-    //
     // Private methods
-    //
 
     /**
      * Sends the {@link KuraRequestMessage} and waits for the response if the {@code timeout} is given.
@@ -137,15 +134,11 @@ public class KuraDeviceCallImpl implements DeviceCall<KuraRequestMessage, KuraRe
 
         KuraResponseMessage response = null;
         try {
-            //
             // Borrow a TransportClient
             try (TransportFacade transportFacade = borrowClient(requestMessage)) {
-                //
                 // Get Kura to transport translator for the request and vice versa
                 Translator<KuraRequestMessage, TransportMessage<?, ?>> translatorKuraTransport = getTranslator(requestMessage.getClass(), transportFacade.getMessageClass());
                 Translator<TransportMessage<?, ?>, KuraResponseMessage> translatorTransportKura = getTranslator(transportFacade.getMessageClass(), KuraResponseMessage.class);
-
-                //
                 // Make the request
                 // Add requestId and requesterClientId to both payload and channel if response is expected
                 // Note: Adding to both payload and channel to let the translator choose what to do base on the transport used.
@@ -160,8 +153,6 @@ public class KuraDeviceCallImpl implements DeviceCall<KuraRequestMessage, KuraRe
 
                     requestPayload.setRequestId(requestId);
                 }
-
-                //
                 // Do send
                 // Set current timestamp
                 requestMessage.setTimestamp(new Date());

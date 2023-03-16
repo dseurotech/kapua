@@ -192,8 +192,6 @@ public class DeviceConfigComponents extends LayoutContainer {
         toolBar.setStyleAttribute("border-right", CssLiterals.border1PxSolidRgb(208, 208, 208));
         toolBar.setStyleAttribute("border-top", CssLiterals.border1PxSolidRgb(208, 208, 208));
         toolBar.setStyleAttribute("border-bottom", CssLiterals.BORDER_0PX_NONE);
-
-        //
         // Refresh Button
         refreshButton = new RefreshButton(new SelectionListener<ButtonEvent>() {
 
@@ -322,8 +320,6 @@ public class DeviceConfigComponents extends LayoutContainer {
         tree.setStyleAttribute("background-color", "white");
 
         configPanel.add(tree, westData);
-
-        //
         // Selection Listener for the component
         // make sure the form is not dirty before switching.
         tree.getSelectionModel().addListener(Events.BeforeSelect, new Listener<BaseEvent>() {
@@ -391,9 +387,7 @@ public class DeviceConfigComponents extends LayoutContainer {
     }
 
     // --------------------------------------------------------------------------------------
-    //
     // Device Configuration Management
-    //
     // --------------------------------------------------------------------------------------
 
     private static final int PERIOD_MILLIS = 1000;
@@ -409,8 +403,6 @@ public class DeviceConfigComponents extends LayoutContainer {
             public void run() {
                 if (selectedDevice != null) {
                     countdownMillis -= PERIOD_MILLIS;
-
-                    //
                     // Poll the current status of the device until is online again or timeout.
                     gwtDeviceService.findDevice(selectedDevice.getScopeId(),
                             selectedDevice.getUnescapedClientId(),
@@ -542,8 +534,6 @@ public class DeviceConfigComponents extends LayoutContainer {
                             reset.setEnabled(false);
                             refreshButton.setEnabled(false);
                             gwtSession.setFormDirty(false);
-
-                            //
                             // Getting XSRF token
                             gwtXSRFService.generateSecurityToken(new AsyncCallback<GwtXSRFToken>() {
 
@@ -637,9 +627,7 @@ public class DeviceConfigComponents extends LayoutContainer {
     };
 
     // --------------------------------------------------------------------------------------
-    //
     // Data Load Listener
-    //
     // --------------------------------------------------------------------------------------
 
     private class DataLoadListener extends KapuaLoadListener {

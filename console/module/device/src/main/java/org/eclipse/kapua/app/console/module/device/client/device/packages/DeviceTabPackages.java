@@ -133,10 +133,7 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
         toolBar.setStyleAttribute("border-bottom", "0px none");
         initialized = true;
     }
-
-    //
     // INITIALIZERS
-    //
 
     private void initToolBar() {
         toolBar = new ToolBar();
@@ -207,8 +204,6 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
         tabsPanel.setPlain(true);
         tabsPanel.setBorders(false);
         tabsPanel.setTabPosition(TabPosition.BOTTOM);
-
-        //
         // Packages installed tab
         installedPackageTab = new DeviceTabPackagesInstalled(currentSession, this);
         installedPackageTab.setBorders(false);
@@ -224,8 +219,6 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
             }
         });
         tabsPanel.add(installedPackageTab);
-
-        //
         // In progress packages install tab
         inProgressPackageTab = new DeviceTabPackagesInProgress(this);
         inProgressPackageTab.setBorders(false);
@@ -242,8 +235,6 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
             }
         });
         tabsPanel.add(inProgressPackageTab);
-
-        //
         // History packages tab
         historyPackageTab = new DeviceTabPackagesHistory(currentSession, this);
         historyPackageTab.setBorders(false);
@@ -262,8 +253,6 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
         if (currentSession.hasPermission(DeviceManagementRegistrySessionPermission.read())) {
             tabsPanel.add(historyPackageTab);
         }
-
-        //
         // Tabs
         add(tabsPanel);
         layout(true);
@@ -277,9 +266,7 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
         }
     }
 
-    //
     // ACTIONS DIALOGS
-    //
     private void openInstallDialog() {
         toolBar.disable();
 
@@ -353,13 +340,10 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
         errorDialog.show();
     }
 
-    //
     // REFRESHER
-    //
     @Override
     public void doRefresh() {
         if (initialized) {
-            //
             // Refresh the installed tab if selected
             if (tabsPanel.getSelectedItem().equals(installedPackageTab)) {
                 installedPackageTab.refresh();
@@ -369,8 +353,6 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
             } else {
                 historyPackageTab.refresh();
             }
-
-            //
             // Manage buttons
             if (selectedEntity != null && selectedEntity.isOnline()) {
                 toolBar.enable();
@@ -382,10 +364,7 @@ public class DeviceTabPackages extends KapuaTabItem<GwtDevice> {
             }
         }
     }
-
-    //
     // ACCESSORS
-    //
 
     public GwtDevice getSelectedDevice() {
         return selectedEntity;

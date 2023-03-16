@@ -206,11 +206,8 @@ public class DeviceTabCommand extends KapuaTabItem<GwtDevice> {
             @Override
             public void handleEvent(FormEvent be) {
                 String htmlResult = be.getResultHtml();
-
-                //
                 // Some browsers will return <pre> (i.e. Firefox)
                 // Other add styles and return <pre {some style}> (i.e. Safari, Chrome)
-                //
                 if (!htmlResult.startsWith("<pre")) {
                     int errorMessageStartIndex = htmlResult.indexOf("<pre");
                     errorMessageStartIndex = htmlResult.indexOf(">", errorMessageStartIndex) + 1;
@@ -246,10 +243,7 @@ public class DeviceTabCommand extends KapuaTabItem<GwtDevice> {
         timeoutField = new HiddenField<Integer>();
         timeoutField.setName("timeout");
         fieldSet.add(timeoutField);
-
-        //
         // xsrfToken Hidden field
-        //
         xsrfTokenField = new HiddenField<String>();
         xsrfTokenField.setId("xsrfToken");
         xsrfTokenField.setName("xsrfToken");
@@ -346,9 +340,7 @@ public class DeviceTabCommand extends KapuaTabItem<GwtDevice> {
     }
 
     // --------------------------------------------------------------------------------------
-    //
     // Device Configuration Management
-    //
     // --------------------------------------------------------------------------------------
 
     @Override
@@ -365,9 +357,7 @@ public class DeviceTabCommand extends KapuaTabItem<GwtDevice> {
     }
 
     // --------------------------------------------------------------------------------------
-    //
     // Unload of the GXT Component
-    //
     // --------------------------------------------------------------------------------------
 
     @Override
