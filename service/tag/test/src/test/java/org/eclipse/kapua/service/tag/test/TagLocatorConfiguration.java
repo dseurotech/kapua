@@ -131,7 +131,7 @@ public class TagLocatorConfiguration {
                                 new AccessPermissionImplJpaRepository(),
                                 new AccessRoleImplJpaRepository(),
                                 new RoleImplJpaRepository(),
-                                new RolePermissionImplJpaRepository())
+                                new RolePermissionImplJpaRepository(), eventStorer)
                 );
                 bind(DeviceFactory.class).toInstance(new DeviceFactoryImpl());
 
@@ -141,8 +141,8 @@ public class TagLocatorConfiguration {
                         permissionFactory,
                         new DeviceConnectionFactoryImpl(),
                         new JpaTxManager(new KapuaEntityManagerFactory("kapua-device")),
-                        new DeviceConnectionImplJpaRepository()
-                ));
+                        new DeviceConnectionImplJpaRepository(),
+                        eventStorer));
                 bind(DeviceConnectionFactory.class).to(DeviceConnectionFactoryImpl.class);
 
                 bind(DeviceRepository.class).toInstance(new DeviceImplJpaRepository());
