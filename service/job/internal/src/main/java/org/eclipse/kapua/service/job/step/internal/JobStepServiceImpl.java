@@ -115,7 +115,7 @@ public class JobStepServiceImpl implements JobStepService {
         // Check access
         authorizationService.checkPermission(permissionFactory.newPermission(JobDomains.JOB_DOMAIN, Actions.write, jobStepCreator.getScopeId()));
 
-        return txManager.executeWithResult(tx -> {
+        return txManager.execute(tx -> {
             //
             // Check job step definition
             validateJobStepProperties(tx, jobStepCreator);
@@ -206,7 +206,7 @@ public class JobStepServiceImpl implements JobStepService {
         // Check access
         authorizationService.checkPermission(permissionFactory.newPermission(JobDomains.JOB_DOMAIN, Actions.write, jobStep.getScopeId()));
 
-        return txManager.executeWithResult(tx -> {
+        return txManager.execute(tx -> {
 
             //
             // Check existence
@@ -291,7 +291,7 @@ public class JobStepServiceImpl implements JobStepService {
 
         //
         // Do find
-        return txManager.executeWithResult(tx -> jobStepRepository.find(tx, scopeId, jobStepId));
+        return txManager.execute(tx -> jobStepRepository.find(tx, scopeId, jobStepId));
     }
 
     @Override
@@ -306,7 +306,7 @@ public class JobStepServiceImpl implements JobStepService {
 
         //
         // Do query
-        return txManager.executeWithResult(tx -> jobStepRepository.query(tx, query));
+        return txManager.execute(tx -> jobStepRepository.query(tx, query));
     }
 
     @Override
@@ -321,7 +321,7 @@ public class JobStepServiceImpl implements JobStepService {
 
         //
         // Do query
-        return txManager.executeWithResult(tx -> jobStepRepository.count(tx, query));
+        return txManager.execute(tx -> jobStepRepository.count(tx, query));
     }
 
     @Override
@@ -335,7 +335,7 @@ public class JobStepServiceImpl implements JobStepService {
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(JobDomains.JOB_DOMAIN, Actions.delete, scopeId));
 
-        txManager.executeWithResult(tx -> {
+        txManager.execute(tx -> {
             //
             // Check existence
             final JobStep jobStep = jobStepRepository.find(tx, scopeId, jobStepId);
