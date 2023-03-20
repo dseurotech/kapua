@@ -62,7 +62,6 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceLinker implem
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CredentialServiceImpl.class);
 
-
     private final AuthorizationService authorizationService;
     private final PermissionFactory permissionFactory;
     private final TxManager txManager;
@@ -185,11 +184,8 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceLinker implem
         authorizationService.checkPermission(permissionFactory.newPermission(AuthenticationDomains.CREDENTIAL_DOMAIN, Actions.write, credential.getScopeId()));
 
         final Credential updatedCredential = txManager.execute(tx -> {
-            Credential currentCredential = credentialRepository.find(tx, credential.getScopeId(), credential.getId());
-
-            if (currentCredential == null) {
-                throw new KapuaEntityNotFoundException(Credential.TYPE, credential.getId());
-            }
+            Credential currentCredential = credentialRepository.find(tx, credential.getScopeId(), credential.getId())
+                    .orElseThrow(() -> new KapuaEntityNotFoundException(Credential.TYPE, credential.getId()));
 
             if (currentCredential.getCredentialType() != credential.getCredentialType()) {
                 throw new KapuaIllegalArgumentException("credentialType", credential.getCredentialType().toString());
@@ -211,9 +207,12 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceLinker implem
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(AuthenticationDomains.CREDENTIAL_DOMAIN, Actions.read, scopeId));
 
-        Credential credential = txManager.execute(tx -> credentialRepository.find(tx, scopeId, credentialId));
-        credential.setCredentialKey(null);
-        return credential;
+        return txManager.execute(tx -> credentialRepository.find(tx, scopeId, credentialId))
+                .map(cred -> {
+                    cred.setCredentialKey(null);
+                    return cred;
+                })
+                .orElse(null);
     }
 
     @Override
@@ -315,7 +314,8 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceLinker implem
         authorizationService.checkPermission(permissionFactory.newPermission(AuthenticationDomains.CREDENTIAL_DOMAIN, Actions.write, scopeId));
 
         txManager.execute(tx -> {
-            Credential credential = credentialRepository.find(tx, scopeId, credentialId);
+            Credential credential = credentialRepository.find(tx, scopeId, credentialId)
+                    .orElseThrow(() -> new KapuaEntityNotFoundException(Credential.TYPE, credentialId));
             credential.setLoginFailures(0);
             credential.setFirstLoginFailure(null);
             credential.setLoginFailuresReset(null);
@@ -401,7 +401,8 @@ public class CredentialServiceImpl extends KapuaConfigurableServiceLinker implem
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(AuthenticationDomains.CREDENTIAL_DOMAIN, Actions.read, null));
 
-        return txManager.execute(tx -> credentialRepository.find(tx, scopeId, credentialId));
+        return txManager.execute(tx -> credentialRepository.find(tx, scopeId, credentialId))
+                .orElse(null);
     }
 
 

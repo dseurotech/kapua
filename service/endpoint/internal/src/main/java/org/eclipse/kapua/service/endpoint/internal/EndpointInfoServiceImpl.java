@@ -164,9 +164,11 @@ public class EndpointInfoServiceImpl
         ArgumentValidator.notNull(endpointInfoId, "endpointInfoId");
         // Check Access
         txManager.execute(tx -> {
-            EndpointInfo endpointInfoToDelete = repository.find(tx, scopeId, endpointInfoId);
             KapuaId scopeIdPermission = null;
-            if (endpointInfoToDelete != null && endpointInfoToDelete.getEndpointType().equals(EndpointInfo.ENDPOINT_TYPE_CORS)) {
+            if (repository.find(tx, scopeId, endpointInfoId)
+                    .map(ei -> ei.getEndpointType())
+                    .map(et -> EndpointInfo.ENDPOINT_TYPE_CORS.equals(et))
+                    .orElse(false)) {
                 scopeIdPermission = scopeId;
             }
 
@@ -188,11 +190,8 @@ public class EndpointInfoServiceImpl
             authorizationService.checkPermission(
                     permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.read, scopeId)
             );
-            EndpointInfo endpointInfoToFind = repository.find(tx, KapuaId.ANY, endpointInfoId); // search the endpoint in any scope
-
-            if (endpointInfoToFind == null) {
-                throw new KapuaEntityNotFoundException(EndpointInfo.TYPE, endpointInfoId);
-            }
+            EndpointInfo endpointInfoToFind = repository.find(tx, KapuaId.ANY, endpointInfoId)
+                    .orElseThrow(() -> new KapuaEntityNotFoundException(EndpointInfo.TYPE, endpointInfoId)); // search the endpoint in any scope
 
             if (endpointInfoToFind.getScopeId().equals(scopeId)) { //found in the specified scope, search finish here
                 return endpointInfoToFind;
@@ -228,7 +227,6 @@ public class EndpointInfoServiceImpl
     public EndpointInfoListResult query(KapuaQuery query, String section)
             throws KapuaException {
         ArgumentValidator.notNull(query, "query");
-
         // Check Access
         authorizationService.checkPermission(
                 permissionFactory.newPermission(EndpointInfoDomains.ENDPOINT_INFO_DOMAIN, Actions.read, query.getScopeId())
@@ -256,11 +254,8 @@ public class EndpointInfoServiceImpl
             KapuaId originalScopeId = query.getScopeId();
 
             do {
-                Account account = accountRepository.find(tx, KapuaId.ANY, query.getScopeId());
-
-                if (account == null) {
-                    throw new KapuaEntityNotFoundException(Account.TYPE, query.getScopeId());
-                }
+                Account account = accountRepository.find(tx, KapuaId.ANY, query.getScopeId())
+                        .orElseThrow(() -> new KapuaEntityNotFoundException(Account.TYPE, query.getScopeId()));
                 if (account.getScopeId() == null) {
                     // Query was originally on root account, and querying on parent scope id would mean querying in null,
                     // i.e. querying on all accounts. Since that's not what we want, break away.
@@ -309,11 +304,8 @@ public class EndpointInfoServiceImpl
                 KapuaId originalScopeId = query.getScopeId();
 
                 do {
-                    Account account = accountRepository.find(tx, KapuaId.ANY, query.getScopeId());
-
-                    if (account == null) {
-                        throw new KapuaEntityNotFoundException(Account.TYPE, query.getScopeId());
-                    }
+                    Account account = accountRepository.find(tx, KapuaId.ANY, query.getScopeId())
+                            .orElseThrow(() -> new KapuaEntityNotFoundException(Account.TYPE, query.getScopeId()));
 
                     query.setScopeId(account.getScopeId());
                     endpointInfoCount = repository.count(tx, query);
@@ -377,5 +369,4 @@ public class EndpointInfoServiceImpl
         QueryPredicate currentPredicate = query.getPredicate();
         query.setPredicate(currentPredicate == null ? sectionPredicate : query.andPredicate(currentPredicate, sectionPredicate));
     }
-
 }
