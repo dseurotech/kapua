@@ -19,6 +19,7 @@ import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.commons.core.InterceptorBind;
 import org.eclipse.kapua.commons.jpa.JpaTxManager;
 import org.eclipse.kapua.commons.jpa.KapuaEntityManagerFactory;
+import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.metric.MetricServiceFactory;
 import org.eclipse.kapua.commons.metric.MetricsService;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
@@ -62,7 +63,8 @@ public class RaiseServiceEventInterceptor implements MethodInterceptor {
     private static final String COMPONENT = "service_event";
     private static final String ACTION = "event_data_filler";
     private static final String COUNT = "count";
-    private final EventStoreRecordRepository repository = new EventStoreRecordImplJpaRepository();
+    //FIXME: inject the repo!
+    private final EventStoreRecordRepository repository = new EventStoreRecordImplJpaRepository(new KapuaJpaRepositoryConfiguration());
 
     private static final MetricsService METRIC_SERVICE = MetricServiceFactory.getInstance();
 
