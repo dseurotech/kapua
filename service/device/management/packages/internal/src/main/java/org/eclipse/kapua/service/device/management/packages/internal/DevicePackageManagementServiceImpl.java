@@ -22,7 +22,7 @@ import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.service.device.management.DeviceManagementDomains;
-import org.eclipse.kapua.service.device.management.commons.AbstractDeviceManagementServiceImpl;
+import org.eclipse.kapua.service.device.management.commons.AbstractDeviceManagementTransactionalServiceImpl;
 import org.eclipse.kapua.service.device.management.commons.call.DeviceCallExecutor;
 import org.eclipse.kapua.service.device.management.commons.setting.DeviceManagementSetting;
 import org.eclipse.kapua.service.device.management.commons.setting.DeviceManagementSettingKey;
@@ -66,7 +66,7 @@ import java.util.Date;
  * @since 1.0.0
  */
 @Singleton
-public class DevicePackageManagementServiceImpl extends AbstractDeviceManagementServiceImpl implements DevicePackageManagementService {
+public class DevicePackageManagementServiceImpl extends AbstractDeviceManagementTransactionalServiceImpl implements DevicePackageManagementService {
 
     private static final String CHAR_ENCODING = DeviceManagementSetting.getInstance().getString(DeviceManagementSettingKey.CHAR_ENCODING);
 
