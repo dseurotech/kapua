@@ -17,9 +17,8 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.commons.core.InterceptorBind;
-import org.eclipse.kapua.commons.jpa.JpaTxManager;
-import org.eclipse.kapua.commons.jpa.KapuaEntityManagerFactory;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
+import org.eclipse.kapua.commons.jpa.KapuaJpaTxManagerFactory;
 import org.eclipse.kapua.commons.metric.MetricServiceFactory;
 import org.eclipse.kapua.commons.metric.MetricsService;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
@@ -267,7 +266,7 @@ public class RaiseServiceEventInterceptor implements MethodInterceptor {
 
     private void updateEventStatus(ServiceEvent serviceEventBus, EventStatus newServiceEventStatus) {
         try {
-            final TxManager txManager = new JpaTxManager(new KapuaEntityManagerFactory("kapua-events"), maxInsertAttempts);
+            final TxManager txManager = new KapuaJpaTxManagerFactory(maxInsertAttempts).create("kapua-events");
 
             serviceEventBus.setStatus(newServiceEventStatus);
             txManager.execute(tx -> {
