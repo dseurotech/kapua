@@ -16,6 +16,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import com.google.inject.name.Names;
 import io.cucumber.java.Before;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.configuration.AccountChildrenFinder;
@@ -124,7 +125,10 @@ public class TagLocatorConfiguration {
                 final KapuaJpaRepositoryConfiguration jpaRepoConfig = new KapuaJpaRepositoryConfiguration();
                 bind(TagRepository.class).toInstance(new TagImplJpaRepository(jpaRepoConfig));
                 bind(DeviceRegistryService.class).toInstance(
-                        new DeviceRegistryServiceImpl(Mockito.mock(ServiceConfigurationManager.class),
+                        new DeviceRegistryServiceImpl(
+                                Mockito.mock(ServiceConfigurationManager.class),
+                                mockedAuthorization,
+                                permissionFactory,
                                 new KapuaJpaTxManagerFactory(maxInsertAttempts).create("kapua-device"),
                                 new DeviceImplJpaRepository(jpaRepoConfig),
                                 new DeviceFactoryImpl(),
