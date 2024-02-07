@@ -14,7 +14,7 @@ package org.eclipse.kapua.service.authorization.shiro;
 
 import com.google.inject.Provides;
 import com.google.inject.multibindings.ProvidesIntoSet;
-import org.eclipse.kapua.commons.configuration.AccountChildrenFinder;
+import org.eclipse.kapua.commons.configuration.AccountRelativeFinder;
 import org.eclipse.kapua.commons.configuration.CachingServiceConfigRepository;
 import org.eclipse.kapua.commons.configuration.ResourceLimitedServiceConfigurationManagerImpl;
 import org.eclipse.kapua.commons.configuration.RootUserTester;
@@ -262,7 +262,7 @@ public class AuthorizationModule extends AbstractKapuaModule {
     public ServiceConfigurationManager roleServiceConfigurationManager(
             RoleFactory roleFactory,
             RootUserTester rootUserTester,
-            AccountChildrenFinder accountChildrenFinder,
+            AccountRelativeFinder accountRelativeFinder,
             RoleRepository roleRepository,
             KapuaJpaRepositoryConfiguration jpaRepoConfig,
             EntityCacheFactory entityCacheFactory
@@ -275,7 +275,7 @@ public class AuthorizationModule extends AbstractKapuaModule {
                                 entityCacheFactory.createCache("AbstractKapuaConfigurableServiceCacheId")
                         ),
                         rootUserTester,
-                        accountChildrenFinder,
+                        accountRelativeFinder,
                         new UsedEntitiesCounterImpl(
                                 roleFactory,
                                 roleRepository
@@ -315,7 +315,7 @@ public class AuthorizationModule extends AbstractKapuaModule {
     public ServiceConfigurationManager groupServiceConfigurationManager(
             GroupFactory factory,
             RootUserTester rootUserTester,
-            AccountChildrenFinder accountChildrenFinder,
+            AccountRelativeFinder accountRelativeFinder,
             GroupRepository groupRepository,
             KapuaJpaRepositoryConfiguration jpaRepoConfig,
             EntityCacheFactory entityCacheFactory
@@ -328,7 +328,7 @@ public class AuthorizationModule extends AbstractKapuaModule {
                                 entityCacheFactory.createCache("AbstractKapuaConfigurableServiceCacheId")
                         ),
                         rootUserTester,
-                        accountChildrenFinder,
+                        accountRelativeFinder,
                         new UsedEntitiesCounterImpl(
                                 factory,
                                 groupRepository
