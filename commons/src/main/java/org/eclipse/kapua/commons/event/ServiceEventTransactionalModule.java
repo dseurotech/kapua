@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -57,12 +58,23 @@ public abstract class ServiceEventTransactionalModule implements ServiceModule {
             String internalAddress,
             ServiceEventHouseKeeperFactory serviceEventTransactionalHousekeeperFactory,
             ServiceEventBus serviceEventBus) {
-        this.serviceEventClientConfigurations = serviceEventClientConfigurations;
+
+        // Use a unique client id
+        this(serviceEventClientConfigurations, internalAddress, UUID.randomUUID().toString(), serviceEventTransactionalHousekeeperFactory, serviceEventBus);
+    }
+
+    public ServiceEventTransactionalModule(
+            ServiceEventClientConfiguration[] serviceEventClientConfigurations,
+            String internalAddress,
+            String clientId,
+            ServiceEventHouseKeeperFactory serviceEventTransactionalHousekeeperFactory,
+            ServiceEventBus serviceEventBus) {
+        // Append the specified clientId
+        this.serviceEventClientConfigurations = appendClientId(clientId, serviceEventClientConfigurations);
         this.internalAddress = internalAddress;
         this.houseKeeperFactory = serviceEventTransactionalHousekeeperFactory;
         this.serviceEventBus = serviceEventBus;
     }
-
 
     @Override
     public void start() throws KapuaException {
