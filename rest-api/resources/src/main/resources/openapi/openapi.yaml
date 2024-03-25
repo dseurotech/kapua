@@ -2,7 +2,7 @@ openapi: 3.0.3
 
 info:
   title: Eclipse Kapua REST API
-  version: '2.0.0-SNAPSHOT'
+  version: '2.0.0-XMLUTILS-SNAPSHOT'
   contact:
     name: Eclipse Kapua Dev Team
     url: https://eclipse.org/kapua
@@ -664,10 +664,10 @@ components:
         message: "User does not have permission to perform this action. Required permission: user:read:1:*."
         kapuaErrorCode: "SUBJECT_UNAUTHORIZED"
         permission:
-            domain: "user"
-            action: "read"
-            targetScopeId: "AQ"
-            forwardable: false
+          domain: "user"
+          action: "read"
+          targetScopeId: "AQ"
+          forwardable: false
     entityNotFoundExceptionInfo:
       description: The object to represent the fact that an entity has not been found
       allOf:
