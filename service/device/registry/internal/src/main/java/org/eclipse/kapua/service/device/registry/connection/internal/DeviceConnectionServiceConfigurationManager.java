@@ -33,7 +33,7 @@ import org.eclipse.kapua.service.device.registry.KapuaDeviceRegistrySettingKeys;
 import org.eclipse.kapua.service.device.registry.KapuaDeviceRegistrySettings;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnection;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionService;
-import org.eclipse.kapua.storage.TxContext;
+import org.eclipse.kapua.storage.TxManager;
 
 /**
  * {@link DeviceConnection} {@link ServiceConfigurationManager} implementation.
@@ -58,12 +58,15 @@ public class DeviceConnectionServiceConfigurationManager extends ServiceConfigur
      * @since 2.0.0
      */
     public DeviceConnectionServiceConfigurationManager(
+            TxManager txManager,
             ServiceConfigRepository serviceConfigRepository,
             RootUserTester rootUserTester,
             Map<String, DeviceConnectionCredentialAdapter> availableDeviceConnectionAdapters,
             KapuaDeviceRegistrySettings kapuaDeviceRegistrySettings,
             XmlUtil xmlUtil) {
-        super(DeviceConnectionService.class.getName(), Domains.DEVICE_CONNECTION, serviceConfigRepository, rootUserTester, xmlUtil);
+        super(DeviceConnectionService.class.getName(), Domains.DEVICE_CONNECTION,
+                txManager,
+                serviceConfigRepository, rootUserTester, xmlUtil);
 
         this.availableDeviceConnectionAdapters = availableDeviceConnectionAdapters;
         this.deviceRegistrySettings = kapuaDeviceRegistrySettings;
@@ -74,11 +77,9 @@ public class DeviceConnectionServiceConfigurationManager extends ServiceConfigur
      * <p>
      * Behaviour is overridden for the following reasons:
      * <ul>
-     *     <li>to insert dynamic {@link KapuaToption} for 'deviceConnectionAuthenticationType' {@link KapuaTad}</li>
+     *     <li>to insert dynamic {@link KapuaToption} for 'ddeeviceConnectionAuthenticationType' {@link KapuaTad}</li>
      * </ul>
      *
-     * @param txContext
-     *         The {@link TxContext}.
      * @param scopeId
      *         The scope {@link KapuaId}.
      * @param excludeDisabled
@@ -88,9 +89,9 @@ public class DeviceConnectionServiceConfigurationManager extends ServiceConfigur
      * @since 2.0.0
      */
     @Override
-    public KapuaTocd getConfigMetadata(TxContext txContext, KapuaId scopeId, boolean excludeDisabled) throws KapuaException {
+    public KapuaTocd getConfigMetadata(KapuaId scopeId, boolean excludeDisabled) throws KapuaException {
 
-        KapuaTocd deviceConnectionServiceConfigDefinition = super.getConfigMetadata(txContext, scopeId, excludeDisabled);
+        KapuaTocd deviceConnectionServiceConfigDefinition = super.getConfigMetadata(scopeId, excludeDisabled);
 
         // Find the 'deviceConnectionAuthenticationType' KapuaTad
         Optional<KapuaTad> authenticationTypeConfigDefinition = findAuthenticationTypeTad(deviceConnectionServiceConfigDefinition);

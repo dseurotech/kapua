@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.group.shiro;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
@@ -35,9 +38,6 @@ import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * {@link GroupService} implementation.
  *
@@ -55,18 +55,21 @@ public class GroupServiceImpl extends KapuaConfigurableServiceBase implements Gr
     /**
      * Injectable constructor
      *
-     * @param permissionFactory           The {@link PermissionFactory} instance.
-     * @param authorizationService        The {@link AuthorizationService} instance.
-     * @param serviceConfigurationManager The {@link ServiceConfigurationManager} instance.
+     * @param permissionFactory
+     *         The {@link PermissionFactory} instance.
+     * @param authorizationService
+     *         The {@link AuthorizationService} instance.
+     * @param serviceConfigurationManager
+     *         The {@link ServiceConfigurationManager} instance.
      * @param txManager
      * @param groupRepository
      * @since 2.0.0
      */
     @Inject
     public GroupServiceImpl(PermissionFactory permissionFactory,
-                            AuthorizationService authorizationService,
-                            ServiceConfigurationManager serviceConfigurationManager,
-                            TxManager txManager, GroupRepository groupRepository) {
+            AuthorizationService authorizationService,
+            ServiceConfigurationManager serviceConfigurationManager,
+            TxManager txManager, GroupRepository groupRepository) {
         super(txManager, serviceConfigurationManager, Domains.GROUP, authorizationService, permissionFactory);
         this.permissionFactory = permissionFactory;
         this.authorizationService = authorizationService;
@@ -84,7 +87,7 @@ public class GroupServiceImpl extends KapuaConfigurableServiceBase implements Gr
         authorizationService.checkPermission(permissionFactory.newPermission(Domains.GROUP, Actions.write, groupCreator.getScopeId()));
         return txManager.execute(tx -> {
             // Check entity limit
-            serviceConfigurationManager.checkAllowedEntities(tx, groupCreator.getScopeId(), "Groups");
+            serviceConfigurationManager.checkAllowedEntities(groupCreator.getScopeId(), "Groups");
             // Do create
             Group group = new GroupImpl(groupCreator.getScopeId());
             group.setName(groupCreator.getName());

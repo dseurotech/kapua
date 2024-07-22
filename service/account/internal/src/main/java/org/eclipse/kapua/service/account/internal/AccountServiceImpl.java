@@ -113,7 +113,7 @@ public class AccountServiceImpl
 
         return txManager.execute(tx -> {
             // Check entity limit
-            serviceConfigurationManager.checkAllowedEntities(tx, accountCreator.getScopeId(), "Accounts");
+            serviceConfigurationManager.checkAllowedEntities(accountCreator.getScopeId(), "Accounts");
             // Check if the parent account exists
             final Account parentAccount = accountRepository.find(tx, KapuaId.ANY, accountCreator.getScopeId())
                     .orElseThrow(() -> new KapuaIllegalArgumentException(KapuaEntityAttributes.SCOPE_ID, "parent account does not exist: " + accountCreator.getScopeId() + "::"));

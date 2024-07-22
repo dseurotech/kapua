@@ -122,6 +122,7 @@ public class AccountLocatorConfiguration {
                         new ResourceLimitedServiceConfigurationManagerImpl(
                                 AccountService.class.getName(),
                                 Domains.ACCOUNT,
+                                new KapuaJpaTxManagerFactory(maxInsertAttempts).create("kapua-service-config"),
                                 new ServiceConfigImplJpaRepository(jpaRepoConfig),
                                 Mockito.mock(RootUserTester.class),
                                 Mockito.mock(AccountRelativeFinder.class),

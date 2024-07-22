@@ -13,6 +13,11 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.user.internal;
 
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateExternalIdException;
 import org.eclipse.kapua.KapuaDuplicateExternalUsernameException;
 import org.eclipse.kapua.KapuaDuplicateNameException;
@@ -47,10 +52,6 @@ import org.eclipse.kapua.service.user.UserType;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Singleton;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * {@link UserService} implementation.
@@ -106,7 +107,7 @@ public class UserServiceImpl extends KapuaConfigurableServiceBase implements Use
 
         return txManager.execute(tx -> {
             // Check entity limit
-            serviceConfigurationManager.checkAllowedEntities(tx, userCreator.getScopeId(), "Users");
+            serviceConfigurationManager.checkAllowedEntities(userCreator.getScopeId(), "Users");
             // Check duplicate name
             if (userRepository.countEntitiesWithNameInScope(tx, userCreator.getScopeId(), userCreator.getName()) > 0) {
                 throw new KapuaDuplicateNameException(userCreator.getName());

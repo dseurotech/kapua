@@ -77,7 +77,7 @@ public class DeviceRegistryServiceImpl
 
         return txManager.execute(tx -> {
                     // Check entity limit
-                    serviceConfigurationManager.checkAllowedEntities(tx, deviceCreator.getScopeId(), "Devices");
+                    serviceConfigurationManager.checkAllowedEntities(deviceCreator.getScopeId(), "Devices");
                     // Check duplicate clientId
                     DeviceQuery query = entityFactory.newQuery(deviceCreator.getScopeId());
                     query.setPredicate(query.attributePredicate(DeviceAttributes.CLIENT_ID, deviceCreator.getClientId()));

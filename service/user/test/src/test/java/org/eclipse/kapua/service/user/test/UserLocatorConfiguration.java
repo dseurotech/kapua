@@ -121,6 +121,7 @@ public class UserLocatorConfiguration {
                 final ResourceLimitedServiceConfigurationManagerImpl userConfigurationManager = new ResourceLimitedServiceConfigurationManagerImpl(
                         UserService.class.getName(),
                         Domains.USER,
+                        new KapuaJpaTxManagerFactory(maxInsertAttempts).create("kapua-service-config"),
                         new ServiceConfigImplJpaRepository(jpaRepoConfig),
                         Mockito.mock(RootUserTester.class),
                         accountRelativeFinder,

@@ -32,9 +32,9 @@ import org.eclipse.kapua.storage.TxManager;
  * Base {@link KapuaConfigurableService} implementation, build upon {@link ServiceConfigurationManager}.
  * <p>
  * Note: at first glance, this might seems like a violation of Composition over Inheritance principle, however: - in this case inheritance is an acceptable strategy due to the strong link between
- * {@link ServiceConfigurationManager#isServiceEnabled(org.eclipse.kapua.storage.TxContext, KapuaId)} and {@link org.eclipse.kapua.service.KapuaService#isServiceEnabled(KapuaId)} (the latter being
- * dependent from the first for configurable services). - this class is nothing more than glue and convenience, demanding all of its logic to the {@link ServiceConfigurationManager}'s instance
- * provided, so no flexibility has been sacrificed
+ * {@link ServiceConfigurationManager#isServiceEnabled(KapuaId)} and {@link org.eclipse.kapua.service.KapuaService#isServiceEnabled(KapuaId)} (the latter being dependent from the first for
+ * configurable services). - this class is nothing more than glue and convenience, demanding all of its logic to the {@link ServiceConfigurationManager}'s instance provided, so no flexibility has been
+ * sacrificed
  *
  * @since 2.0.0
  */
@@ -66,7 +66,7 @@ public class KapuaConfigurableServiceBase
         // Argument Validation
         ArgumentValidator.notNull(scopeId, "scopeId");
 
-        return txManager.execute(tx -> serviceConfigurationManager.isServiceEnabled(tx, scopeId));
+        return serviceConfigurationManager.isServiceEnabled(scopeId);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class KapuaConfigurableServiceBase
             //Temporary, use Optional instead
             return new EmptyTocd();
         }
-        return txManager.execute(tx -> serviceConfigurationManager.getConfigMetadata(tx, scopeId, true));
+        return serviceConfigurationManager.getConfigMetadata(scopeId, true);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class KapuaConfigurableServiceBase
         if (!authorizationService.isPermitted(permissionFactory.newPermission(domain, Actions.read, scopeId))) {
             return Collections.emptyMap();
         }
-        return txManager.execute(tx -> serviceConfigurationManager.getConfigValues(tx, scopeId, true));
+        return serviceConfigurationManager.getConfigValues(scopeId, true);
     }
 
     @Override
@@ -102,9 +102,6 @@ public class KapuaConfigurableServiceBase
 
         authorizationService.checkPermission(permissionFactory.newPermission(domain, Actions.write, scopeId));
 
-        txManager.<Void>execute(tx -> {
-            serviceConfigurationManager.setConfigValues(tx, scopeId, Optional.ofNullable(parentId), values);
-            return null;
-        });
+        serviceConfigurationManager.setConfigValues(scopeId, Optional.ofNullable(parentId), values);
     }
 }

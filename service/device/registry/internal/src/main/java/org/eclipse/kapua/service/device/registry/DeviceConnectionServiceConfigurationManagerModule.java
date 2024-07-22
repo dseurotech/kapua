@@ -24,6 +24,7 @@ import org.eclipse.kapua.commons.configuration.ServiceConfigurationManagerCachin
 import org.eclipse.kapua.commons.core.AbstractKapuaModule;
 import org.eclipse.kapua.commons.jpa.EntityCacheFactory;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
+import org.eclipse.kapua.commons.jpa.KapuaJpaTxManagerFactory;
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
 import org.eclipse.kapua.service.device.authentication.api.DeviceConnectionCredentialAdapter;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionService;
@@ -49,6 +50,7 @@ public class DeviceConnectionServiceConfigurationManagerModule extends AbstractK
     @ClassMapKey(DeviceConnectionService.class)
     @Singleton
     ServiceConfigurationManager deviceConnectionServiceConfigurationManager(
+            KapuaJpaTxManagerFactory txManagerFactory,
             RootUserTester rootUserTester,
             KapuaJpaRepositoryConfiguration jpaRepoConfig,
             Map<String, DeviceConnectionCredentialAdapter> availableDeviceConnectionAdapters,
@@ -57,6 +59,7 @@ public class DeviceConnectionServiceConfigurationManagerModule extends AbstractK
             XmlUtil xmlUtil) {
         return new ServiceConfigurationManagerCachingWrapper(
                 new DeviceConnectionServiceConfigurationManager(
+                        txManagerFactory.create("kapua-datastore"),
                         new CachingServiceConfigRepository(
                                 new ServiceConfigImplJpaRepository(jpaRepoConfig),
                                 entityCacheFactory.createCache("AbstractKapuaConfigurableServiceCacheId")

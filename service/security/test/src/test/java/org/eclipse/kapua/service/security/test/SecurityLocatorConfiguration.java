@@ -169,6 +169,7 @@ public class SecurityLocatorConfiguration {
                 bind(CredentialFactory.class).toInstance(credentialFactory);
                 final SystemPasswordLengthProviderImpl systemMinimumPasswordLengthProvider = new SystemPasswordLengthProviderImpl(new KapuaAuthenticationSetting());
                 final CredentialServiceConfigurationManagerImpl credentialServiceConfigurationManager = new CredentialServiceConfigurationManagerImpl(
+                        new KapuaJpaTxManagerFactory(maxInsertAttempts).create("kapua-service-config"),
                         new ServiceConfigImplJpaRepository(jpaRepoConfig),
                         systemMinimumPasswordLengthProvider,
                         Mockito.mock(RootUserTester.class),

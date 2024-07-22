@@ -12,6 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.role.shiro;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaErrorCodes;
@@ -54,11 +60,6 @@ import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.List;
-import java.util.stream.Collectors;
-
 /**
  * {@link RoleService} implementation.
  *
@@ -80,14 +81,17 @@ public class RoleServiceImpl extends KapuaConfigurableServiceBase implements Rol
 
     public AccessInfoService accessInfoService;
 
-
     /**
      * Injectable constructor
      *
-     * @param permissionFactory           The {@link PermissionFactory} instance.
-     * @param authorizationService        The {@link AuthorizationService} instance.
-     * @param rolePermissionFactory       The {@link RolePermissionFactory} instance.
-     * @param serviceConfigurationManager The {@link ServiceConfigurationManager} instance.
+     * @param permissionFactory
+     *         The {@link PermissionFactory} instance.
+     * @param authorizationService
+     *         The {@link AuthorizationService} instance.
+     * @param rolePermissionFactory
+     *         The {@link RolePermissionFactory} instance.
+     * @param serviceConfigurationManager
+     *         The {@link ServiceConfigurationManager} instance.
      * @param txManager
      * @param roleRepository
      * @param rolePermissionRepository
@@ -129,7 +133,7 @@ public class RoleServiceImpl extends KapuaConfigurableServiceBase implements Rol
 
         return txManager.execute(tx -> {
             // Check entity limit
-            serviceConfigurationManager.checkAllowedEntities(tx, roleCreator.getScopeId(), "Roles");
+            serviceConfigurationManager.checkAllowedEntities(roleCreator.getScopeId(), "Roles");
 
             // Check duplicate name
             if (roleRepository.countEntitiesWithNameInScope(tx, roleCreator.getScopeId(), roleCreator.getName()) > 0) {
@@ -274,7 +278,8 @@ public class RoleServiceImpl extends KapuaConfigurableServiceBase implements Rol
         AccessRoleListResult accessRoleListResult = accessRoleService.query(accessRoleQuery);
 
         AccessInfoQuery accessInfoQuery = accessInfoFactory.newQuery(scopeId);
-        accessInfoQuery.setPredicate(accessInfoQuery.attributePredicate(KapuaEntityAttributes.ENTITY_ID, accessRoleListResult.getItems().stream().map(AccessRole::getAccessInfoId).collect(Collectors.toList())));
+        accessInfoQuery.setPredicate(
+                accessInfoQuery.attributePredicate(KapuaEntityAttributes.ENTITY_ID, accessRoleListResult.getItems().stream().map(AccessRole::getAccessInfoId).collect(Collectors.toList())));
         AccessInfoListResult accessInfoListResult = accessInfoService.query(accessInfoQuery);
 
         return accessInfoListResult.getItems().stream().map(AccessInfo::getUserId).collect(Collectors.toList());

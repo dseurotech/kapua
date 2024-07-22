@@ -28,7 +28,7 @@ import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.authentication.credential.CredentialService;
 import org.eclipse.kapua.service.authentication.credential.shiro.AccountPasswordLengthProviderImpl;
 import org.eclipse.kapua.service.authentication.shiro.setting.KapuaAuthenticationSetting;
-import org.eclipse.kapua.storage.TxContext;
+import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +38,7 @@ public class CredentialServiceConfigurationManagerImpl extends ServiceConfigurat
     private final SystemPasswordLengthProvider systemPasswordLengthProvider;
 
     public CredentialServiceConfigurationManagerImpl(
+            TxManager txManager,
             ServiceConfigRepository serviceConfigRepository,
             SystemPasswordLengthProvider systemPasswordLengthProvider,
             RootUserTester rootUserTester,
@@ -45,6 +46,7 @@ public class CredentialServiceConfigurationManagerImpl extends ServiceConfigurat
             XmlUtil xmlUtil) {
         super(CredentialService.class.getName(),
                 Domains.CREDENTIAL,
+                txManager,
                 serviceConfigRepository,
                 rootUserTester,
                 xmlUtil);
@@ -52,7 +54,7 @@ public class CredentialServiceConfigurationManagerImpl extends ServiceConfigurat
     }
 
     @Override
-    protected boolean validateNewConfigValuesCoherence(TxContext txContext, KapuaTocd ocd, Map<String, Object> updatedProps, KapuaId scopeId, Optional<KapuaId> parentId) throws KapuaException {
+    protected boolean validateNewConfigValuesCoherence(KapuaTocd ocd, Map<String, Object> updatedProps, KapuaId scopeId, Optional<KapuaId> parentId) throws KapuaException {
         if (updatedProps.get(AccountPasswordLengthProviderImpl.PASSWORD_MIN_LENGTH_ACCOUNT_CONFIG_KEY) != null) {
             // If we're going to set a new limit, check that it's not less than system limit
             int newPasswordLimit = Integer.parseInt(updatedProps.get(AccountPasswordLengthProviderImpl.PASSWORD_MIN_LENGTH_ACCOUNT_CONFIG_KEY).toString());

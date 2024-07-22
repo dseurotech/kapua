@@ -58,6 +58,6 @@ public class AccountPasswordLengthProviderImpl implements AccountPasswordLengthP
     }
 
     private Map<String, Object> getConfigValues(TxContext tx, KapuaId scopeId) throws KapuaException {
-        return credentialServiceConfigurationManager.getConfigValues(tx, scopeId, true);
+        return credentialServiceConfigurationManager.getConfigValues(scopeId, true);
     }
 }

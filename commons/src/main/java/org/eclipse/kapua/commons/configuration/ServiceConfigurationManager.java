@@ -32,19 +32,20 @@ public interface ServiceConfigurationManager {
      * @return {@code true} if the {@link KapuaService} is enabled, {@code false} otherwise.
      * @since 1.2.0
      */
-    default boolean isServiceEnabled(TxContext txContext, KapuaId scopeId) {
+    default boolean isServiceEnabled(KapuaId scopeId) {
         return true;
     }
 
     String getDomain();
 
-    void checkAllowedEntities(TxContext txContext, KapuaId scopeId, String entityType) throws KapuaException;
+    //this is in the wrong place
+    void checkAllowedEntities(KapuaId scopeId, String entityType) throws KapuaException;
 
-    void setConfigValues(TxContext txContext, KapuaId scopeId, Optional<KapuaId> parentId, Map<String, Object> values) throws KapuaException;
+    void setConfigValues(KapuaId scopeId, Optional<KapuaId> parentId, Map<String, Object> values) throws KapuaException;
 
-    Map<String, Object> getConfigValues(TxContext txContext, KapuaId scopeId, boolean excludeDisabled) throws KapuaException;
+    Map<String, Object> getConfigValues(KapuaId scopeId, boolean excludeDisabled) throws KapuaException;
 
-    KapuaTocd getConfigMetadata(TxContext txContext, KapuaId scopeId, boolean excludeDisabled) throws KapuaException;
+    KapuaTocd getConfigMetadata(KapuaId scopeId, boolean excludeDisabled) throws KapuaException;
 
     ServiceComponentConfiguration extractServiceComponentConfiguration(TxContext txContext, KapuaId scopeId) throws KapuaException;
 }
