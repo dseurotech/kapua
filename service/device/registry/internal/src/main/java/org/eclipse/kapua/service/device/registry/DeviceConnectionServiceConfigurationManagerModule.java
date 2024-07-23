@@ -59,7 +59,7 @@ public class DeviceConnectionServiceConfigurationManagerModule extends AbstractK
             XmlUtil xmlUtil) {
         return new ServiceConfigurationManagerCachingWrapper(
                 new DeviceConnectionServiceConfigurationManager(
-                        txManagerFactory.create("kapua-datastore"),
+                        txManagerFactory.create("kapua-service-config"),
                         new CachingServiceConfigRepository(
                                 new ServiceConfigImplJpaRepository(jpaRepoConfig),
                                 entityCacheFactory.createCache("AbstractKapuaConfigurableServiceCacheId")
