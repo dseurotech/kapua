@@ -12,13 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons;
 
-import java.util.Map;
-
 import javax.inject.Singleton;
 
-import org.eclipse.kapua.commons.configuration.ServiceConfigurationManager;
-import org.eclipse.kapua.commons.configuration.ServiceConfigurationsFacade;
-import org.eclipse.kapua.commons.configuration.ServiceConfigurationsFacadeImpl;
 import org.eclipse.kapua.commons.core.AbstractKapuaModule;
 import org.eclipse.kapua.commons.core.JaxbClassProvider;
 import org.eclipse.kapua.commons.core.SimpleJaxbClassProvider;
@@ -33,7 +28,6 @@ import org.eclipse.kapua.commons.event.jms.JMSServiceEventBus;
 import org.eclipse.kapua.commons.jpa.EventStorer;
 import org.eclipse.kapua.commons.jpa.EventStorerImpl;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
-import org.eclipse.kapua.commons.jpa.KapuaJpaTxManagerFactory;
 import org.eclipse.kapua.commons.metric.CommonsMetric;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.model.mappers.KapuaBaseMapper;
@@ -55,9 +49,6 @@ import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.domain.Domain;
 import org.eclipse.kapua.model.domain.DomainEntry;
 import org.eclipse.kapua.model.query.QueryFactory;
-import org.eclipse.kapua.service.account.AccountRepository;
-import org.eclipse.kapua.service.authorization.AuthorizationService;
-import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 
 import com.google.inject.Provides;
 import com.google.inject.multibindings.Multibinder;
@@ -85,15 +76,6 @@ public class CommonsModule extends AbstractKapuaModule {
                         EventStoreRecordCreator.class,
                         ServiceEvent.class
                 ));
-    }
-
-    @Provides
-    @Singleton
-    ServiceConfigurationsFacade serviceConfigurationsFacade(
-            Map<Class<?>, ServiceConfigurationManager> serviceConfigurationManagersByServiceClass, KapuaJpaTxManagerFactory txManagerFactory, AuthorizationService authorizationService,
-            PermissionFactory permissionFactory, AccountRepository accountRepository) {
-        return new ServiceConfigurationsFacadeImpl(serviceConfigurationManagersByServiceClass, txManagerFactory.create("kapua-service-config"), authorizationService, permissionFactory,
-                accountRepository);
     }
 
     @ProvidesIntoSet
