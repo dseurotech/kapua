@@ -18,6 +18,7 @@ import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public interface JobExecutionRepository
-        extends KapuaUpdatableEntityRepository<JobExecution, JobExecutionListResult> {
+        extends KapuaUpdatableEntityRepository<JobExecution> {
+
     long countByJobId(TxContext tx, KapuaId scopeId, KapuaId jobId) throws KapuaException;
 }

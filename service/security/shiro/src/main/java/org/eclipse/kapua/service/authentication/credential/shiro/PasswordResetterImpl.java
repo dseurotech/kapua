@@ -12,19 +12,19 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authentication.credential.shiro;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.KapuaIllegalArgumentException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authentication.credential.Credential;
-import org.eclipse.kapua.service.authentication.credential.CredentialListResult;
 import org.eclipse.kapua.service.authentication.credential.CredentialRepository;
 import org.eclipse.kapua.service.authentication.credential.CredentialStatus;
 import org.eclipse.kapua.service.authentication.credential.handler.CredentialTypeHandler;
 import org.eclipse.kapua.service.authentication.user.PasswordResetRequest;
 import org.eclipse.kapua.storage.TxContext;
-
-import java.util.Optional;
 
 /**
  * The {@link PasswordResetter} implementation.
@@ -32,6 +32,7 @@ import java.util.Optional;
  * @since 2.0.0
  */
 public class PasswordResetterImpl implements PasswordResetter {
+
     private final CredentialRepository credentialRepository;
     private final PasswordValidator passwordValidator;
 
@@ -48,7 +49,7 @@ public class PasswordResetterImpl implements PasswordResetter {
 
     @Override
     public Credential resetPassword(TxContext tx, KapuaId scopeId, KapuaId userId, boolean failIfAbsent, PasswordResetRequest passwordResetRequest) throws KapuaException {
-        final CredentialListResult credentials = credentialRepository.findByUserId(tx, scopeId, userId);
+        final KapuaListResult<Credential> credentials = credentialRepository.findByUserId(tx, scopeId, userId);
         final Optional<Credential> passwordCredential = credentials.getItems().stream()
                 .filter(credential -> credentialTypeHandler.getName().equals(credential.getCredentialType()))
                 .findAny();

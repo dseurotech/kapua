@@ -12,24 +12,24 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.storage.memory;
 
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.KapuaUpdatableEntity;
 import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Supplier;
+public class KapuaUpdatableEntityInMemoryRepository<E extends KapuaUpdatableEntity>
+        extends KapuaEntityInMemoryRepository<E>
+        implements KapuaUpdatableEntityRepository<E> {
 
-public class KapuaUpdatableEntityInMemoryRepository<E extends KapuaUpdatableEntity, L extends KapuaListResult<E>>
-        extends KapuaEntityInMemoryRepository<E, L>
-        implements KapuaUpdatableEntityRepository<E, L> {
-
-    public KapuaUpdatableEntityInMemoryRepository(Class<E> clazz, Supplier<L> listSupplier,
-                                                  KapuaQueryConverter kapuaQueryConverter,
-                                                  Map<String, Function<E, Object>> fieldPluckers) {
+    public KapuaUpdatableEntityInMemoryRepository(Class<E> clazz, Supplier<KapuaListResult<E>> listSupplier,
+            KapuaQueryConverter kapuaQueryConverter,
+            Map<String, Function<E, Object>> fieldPluckers) {
         super(clazz, listSupplier, kapuaQueryConverter, fieldPluckers);
     }
 

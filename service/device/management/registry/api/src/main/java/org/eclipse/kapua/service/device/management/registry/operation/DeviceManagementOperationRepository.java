@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.management.registry.operation;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Optional;
+public interface DeviceManagementOperationRepository extends KapuaUpdatableEntityRepository<DeviceManagementOperation> {
 
-public interface DeviceManagementOperationRepository extends KapuaUpdatableEntityRepository<DeviceManagementOperation, DeviceManagementOperationListResult> {
     Optional<DeviceManagementOperation> findByOperationId(TxContext tx, KapuaId scopeId, KapuaId operationId) throws KapuaException;
 }

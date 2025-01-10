@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.device.registry.connection.option;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 
 public interface DeviceConnectionOptionRepository
-        extends KapuaUpdatableEntityRepository<DeviceConnectionOption, DeviceConnectionOptionListResult> {
+        extends KapuaUpdatableEntityRepository<DeviceConnectionOption> {
+
 }

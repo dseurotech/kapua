@@ -12,6 +12,16 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.jpa;
 
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.AbstractKapuaNamedEntity_;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
@@ -22,22 +32,14 @@ import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.function.BiFunction;
-import java.util.function.Supplier;
+public class KapuaNamedEntityJpaRepository<E extends KapuaNamedEntity, C extends E>
+        extends KapuaUpdatableEntityJpaRepository<E, C>
+        implements KapuaNamedEntityRepository<E> {
 
-public class KapuaNamedEntityJpaRepository<E extends KapuaNamedEntity, C extends E, L extends KapuaListResult<E>>
-        extends KapuaUpdatableEntityJpaRepository<E, C, L>
-        implements KapuaNamedEntityRepository<E, L> {
     public KapuaNamedEntityJpaRepository(
             Class<C> concreteClass,
             String entityName,
-            Supplier<L> listSupplier,
+            Supplier<KapuaListResult<E>> listSupplier,
             KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(concreteClass, entityName, listSupplier, jpaRepoConfig);
     }

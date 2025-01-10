@@ -14,10 +14,10 @@ package org.eclipse.kapua.service.job.step.internal;
 
 import java.util.List;
 import java.util.regex.Pattern;
+
 import javax.inject.Singleton;
 import javax.xml.bind.DatatypeConverter;
 
-import com.google.common.base.Strings;
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
@@ -29,6 +29,7 @@ import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.model.query.SortOrder;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate.Operator;
@@ -46,7 +47,6 @@ import org.eclipse.kapua.service.job.step.JobStepAttributes;
 import org.eclipse.kapua.service.job.step.JobStepCreator;
 import org.eclipse.kapua.service.job.step.JobStepFactory;
 import org.eclipse.kapua.service.job.step.JobStepIndex;
-import org.eclipse.kapua.service.job.step.JobStepListResult;
 import org.eclipse.kapua.service.job.step.JobStepQuery;
 import org.eclipse.kapua.service.job.step.JobStepRepository;
 import org.eclipse.kapua.service.job.step.JobStepService;
@@ -56,6 +56,8 @@ import org.eclipse.kapua.service.job.step.definition.JobStepProperty;
 import org.eclipse.kapua.storage.TxContext;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Strings;
 
 /**
  * {@link JobStepService} implementation.
@@ -149,7 +151,7 @@ public class JobStepServiceImpl implements JobStepService {
                 query.setSortCriteria(query.fieldSortCriteria(JobStepAttributes.STEP_INDEX, SortOrder.DESCENDING));
                 query.setLimit(1);
 
-                final JobStepListResult jobStepListResult = jobStepRepository.query(tx, query);
+                final KapuaListResult<JobStep> jobStepListResult = jobStepRepository.query(tx, query);
                 final JobStep lastJobStep = jobStepListResult.getFirstItem();
 
                 jobStepCreator.setStepIndex(lastJobStep != null ? lastJobStep.getStepIndex() + 1 : JobStepIndex.FIRST);
@@ -284,7 +286,7 @@ public class JobStepServiceImpl implements JobStepService {
     }
 
     @Override
-    public JobStepListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<JobStep> query(KapuaQuery query) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
         // Check Access
@@ -339,7 +341,7 @@ public class JobStepServiceImpl implements JobStepService {
                     )
             );
 
-            JobStepListResult followingJobStep = jobStepRepository.query(tx, query);
+            KapuaListResult<JobStep> followingJobStep = jobStepRepository.query(tx, query);
 
             for (JobStep js : followingJobStep.getItems()) {
                 js.setStepIndex(js.getStepIndex() - 1);
@@ -376,7 +378,7 @@ public class JobStepServiceImpl implements JobStepService {
     private void shiftJobStepPosition(TxContext tx, JobStepQuery selectorQuery, int increment) throws KapuaException {
         selectorQuery.setSortCriteria(selectorQuery.fieldSortCriteria(JobStepAttributes.STEP_INDEX, SortOrder.ASCENDING));
 
-        JobStepListResult followingJobStepListResult = jobStepRepository.query(tx, selectorQuery);
+        KapuaListResult<JobStep> followingJobStepListResult = jobStepRepository.query(tx, selectorQuery);
 
         LoggerFactory.getLogger(JobStepServiceImpl.class).warn("Got {} steps to move", followingJobStepListResult.getSize());
 

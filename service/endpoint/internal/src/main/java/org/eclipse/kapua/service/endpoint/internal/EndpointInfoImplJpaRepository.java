@@ -15,12 +15,12 @@ package org.eclipse.kapua.service.endpoint.internal;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.service.endpoint.EndpointInfo;
-import org.eclipse.kapua.service.endpoint.EndpointInfoListResult;
 import org.eclipse.kapua.service.endpoint.EndpointInfoRepository;
 
 public class EndpointInfoImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<EndpointInfo, EndpointInfoImpl, EndpointInfoListResult>
+        extends KapuaUpdatableEntityJpaRepository<EndpointInfo, EndpointInfoImpl>
         implements EndpointInfoRepository {
+
     public EndpointInfoImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(EndpointInfoImpl.class, EndpointInfo.TYPE, () -> new EndpointInfoListResultImpl(), jpaRepoConfig);
     }

@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.job.server;
 
-import com.extjs.gxt.ui.client.data.BaseListLoadResult;
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
 import org.eclipse.kapua.app.console.module.api.server.util.KapuaExceptionHandler;
@@ -33,22 +34,21 @@ import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.job.Job;
 import org.eclipse.kapua.service.job.JobCreator;
 import org.eclipse.kapua.service.job.JobFactory;
-import org.eclipse.kapua.service.job.JobListResult;
 import org.eclipse.kapua.service.job.JobQuery;
 import org.eclipse.kapua.service.job.JobService;
 import org.eclipse.kapua.service.user.User;
 import org.eclipse.kapua.service.user.UserFactory;
-import org.eclipse.kapua.service.user.UserListResult;
 import org.eclipse.kapua.service.user.UserService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
+import com.extjs.gxt.ui.client.data.BaseListLoadResult;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 
 public class GwtJobServiceImpl extends KapuaRemoteServiceServlet implements GwtJobService {
 
@@ -73,16 +73,16 @@ public class GwtJobServiceImpl extends KapuaRemoteServiceServlet implements GwtJ
             JobQuery jobQuery = GwtKapuaJobModelConverter.convertJobQuery(gwtJobQuery, loadConfig);
 
             // query
-            JobListResult jobs = JOB_SERVICE.query(jobQuery);
+            KapuaListResult<Job> jobs = JOB_SERVICE.query(jobQuery);
             totalLength = jobs.getTotalCount().intValue();
 
             // If there are results
             if (!jobs.isEmpty()) {
                 //TODO: #LAYER_VIOLATION - user lookup should not be done here (horribly inefficient)
-                UserListResult usernames = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+                KapuaListResult<User> usernames = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                     @Override
-                    public UserListResult call() throws Exception {
+                    public KapuaListResult<User> call() throws Exception {
                         return USER_SERVICE.query(USER_FACTORY.newQuery(null));
                     }
                 });
@@ -207,7 +207,7 @@ public class GwtJobServiceImpl extends KapuaRemoteServiceServlet implements GwtJ
 
     @Override
     public ListLoadResult<GwtGroupedNVPair> findJobDescription(String gwtScopeId,
-                                                               String gwtJobId) throws GwtKapuaException {
+            String gwtJobId) throws GwtKapuaException {
         List<GwtGroupedNVPair> gwtJobDescription = new ArrayList<GwtGroupedNVPair>();
         try {
             KapuaId scopeId = KapuaEid.parseCompactId(gwtScopeId);
@@ -215,10 +215,10 @@ public class GwtJobServiceImpl extends KapuaRemoteServiceServlet implements GwtJ
 
             Job job = JOB_SERVICE.find(scopeId, jobId);
 
-            UserListResult userListResult = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+            KapuaListResult<User> userListResult = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                 @Override
-                public UserListResult call() throws Exception {
+                public KapuaListResult<User> call() throws Exception {
                     return USER_SERVICE.query(USER_FACTORY.newQuery(null));
                 }
             });

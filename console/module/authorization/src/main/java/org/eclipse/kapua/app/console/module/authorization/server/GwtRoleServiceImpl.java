@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.authorization.server;
 
-import com.extjs.gxt.ui.client.Style.SortDir;
-import com.extjs.gxt.ui.client.data.BaseListLoadResult;
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
@@ -40,6 +40,7 @@ import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.query.FieldSortCriteria;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.SortOrder;
 import org.eclipse.kapua.service.account.Account;
 import org.eclipse.kapua.service.account.AccountService;
@@ -48,26 +49,24 @@ import org.eclipse.kapua.service.authorization.group.GroupService;
 import org.eclipse.kapua.service.authorization.role.Role;
 import org.eclipse.kapua.service.authorization.role.RoleCreator;
 import org.eclipse.kapua.service.authorization.role.RoleFactory;
-import org.eclipse.kapua.service.authorization.role.RoleListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermission;
 import org.eclipse.kapua.service.authorization.role.RolePermissionAttributes;
 import org.eclipse.kapua.service.authorization.role.RolePermissionCreator;
 import org.eclipse.kapua.service.authorization.role.RolePermissionFactory;
-import org.eclipse.kapua.service.authorization.role.RolePermissionListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermissionQuery;
 import org.eclipse.kapua.service.authorization.role.RolePermissionService;
 import org.eclipse.kapua.service.authorization.role.RoleQuery;
 import org.eclipse.kapua.service.authorization.role.RoleService;
 import org.eclipse.kapua.service.user.User;
 import org.eclipse.kapua.service.user.UserFactory;
-import org.eclipse.kapua.service.user.UserListResult;
 import org.eclipse.kapua.service.user.UserService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
+import com.extjs.gxt.ui.client.Style.SortDir;
+import com.extjs.gxt.ui.client.data.BaseListLoadResult;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 
 public class GwtRoleServiceImpl extends KapuaRemoteServiceServlet implements GwtRoleService {
 
@@ -166,15 +165,15 @@ public class GwtRoleServiceImpl extends KapuaRemoteServiceServlet implements Gwt
             RoleQuery roleQuery = GwtKapuaAuthorizationModelConverter.convertRoleQuery(loadConfig, gwtRoleQuery);
 
             // query
-            RoleListResult roles = ROLE_SERVICE.query(roleQuery);
+            KapuaListResult<Role> roles = ROLE_SERVICE.query(roleQuery);
             totalLength = roles.getTotalCount().intValue();
 
             if (!roles.isEmpty()) {
                 //TODO: #LAYER_VIOLATION - user lookup should not be done here (horribly inefficient)
-                UserListResult usernames = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+                KapuaListResult<User> usernames = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                     @Override
-                    public UserListResult call() throws Exception {
+                    public KapuaListResult<User> call() throws Exception {
                         return USER_SERVICE.query(USER_FACTORY.newQuery(null));
                     }
                 });
@@ -211,10 +210,10 @@ public class GwtRoleServiceImpl extends KapuaRemoteServiceServlet implements Gwt
 
             // Find
             final Role role = ROLE_SERVICE.find(scopeId, roleId);
-            UserListResult userListResult = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+            KapuaListResult<User> userListResult = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                 @Override
-                public UserListResult call() throws Exception {
+                public KapuaListResult<User> call() throws Exception {
                     return USER_SERVICE.query(USER_FACTORY.newQuery(null));
                 }
             });
@@ -267,7 +266,7 @@ public class GwtRoleServiceImpl extends KapuaRemoteServiceServlet implements Gwt
             query.setSortCriteria(sortCriteria);
             query.setAskTotalCount(true);
 
-            RolePermissionListResult list = ROLE_PERMISSION_SERVICE.query(query);
+            KapuaListResult<RolePermission> list = ROLE_PERMISSION_SERVICE.query(query);
             totalLength = list.getTotalCount().intValue();
 
             if (list != null) {
@@ -373,7 +372,7 @@ public class GwtRoleServiceImpl extends KapuaRemoteServiceServlet implements Gwt
         List<GwtRole> gwtRoleList = new ArrayList<GwtRole>();
         try {
             RoleQuery query = ROLE_FACTORY.newQuery(scopeId);
-            RoleListResult list = ROLE_SERVICE.query(query);
+            KapuaListResult<Role> list = ROLE_SERVICE.query(query);
 
             for (Role role : list.getItems()) {
                 gwtRoleList.add(KapuaGwtAuthorizationModelConverter.convertRole(role));

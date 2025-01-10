@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.job;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 
 public interface JobRepository extends
-        KapuaNamedEntityRepository<Job, JobListResult> {
+        KapuaNamedEntityRepository<Job> {
+
 }

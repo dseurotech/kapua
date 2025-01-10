@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.endpoint;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 
 public interface EndpointInfoRepository
-        extends KapuaUpdatableEntityRepository<EndpointInfo, EndpointInfoListResult> {
+        extends KapuaUpdatableEntityRepository<EndpointInfo> {
+
 }

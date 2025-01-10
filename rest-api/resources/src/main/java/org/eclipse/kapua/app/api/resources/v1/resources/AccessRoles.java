@@ -12,22 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.resources.v1.resources;
 
-import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.app.api.core.model.CountResult;
-import org.eclipse.kapua.app.api.core.model.EntityId;
-import org.eclipse.kapua.app.api.core.model.ScopeId;
-import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
-import org.eclipse.kapua.model.KapuaEntityAttributes;
-import org.eclipse.kapua.model.query.predicate.AndPredicate;
-import org.eclipse.kapua.service.KapuaService;
-import org.eclipse.kapua.service.authorization.access.AccessRole;
-import org.eclipse.kapua.service.authorization.access.AccessRoleAttributes;
-import org.eclipse.kapua.service.authorization.access.AccessRoleCreator;
-import org.eclipse.kapua.service.authorization.access.AccessRoleFactory;
-import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
-import org.eclipse.kapua.service.authorization.access.AccessRoleQuery;
-import org.eclipse.kapua.service.authorization.access.AccessRoleService;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -41,6 +25,23 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.eclipse.kapua.KapuaException;
+import org.eclipse.kapua.app.api.core.model.CountResult;
+import org.eclipse.kapua.app.api.core.model.EntityId;
+import org.eclipse.kapua.app.api.core.model.ScopeId;
+import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
+import org.eclipse.kapua.model.KapuaEntityAttributes;
+import org.eclipse.kapua.model.query.KapuaListResult;
+import org.eclipse.kapua.model.query.predicate.AndPredicate;
+import org.eclipse.kapua.service.KapuaService;
+import org.eclipse.kapua.service.authorization.access.AccessRole;
+import org.eclipse.kapua.service.authorization.access.AccessRoleAttributes;
+import org.eclipse.kapua.service.authorization.access.AccessRoleCreator;
+import org.eclipse.kapua.service.authorization.access.AccessRoleFactory;
+import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
+import org.eclipse.kapua.service.authorization.access.AccessRoleQuery;
+import org.eclipse.kapua.service.authorization.access.AccessRoleService;
+
 @Path("{scopeId}/accessinfos/{accessInfoId}/roles")
 public class AccessRoles extends AbstractKapuaResource {
 
@@ -52,16 +53,20 @@ public class AccessRoles extends AbstractKapuaResource {
     /**
      * Gets the {@link AccessRole} list in the scope.
      *
-     * @param scopeId The {@link ScopeId} in which to search results.
-     * @param offset  The result set offset.
-     * @param limit   The result set limit.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param offset
+     *         The result set offset.
+     * @param limit
+     *         The result set limit.
      * @return The {@link AccessRoleListResult} of all the accessRoles associated to the current selected scope.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public AccessRoleListResult simpleQuery(
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public KapuaListResult<AccessRole> simpleQuery(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("accessInfoId") EntityId accessInfoId,
             @QueryParam("askTotalCount") boolean askTotalCount,
@@ -81,17 +86,20 @@ public class AccessRoles extends AbstractKapuaResource {
     /**
      * Queries the results with the given {@link AccessRoleQuery} parameter.
      *
-     * @param scopeId The {@link ScopeId} in which to search results.
-     * @param query   The {@link AccessRoleQuery} to use to filter results.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param query
+     *         The {@link AccessRoleQuery} to use to filter results.
      * @return The {@link AccessRoleListResult} of all the result matching the given {@link AccessRoleQuery} parameter.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @POST
     @Path("_query")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public AccessRoleListResult query(
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public KapuaListResult<AccessRole> query(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("accessInfoId") EntityId accessInfoId,
             AccessRoleQuery query) throws KapuaException {
@@ -105,16 +113,19 @@ public class AccessRoles extends AbstractKapuaResource {
     /**
      * Counts the results with the given {@link AccessRoleQuery} parameter.
      *
-     * @param scopeId The {@link ScopeId} in which to search results.
-     * @param query   The {@link AccessRoleQuery} to use to filter results.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param query
+     *         The {@link AccessRoleQuery} to use to filter results.
      * @return The count of all the result matching the given {@link AccessRoleQuery} parameter.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @POST
     @Path("_count")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public CountResult count(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("accessInfoId") EntityId accessInfoId,
@@ -127,18 +138,20 @@ public class AccessRoles extends AbstractKapuaResource {
     }
 
     /**
-     * Creates a new AccessRole based on the information provided in AccessRoleCreator
-     * parameter.
+     * Creates a new AccessRole based on the information provided in AccessRoleCreator parameter.
      *
-     * @param scopeId           The {@link ScopeId} in which to create the {@link AccessRole}.
-     * @param accessRoleCreator Provides the information for the new AccessRole to be created.
+     * @param scopeId
+     *         The {@link ScopeId} in which to create the {@link AccessRole}.
+     * @param accessRoleCreator
+     *         Provides the information for the new AccessRole to be created.
      * @return The newly created {@link AccessRole} object.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @POST
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response create(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("accessInfoId") EntityId accessInfoId,
@@ -152,15 +165,18 @@ public class AccessRoles extends AbstractKapuaResource {
     /**
      * Returns the AccessRole specified by the "accessRoleId" path parameter.
      *
-     * @param scopeId      The {@link ScopeId} of the requested {@link AccessRole}.
-     * @param accessRoleId The id of the requested {@link AccessRole}.
+     * @param scopeId
+     *         The {@link ScopeId} of the requested {@link AccessRole}.
+     * @param accessRoleId
+     *         The id of the requested {@link AccessRole}.
      * @return The requested {@link AccessRole} object.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @GET
     @Path("{accessRoleId}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public AccessRole find(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("accessInfoId") EntityId accessInfoId,
@@ -176,7 +192,7 @@ public class AccessRoles extends AbstractKapuaResource {
         query.setOffset(0);
         query.setLimit(1);
 
-        AccessRoleListResult results = accessRoleService.query(query);
+        KapuaListResult<AccessRole> results = accessRoleService.query(query);
 
         return returnNotNullEntity(results.getFirstItem(), AccessRole.TYPE, accessRoleId);
     }
@@ -184,9 +200,11 @@ public class AccessRoles extends AbstractKapuaResource {
     /**
      * Deletes the AccessRole specified by the "accessRoleId" path parameter.
      *
-     * @param accessRoleId The id of the AccessRole to be deleted.
+     * @param accessRoleId
+     *         The id of the AccessRole to be deleted.
      * @return HTTP 200 if operation has completed successfully.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @DELETE

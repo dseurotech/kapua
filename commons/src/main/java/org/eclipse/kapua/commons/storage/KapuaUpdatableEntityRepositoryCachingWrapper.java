@@ -17,27 +17,24 @@ import org.eclipse.kapua.commons.service.internal.cache.EntityCache;
 import org.eclipse.kapua.model.KapuaEntity;
 import org.eclipse.kapua.model.KapuaUpdatableEntity;
 import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 /**
  * This wrapper around a {@link KapuaUpdatableEntityRepository} provides basic caching functionality for the entities
  *
- * @param <E> The specific subclass of {@link KapuaEntity} handled by this repository
- * @param <L> The specific subclass of {@link KapuaListResult}&lt;E&gt; meant to hold list results for the kapua entity handled by this repo
+ * @param <E>
+ *         The specific subclass of {@link KapuaEntity} handled by this repository
  * @since 2.0.0
  */
 public class KapuaUpdatableEntityRepositoryCachingWrapper<
-        E extends KapuaUpdatableEntity,
-        L extends KapuaListResult<E>>
-        extends KapuaEntityRepositoryCachingWrapper<E, L>
-        implements KapuaUpdatableEntityRepository<E, L> {
+        E extends KapuaUpdatableEntity>
+        extends KapuaEntityRepositoryCachingWrapper<E>
+        implements KapuaUpdatableEntityRepository<E> {
 
+    private final KapuaUpdatableEntityRepository<E> wrapped;
 
-    private final KapuaUpdatableEntityRepository<E, L> wrapped;
-
-    public KapuaUpdatableEntityRepositoryCachingWrapper(KapuaUpdatableEntityRepository<E, L> wrapped, EntityCache entityCache) {
+    public KapuaUpdatableEntityRepositoryCachingWrapper(KapuaUpdatableEntityRepository<E> wrapped, EntityCache entityCache) {
         super(wrapped, entityCache);
         this.wrapped = wrapped;
     }

@@ -13,6 +13,7 @@
 package org.eclipse.kapua.service.endpoint;
 
 import org.eclipse.kapua.KapuaException;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 import org.eclipse.kapua.service.KapuaUpdatableEntityService;
@@ -25,19 +26,7 @@ import org.eclipse.kapua.service.KapuaUpdatableEntityService;
 public interface EndpointInfoService extends KapuaEntityService<EndpointInfo, EndpointInfoCreator>,
         KapuaUpdatableEntityService<EndpointInfo> {
 
-    /**
-     * Returns the {@link EndpointInfoListResult} with elements matching the provided query.
-     *
-     * @param query The {@link EndpointInfoQuery} used to filter results.
-     * @return The {@link EndpointInfoListResult} with elements matching the query parameter.
-     * @throws KapuaException
-     * @since 1.0.0
-     */
-    @Override
-    EndpointInfoListResult query(KapuaQuery query)
-            throws KapuaException;
-
-    EndpointInfoListResult query(KapuaQuery query, String section)
+    KapuaListResult<EndpointInfo> query(KapuaQuery query, String section)
             throws KapuaException;
 
     long count(KapuaQuery query, String section)

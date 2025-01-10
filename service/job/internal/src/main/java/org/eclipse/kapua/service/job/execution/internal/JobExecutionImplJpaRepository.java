@@ -17,14 +17,14 @@ import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.job.execution.JobExecution;
-import org.eclipse.kapua.service.job.execution.JobExecutionListResult;
 import org.eclipse.kapua.service.job.execution.JobExecutionQuery;
 import org.eclipse.kapua.service.job.execution.JobExecutionRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public class JobExecutionImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<JobExecution, JobExecutionImpl, JobExecutionListResult>
+        extends KapuaUpdatableEntityJpaRepository<JobExecution, JobExecutionImpl>
         implements JobExecutionRepository {
+
     public JobExecutionImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(JobExecutionImpl.class, JobExecution.TYPE, () -> new JobExecutionListResultImpl(), jpaRepoConfig);
     }

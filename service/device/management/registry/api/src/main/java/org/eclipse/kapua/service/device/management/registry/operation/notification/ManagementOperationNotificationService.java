@@ -12,23 +12,10 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.management.registry.operation.notification;
 
-import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 
 public interface ManagementOperationNotificationService
         extends
         KapuaEntityService<ManagementOperationNotification, ManagementOperationNotificationCreator> {
-
-    /**
-     * Returns the {@link ManagementOperationNotificationListResult} with elements matching the provided query.
-     *
-     * @param query The {@link ManagementOperationNotificationQuery} used to filter results.
-     * @return The {@link ManagementOperationNotificationListResult} with elements matching the query parameter.
-     * @throws KapuaException
-     * @since 1.0.0
-     */
-    @Override
-    ManagementOperationNotificationListResult query(KapuaQuery query) throws KapuaException;
 
 }

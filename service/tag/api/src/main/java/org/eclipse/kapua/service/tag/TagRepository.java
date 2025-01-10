@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.tag;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 
 public interface TagRepository extends
-        KapuaNamedEntityRepository<Tag, TagListResult> {
+        KapuaNamedEntityRepository<Tag> {
+
 }

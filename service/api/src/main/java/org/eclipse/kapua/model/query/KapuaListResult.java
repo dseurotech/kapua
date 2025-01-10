@@ -12,8 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.model.query;
 
-import org.eclipse.kapua.KapuaSerializable;
-import org.eclipse.kapua.model.KapuaEntity;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -22,29 +26,27 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Predicate;
+
+import org.eclipse.kapua.KapuaSerializable;
+import org.eclipse.kapua.model.KapuaEntity;
 
 /**
  * {@link KapuaListResult} definition.
  *
- * @param <E> {@link KapuaEntity} type.
+ * @param <E>
+ *         {@link KapuaEntity} type.
  * @since 1.0.0
  */
 @XmlRootElement(name = "result")
 @XmlAccessorType(XmlAccessType.PROPERTY)
-@XmlType(propOrder = {"limitExceeded", "size", "items", "totalCount"})
-public interface KapuaListResult<E extends KapuaEntity> extends KapuaSerializable {
+@XmlType(propOrder = { "limitExceeded", "size", "items", "totalCount" })
+public interface KapuaListResult<E> extends KapuaSerializable {
 
     /**
      * Gets the limit exceeded flag.
      * <p>
-     * This flag is {@code true} if there are more results that exceded the {@link KapuaQuery#getLimit()}.
-     * Increasing the {@link KapuaQuery#getLimit()} or moving the {@link KapuaQuery#getOffset()} will return more results
+     * This flag is {@code true} if there are more results that exceded the {@link KapuaQuery#getLimit()}. Increasing the {@link KapuaQuery#getLimit()} or moving the {@link KapuaQuery#getOffset()}
+     * will return more results
      *
      * @return The limit exceeded flag
      * @since 1.0.0
@@ -57,7 +59,8 @@ public interface KapuaListResult<E extends KapuaEntity> extends KapuaSerializabl
      * <p>
      * To be set to {@code true} if the {@link KapuaQuery} matching elements are more than {@link KapuaQuery#getLimit()}.
      *
-     * @param limitExceeded The limit exceeded flag.
+     * @param limitExceeded
+     *         The limit exceeded flag.
      * @since 1.0.0
      */
     void setLimitExceeded(boolean limitExceeded);
@@ -79,33 +82,39 @@ public interface KapuaListResult<E extends KapuaEntity> extends KapuaSerializabl
      * <p>
      * This is meant to be used to filter result when is not possible to do so with {@link KapuaQuery#getPredicate()}s.
      *
-     * @param filter The filter to apply to select results.
+     * @param filter
+     *         The filter to apply to select results.
      * @return The filtered {@link KapuaEntity}s that matched the {@link KapuaQuery#getPredicate()}.
      * @since 2.0.0
      */
     List<E> getItems(@NotNull Predicate<E> filter);
 
     /**
-     * Gets a {@link Map} whose {@link Map#keySet()} are generated from the given {@link Map.Entry#getKey()} mapper {@link Function}.
-     * The {@link Map#values()} are the {@link KapuaEntity}s themself.
+     * Gets a {@link Map} whose {@link Map#keySet()} are generated from the given {@link Map.Entry#getKey()} mapper {@link Function}. The {@link Map#values()} are the {@link KapuaEntity}s themself.
      * <p>
      * This is like invoking {@link #getItemsAsMap(Function, Function)} whose value mapper returns the {@link KapuaEntity} itself.
      *
-     * @param keyMapper The {@link Function} which defines the {@link Map.Entry#getKey()} for each {@link Map.Entry}
-     * @param <K>       The type of the {@link Map.Entry#getKey()}
+     * @param keyMapper
+     *         The {@link Function} which defines the {@link Map.Entry#getKey()} for each {@link Map.Entry}
+     * @param <K>
+     *         The type of the {@link Map.Entry#getKey()}
      * @return The {@link Map} generated according to the mapping {@link Map.Entry#getKey()} {@link Function}.
      * @since 2.0.0
      */
     <K> Map<K, E> getItemsAsMap(@NotNull Function<E, K> keyMapper);
 
     /**
-     * Gets a {@link Map} whose {@link Map#keySet()} are generated from the given {@link Map.Entry#getKey()} mapper {@link Function}.
-     * The {@link Map#values()} are generated from the given {@link Map.Entry#getValue()} mapper {@link Function}.
+     * Gets a {@link Map} whose {@link Map#keySet()} are generated from the given {@link Map.Entry#getKey()} mapper {@link Function}. The {@link Map#values()} are generated from the given
+     * {@link Map.Entry#getValue()} mapper {@link Function}.
      *
-     * @param keyMapper   The {@link Function} which defines the {@link Map.Entry#getKey()} for each {@link Map.Entry}
-     * @param valueMapper The {@link Function} which defines the {@link Map.Entry#getValue()} for each {@link Map.Entry}
-     * @param <K>         The type of the {@link Map.Entry#getKey()}
-     * @param <V>         The type of the {@link Map.Entry#getValue()}
+     * @param keyMapper
+     *         The {@link Function} which defines the {@link Map.Entry#getKey()} for each {@link Map.Entry}
+     * @param valueMapper
+     *         The {@link Function} which defines the {@link Map.Entry#getValue()} for each {@link Map.Entry}
+     * @param <K>
+     *         The type of the {@link Map.Entry#getKey()}
+     * @param <V>
+     *         The type of the {@link Map.Entry#getValue()}
      * @return The {@link Map} generated according to the mapping {@link Function}s.
      * @since 2.0.0
      */
@@ -114,9 +123,11 @@ public interface KapuaListResult<E extends KapuaEntity> extends KapuaSerializabl
     /**
      * Gets the {@link KapuaEntity} at the given position in the {@link KapuaListResult}.
      *
-     * @param i The position in the {@link KapuaListResult}
+     * @param i
+     *         The position in the {@link KapuaListResult}
      * @return The {@link KapuaEntity} at the position
-     * @throws IndexOutOfBoundsException If position is not available.
+     * @throws IndexOutOfBoundsException
+     *         If position is not available.
      * @see List#get(int)
      * @since 1.0.0
      */
@@ -154,7 +165,8 @@ public interface KapuaListResult<E extends KapuaEntity> extends KapuaSerializabl
     /**
      * Adds {@link KapuaEntity}s to the result {@link KapuaListResult}
      *
-     * @param items The {@link KapuaEntity}s to add.
+     * @param items
+     *         The {@link KapuaEntity}s to add.
      * @see List#addAll(Collection)
      * @since 1.0.0
      */
@@ -163,7 +175,8 @@ public interface KapuaListResult<E extends KapuaEntity> extends KapuaSerializabl
     /**
      * Adds a {@link KapuaEntity} to the {@link KapuaListResult}.
      *
-     * @param item The {@link KapuaEntity} to add.
+     * @param item
+     *         The {@link KapuaEntity} to add.
      */
     void addItem(@NotNull E item);
 
@@ -178,7 +191,8 @@ public interface KapuaListResult<E extends KapuaEntity> extends KapuaSerializabl
     /**
      * Sorts the result {@link List} according to the given {@link Comparator}.
      *
-     * @param comparator The {@link Comparator} used to compare items.
+     * @param comparator
+     *         The {@link Comparator} used to compare items.
      * @see List#sort(Comparator)
      * @see Comparator
      * @since 1.0.0

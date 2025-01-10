@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.job.internal;
 
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
@@ -24,20 +26,18 @@ import org.eclipse.kapua.job.engine.JobEngineService;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.service.job.Job;
 import org.eclipse.kapua.service.job.JobCreator;
-import org.eclipse.kapua.service.job.JobListResult;
 import org.eclipse.kapua.service.job.JobRepository;
 import org.eclipse.kapua.service.job.JobService;
 import org.eclipse.kapua.service.scheduler.trigger.TriggerService;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Singleton;
 
 /**
  * {@link JobService} implementation
@@ -56,10 +56,13 @@ public class JobServiceImpl extends KapuaConfigurableServiceBase implements JobS
     /**
      * Default constructor for injection
      *
-     * @param permissionFactory    The {@link PermissionFactory} instance
-     * @param authorizationService The {@link AuthorizationService} instance
+     * @param permissionFactory
+     *         The {@link PermissionFactory} instance
+     * @param authorizationService
+     *         The {@link AuthorizationService} instance
      * @param jobRepository
-     * @param triggerService       The {@link TriggerService} instance
+     * @param triggerService
+     *         The {@link TriggerService} instance
      * @since 2.0.0
      */
     public JobServiceImpl(
@@ -136,7 +139,7 @@ public class JobServiceImpl extends KapuaConfigurableServiceBase implements JobS
     }
 
     @Override
-    public JobListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<Job> query(KapuaQuery query) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
         // Check Access
@@ -169,13 +172,17 @@ public class JobServiceImpl extends KapuaConfigurableServiceBase implements JobS
     /**
      * Deletes the {@link Job} like {@link #delete(KapuaId, KapuaId)}.
      * <p>
-     * If {@code forced} is {@code true} {@link org.eclipse.kapua.service.authorization.permission.Permission} checked will be {@code job:delete:null},
-     * and when invoking {@link JobEngineService#cleanJobData(KapuaId, KapuaId)} any exception is logged and ignored.
+     * If {@code forced} is {@code true} {@link org.eclipse.kapua.service.authorization.permission.Permission} checked will be {@code job:delete:null}, and when invoking
+     * {@link JobEngineService#cleanJobData(KapuaId, KapuaId)} any exception is logged and ignored.
      *
-     * @param scopeId The {@link KapuaId} scopeId of the {@link Job}.
-     * @param jobId   The {@link KapuaId} of the {@link Job}.
-     * @param forced  Whether or not the {@link Job} must be forcibly deleted.
-     * @throws KapuaException In case something bad happens.
+     * @param scopeId
+     *         The {@link KapuaId} scopeId of the {@link Job}.
+     * @param jobId
+     *         The {@link KapuaId} of the {@link Job}.
+     * @param forced
+     *         Whether or not the {@link Job} must be forcibly deleted.
+     * @throws KapuaException
+     *         In case something bad happens.
      * @since 1.1.0
      */
     private void deleteInternal(KapuaId scopeId, KapuaId jobId, boolean forced) throws KapuaException {

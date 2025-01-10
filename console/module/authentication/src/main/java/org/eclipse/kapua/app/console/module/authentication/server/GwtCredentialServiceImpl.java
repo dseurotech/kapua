@@ -12,9 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.authentication.server;
 
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.eclipse.kapua.KapuaException;
@@ -32,13 +35,13 @@ import org.eclipse.kapua.app.console.module.authentication.shared.util.KapuaGwtA
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authentication.AuthenticationService;
 import org.eclipse.kapua.service.authentication.CredentialsFactory;
 import org.eclipse.kapua.service.authentication.UsernamePasswordCredentials;
 import org.eclipse.kapua.service.authentication.credential.Credential;
 import org.eclipse.kapua.service.authentication.credential.CredentialCreator;
 import org.eclipse.kapua.service.authentication.credential.CredentialFactory;
-import org.eclipse.kapua.service.authentication.credential.CredentialListResult;
 import org.eclipse.kapua.service.authentication.credential.CredentialQuery;
 import org.eclipse.kapua.service.authentication.credential.CredentialService;
 import org.eclipse.kapua.service.authentication.shiro.utils.AuthenticationUtils;
@@ -48,14 +51,11 @@ import org.eclipse.kapua.service.authentication.user.UserCredentialsFactory;
 import org.eclipse.kapua.service.authentication.user.UserCredentialsService;
 import org.eclipse.kapua.service.user.User;
 import org.eclipse.kapua.service.user.UserFactory;
-import org.eclipse.kapua.service.user.UserListResult;
 import org.eclipse.kapua.service.user.UserService;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.Callable;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 
 public class GwtCredentialServiceImpl extends KapuaRemoteServiceServlet implements GwtCredentialService {
 
@@ -90,17 +90,17 @@ public class GwtCredentialServiceImpl extends KapuaRemoteServiceServlet implemen
             CredentialQuery credentialQuery = GwtKapuaAuthenticationModelConverter.convertCredentialQuery(loadConfig, gwtCredentialQuery);
 
             // query
-            CredentialListResult credentials = CREDENTIAL_SERVICE.query(credentialQuery);
+            KapuaListResult<Credential> credentials = CREDENTIAL_SERVICE.query(credentialQuery);
             credentials.sort(credentialComparator);
             totalLength = credentials.getTotalCount().intValue();
 
             // If there are results
             if (!credentials.isEmpty()) {
                 //TODO: #LAYER_VIOLATION - user lookup should not be done here
-                UserListResult userListResult = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+                KapuaListResult<User> userListResult = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                     @Override
-                    public UserListResult call() throws Exception {
+                    public KapuaListResult<User> call() throws Exception {
                         return USER_SERVICE.query(USER_FACTORY.newQuery(GwtKapuaCommonsModelConverter.convertKapuaId(gwtCredentialQuery.getScopeId())));
                     }
                 });
@@ -223,7 +223,6 @@ public class GwtCredentialServiceImpl extends KapuaRemoteServiceServlet implemen
         }
     }
 
-
     @Override
     public void resetPassword(GwtXSRFToken gwtXsrfToken, String stringScopeId, String gwtCredentialId, final String newPassword) throws GwtKapuaException {
         checkXSRFToken(gwtXsrfToken);
@@ -239,7 +238,6 @@ public class GwtCredentialServiceImpl extends KapuaRemoteServiceServlet implemen
             throw KapuaExceptionHandler.buildExceptionFromError(e);
         }
     }
-
 
     @Override
     public void unlock(GwtXSRFToken xsrfToken, String stringScopeId, String gwtCredentialId) throws GwtKapuaException {

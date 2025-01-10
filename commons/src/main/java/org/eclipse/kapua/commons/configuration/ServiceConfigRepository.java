@@ -14,10 +14,12 @@ package org.eclipse.kapua.commons.configuration;
 
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public interface ServiceConfigRepository extends
-        KapuaUpdatableEntityRepository<ServiceConfig, ServiceConfigListResult> {
-    ServiceConfigListResult findByScopeAndPid(TxContext txContext, KapuaId scopeId, String pid) throws KapuaException;
+        KapuaUpdatableEntityRepository<ServiceConfig> {
+
+    KapuaListResult<ServiceConfig> findByScopeAndPid(TxContext txContext, KapuaId scopeId, String pid) throws KapuaException;
 }

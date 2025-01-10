@@ -12,12 +12,18 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.management.registry.operation.internal;
 
+import java.util.Date;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
@@ -25,16 +31,11 @@ import org.eclipse.kapua.service.device.management.message.notification.NotifySt
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperation;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationCreator;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationFactory;
-import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationListResult;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationRegistryService;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationRepository;
 import org.eclipse.kapua.service.device.registry.Device;
 import org.eclipse.kapua.service.device.registry.DeviceRepository;
 import org.eclipse.kapua.storage.TxManager;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.Date;
 
 @Singleton
 public class DeviceManagementOperationRegistryServiceImpl
@@ -154,7 +155,7 @@ public class DeviceManagementOperationRegistryServiceImpl
     }
 
     @Override
-    public DeviceManagementOperationListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<DeviceManagementOperation> query(KapuaQuery query) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
         // Check Access

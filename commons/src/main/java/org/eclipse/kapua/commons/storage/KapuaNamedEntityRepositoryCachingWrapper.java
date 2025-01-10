@@ -12,34 +12,32 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.storage;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.service.internal.cache.NamedEntityCache;
 import org.eclipse.kapua.model.KapuaEntity;
 import org.eclipse.kapua.model.KapuaNamedEntity;
 import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
-
-import java.util.Optional;
 
 /**
  * This wrapper around a {@link KapuaNamedEntityRepository} provides basic caching functionality for the entities
  *
- * @param <E> The specific subclass of {@link KapuaEntity} handled by this repository
- * @param <L> The specific subclass of {@link KapuaListResult}&lt;E&gt; meant to hold list results for the kapua entity handled by this repo
+ * @param <E>
+ *         The specific subclass of {@link KapuaEntity} handled by this repository
  * @since 2.0.0
  */
 public class KapuaNamedEntityRepositoryCachingWrapper<
-        E extends KapuaNamedEntity,
-        L extends KapuaListResult<E>>
-        extends KapuaUpdatableEntityRepositoryCachingWrapper<E, L>
-        implements KapuaNamedEntityRepository<E, L> {
+        E extends KapuaNamedEntity>
+        extends KapuaUpdatableEntityRepositoryCachingWrapper<E>
+        implements KapuaNamedEntityRepository<E> {
 
-    protected final KapuaNamedEntityRepository<E, L> wrapped;
+    protected final KapuaNamedEntityRepository<E> wrapped;
     protected final NamedEntityCache entityCache;
 
-    public KapuaNamedEntityRepositoryCachingWrapper(KapuaNamedEntityRepository<E, L> wrapped, NamedEntityCache entityCache) {
+    public KapuaNamedEntityRepositoryCachingWrapper(KapuaNamedEntityRepository<E> wrapped, NamedEntityCache entityCache) {
         super(wrapped, entityCache);
         this.wrapped = wrapped;
         this.entityCache = entityCache;

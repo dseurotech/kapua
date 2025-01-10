@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.device.registry.event;
 import org.eclipse.kapua.storage.KapuaEntityRepository;
 
 public interface DeviceEventRepository
-        extends KapuaEntityRepository<DeviceEvent, DeviceEventListResult> {
+        extends KapuaEntityRepository<DeviceEvent> {
+
 }

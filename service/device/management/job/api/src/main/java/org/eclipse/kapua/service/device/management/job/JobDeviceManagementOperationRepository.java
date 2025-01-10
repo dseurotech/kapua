@@ -15,6 +15,6 @@ package org.eclipse.kapua.service.device.management.job;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 
 public interface JobDeviceManagementOperationRepository
-        extends KapuaUpdatableEntityRepository<JobDeviceManagementOperation, JobDeviceManagementOperationListResult> {
+        extends KapuaUpdatableEntityRepository<JobDeviceManagementOperation> {
 
 }

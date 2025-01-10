@@ -12,6 +12,15 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.role.shiro;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.JpaAwareTxContext;
 import org.eclipse.kapua.commons.jpa.KapuaEntityJpaRepository;
@@ -19,22 +28,15 @@ import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authorization.permission.shiro.PermissionImpl_;
 import org.eclipse.kapua.service.authorization.role.RolePermission;
 import org.eclipse.kapua.service.authorization.role.RolePermissionListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermissionRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class RolePermissionImplJpaRepository
-        extends KapuaEntityJpaRepository<RolePermission, RolePermissionImpl, RolePermissionListResult>
+        extends KapuaEntityJpaRepository<RolePermission, RolePermissionImpl>
         implements RolePermissionRepository {
 
     public RolePermissionImplJpaRepository(KapuaJpaRepositoryConfiguration configuration) {
@@ -42,8 +44,8 @@ public class RolePermissionImplJpaRepository
     }
 
     @Override
-    public RolePermissionListResult findByRoleId(TxContext tx, KapuaId scopeId, KapuaId roleId) throws KapuaException {
-        final RolePermissionListResult res = listSupplier.get();
+    public KapuaListResult<RolePermission> findByRoleId(TxContext tx, KapuaId scopeId, KapuaId roleId) throws KapuaException {
+        final KapuaListResult<RolePermission> res = listSupplier.get();
         res.addItems(doFindAllByField(tx, scopeId, RolePermissionImpl_.ROLE_ID, roleId));
         return res;
     }

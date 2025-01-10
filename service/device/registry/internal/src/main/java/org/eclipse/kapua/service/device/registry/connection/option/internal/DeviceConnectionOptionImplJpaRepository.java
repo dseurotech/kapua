@@ -15,12 +15,12 @@ package org.eclipse.kapua.service.device.registry.connection.option.internal;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.service.device.registry.connection.option.DeviceConnectionOption;
-import org.eclipse.kapua.service.device.registry.connection.option.DeviceConnectionOptionListResult;
 import org.eclipse.kapua.service.device.registry.connection.option.DeviceConnectionOptionRepository;
 
 public class DeviceConnectionOptionImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<DeviceConnectionOption, DeviceConnectionOptionImpl, DeviceConnectionOptionListResult>
+        extends KapuaUpdatableEntityJpaRepository<DeviceConnectionOption, DeviceConnectionOptionImpl>
         implements DeviceConnectionOptionRepository {
+
     public DeviceConnectionOptionImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(DeviceConnectionOptionImpl.class, DeviceConnectionOption.TYPE, () -> new DeviceConnectionOptionListResultImpl(), jpaRepoConfig);
     }

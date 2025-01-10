@@ -14,6 +14,7 @@ package org.eclipse.kapua.service.device.registry;
 
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 import org.eclipse.kapua.service.KapuaUpdatableEntityService;
@@ -31,13 +32,14 @@ public interface DeviceRegistryService extends KapuaEntityService<Device, Device
     /**
      * Returns the {@link DeviceListResult} with elements matching the provided query.
      *
-     * @param query The {@link DeviceQuery} used to filter results.
+     * @param query
+     *         The {@link DeviceQuery} used to filter results.
      * @return The {@link DeviceListResult} with elements matching the query parameter.
      * @throws KapuaException
      * @since 1.0.0
      */
     @Override
-    DeviceListResult query(KapuaQuery query) throws KapuaException;
+    KapuaListResult<Device> query(KapuaQuery query) throws KapuaException;
 
     /**
      * Finds a device by its unique clientId and loads it with all its properties.

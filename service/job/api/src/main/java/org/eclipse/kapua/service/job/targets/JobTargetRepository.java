@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.job.targets;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 
 public interface JobTargetRepository
-        extends KapuaUpdatableEntityRepository<JobTarget, JobTargetListResult> {
+        extends KapuaUpdatableEntityRepository<JobTarget> {
+
 }

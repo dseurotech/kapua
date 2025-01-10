@@ -13,11 +13,12 @@
 package org.eclipse.kapua.service.account;
 
 import org.eclipse.kapua.KapuaException;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public interface AccountRepository extends
-        KapuaNamedEntityRepository<Account, AccountListResult> {
+        KapuaNamedEntityRepository<Account> {
 
-    AccountListResult findChildAccountsRecursive(TxContext tx, String parentAccountPath) throws KapuaException;
+    KapuaListResult<Account> findChildAccountsRecursive(TxContext tx, String parentAccountPath) throws KapuaException;
 }

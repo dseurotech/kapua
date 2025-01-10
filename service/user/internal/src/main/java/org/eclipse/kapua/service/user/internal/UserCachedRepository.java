@@ -12,18 +12,18 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.user.internal;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.commons.service.internal.cache.NamedEntityCache;
 import org.eclipse.kapua.commons.storage.KapuaNamedEntityRepositoryCachingWrapper;
 import org.eclipse.kapua.service.user.User;
-import org.eclipse.kapua.service.user.UserListResult;
 import org.eclipse.kapua.service.user.UserRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Optional;
-
 public class UserCachedRepository
-        extends KapuaNamedEntityRepositoryCachingWrapper<User, UserListResult>
+        extends KapuaNamedEntityRepositoryCachingWrapper<User>
         implements UserRepository {
+
     private final UserRepository wrapped;
 
     public UserCachedRepository(UserRepository wrapped, NamedEntityCache entityCache) {
@@ -44,6 +44,5 @@ public class UserCachedRepository
         found.ifPresent(entityCache::put);
         return found;
     }
-
 
 }

@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.registry.internal;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.configuration.KapuaConfigurableServiceBase;
@@ -20,6 +24,7 @@ import org.eclipse.kapua.commons.jpa.EventStorer;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.access.GroupQueryHelper;
@@ -28,7 +33,6 @@ import org.eclipse.kapua.service.device.registry.Device;
 import org.eclipse.kapua.service.device.registry.DeviceAttributes;
 import org.eclipse.kapua.service.device.registry.DeviceCreator;
 import org.eclipse.kapua.service.device.registry.DeviceFactory;
-import org.eclipse.kapua.service.device.registry.DeviceListResult;
 import org.eclipse.kapua.service.device.registry.DeviceQuery;
 import org.eclipse.kapua.service.device.registry.DeviceRegistryService;
 import org.eclipse.kapua.service.device.registry.DeviceRepository;
@@ -36,10 +40,6 @@ import org.eclipse.kapua.service.device.registry.common.DeviceValidation;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 /**
  * {@link DeviceRegistryService} implementation.
@@ -160,7 +160,7 @@ public class DeviceRegistryServiceImpl
     }
 
     @Override
-    public DeviceListResult query(KapuaQuery query)
+    public KapuaListResult<Device> query(KapuaQuery query)
             throws KapuaException {
         deviceValidation.validateQueryPreconditions(query);
 
@@ -214,7 +214,7 @@ public class DeviceRegistryServiceImpl
         query.setPredicate(query.attributePredicate(DeviceAttributes.GROUP_ID, groupId));
 
         txManager.<Void>execute(tx -> {
-            DeviceListResult devicesToDelete = deviceRepository.query(tx, query);
+            KapuaListResult<Device> devicesToDelete = deviceRepository.query(tx, query);
 
             for (Device d : devicesToDelete.getItems()) {
                 d.setGroupId(null);
@@ -228,7 +228,7 @@ public class DeviceRegistryServiceImpl
         DeviceQuery query = entityFactory.newQuery(accountId);
 
         txManager.<Void>execute(tx -> {
-            DeviceListResult devicesToDelete = deviceRepository.query(tx, query);
+            KapuaListResult<Device> devicesToDelete = deviceRepository.query(tx, query);
 
             for (Device d : devicesToDelete.getItems()) {
                 deviceRepository.delete(tx, d);

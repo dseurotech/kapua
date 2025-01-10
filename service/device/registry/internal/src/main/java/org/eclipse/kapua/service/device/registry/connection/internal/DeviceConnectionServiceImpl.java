@@ -12,6 +12,13 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.registry.connection.internal;
 
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import org.apache.commons.lang.NotImplementedException;
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
@@ -26,6 +33,7 @@ import org.eclipse.kapua.event.RaiseServiceEvent;
 import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
@@ -35,19 +43,12 @@ import org.eclipse.kapua.service.device.registry.connection.DeviceConnection;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionAttributes;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionCreator;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionFactory;
-import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionListResult;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionQuery;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionRepository;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionService;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Singleton;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * {@link DeviceConnectionService} implementation.
@@ -67,7 +68,8 @@ public class DeviceConnectionServiceImpl extends KapuaConfigurableServiceBase im
     /**
      * Constructor.
      *
-     * @param serviceConfigurationManager The {@link ServiceConfigurationManager} instance.
+     * @param serviceConfigurationManager
+     *         The {@link ServiceConfigurationManager} instance.
      * @since 2.0.0
      */
     @Inject
@@ -180,7 +182,7 @@ public class DeviceConnectionServiceImpl extends KapuaConfigurableServiceBase im
     }
 
     @Override
-    public DeviceConnectionListResult query(KapuaQuery query)
+    public KapuaListResult<DeviceConnection> query(KapuaQuery query)
             throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
@@ -270,7 +272,7 @@ public class DeviceConnectionServiceImpl extends KapuaConfigurableServiceBase im
         DeviceConnectionQuery query = entityFactory.newQuery(accountId);
 
         txManager.execute(tx -> {
-            final DeviceConnectionListResult deviceConnectionsToDelete = repository.query(tx, query);
+            final KapuaListResult<DeviceConnection> deviceConnectionsToDelete = repository.query(tx, query);
 
             for (DeviceConnection dc : deviceConnectionsToDelete.getItems()) {
                 repository.delete(tx, dc.getScopeId(), dc.getId());

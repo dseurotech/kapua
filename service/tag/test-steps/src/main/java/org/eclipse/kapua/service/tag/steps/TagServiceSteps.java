@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.tag.steps;
 
-import com.google.inject.Singleton;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
 import org.eclipse.kapua.qa.common.StepData;
 import org.eclipse.kapua.qa.common.TestBase;
@@ -38,11 +38,15 @@ import org.eclipse.kapua.service.tag.TagQuery;
 import org.eclipse.kapua.service.tag.TagService;
 import org.junit.Assert;
 
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.google.inject.Singleton;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
  * Implementation of Gherkin steps used in TagService.feature scenarios.
@@ -173,7 +177,7 @@ public class TagServiceSteps extends TestBase {
             TagQuery query = tagFactory.newQuery(SYS_SCOPE_ID);
             query.setPredicate(query.attributePredicate(TagAttributes.NAME, tagName, AttributePredicate.Operator.EQUAL));
             //TODO: #LAYER_VIOLATION - isn't this a find by name?
-            TagListResult queryResult = tagService.query(query);
+            KapuaListResult<Tag> queryResult = tagService.query(query);
             Tag foundTag = queryResult.getFirstItem();
             stepData.put("tag", foundTag);
             stepData.put("queryResult", queryResult);
@@ -189,7 +193,7 @@ public class TagServiceSteps extends TestBase {
             TagQuery query = tagFactory.newQuery(getCurrentScopeId());
             query.setPredicate(query.attributePredicate(TagAttributes.NAME, tagName, AttributePredicate.Operator.EQUAL));
             //TODO: #LAYER_VIOLATION - isn't this a find by name?
-            TagListResult queryResult = tagService.query(query);
+            KapuaListResult<Tag> queryResult = tagService.query(query);
             Tag foundTag = queryResult.getFirstItem();
             //TODO: #LAYER_VIOLATION - or better, delete by name?
             tagService.delete(getCurrentScopeId(), foundTag.getId());
@@ -232,7 +236,8 @@ public class TagServiceSteps extends TestBase {
     /**
      * Create TagCreator for creating tag with specified name.
      *
-     * @param tagName name of tag
+     * @param tagName
+     *         name of tag
      * @return tag creator for tag with specified name
      */
     private TagCreator tagCreatorCreatorWithoutDescription(String tagName) {
@@ -268,7 +273,7 @@ public class TagServiceSteps extends TestBase {
             primeException();
             TagQuery query = tagFactory.newQuery(getCurrentScopeId());
             query.setPredicate(query.attributePredicate(TagAttributes.NAME, tagName, AttributePredicate.Operator.EQUAL));
-            TagListResult queryResult = tagService.query(query);
+            KapuaListResult<Tag> queryResult = tagService.query(query);
             Tag foundTag = queryResult.getFirstItem();
             foundTag.setName(newTagName);
             //TODO: #LAYER_VIOLATION - this is updateByName
@@ -298,7 +303,7 @@ public class TagServiceSteps extends TestBase {
         try {
             TagQuery query = tagFactory.newQuery(getCurrentScopeId());
             query.setPredicate(query.attributePredicate(TagAttributes.NAME, tagName, AttributePredicate.Operator.EQUAL));
-            TagListResult queryResult = tagService.query(query);
+            KapuaListResult<Tag> queryResult = tagService.query(query);
             Tag foundTag = queryResult.getFirstItem();
             foundTag.setDescription(newDescription);
             primeException();

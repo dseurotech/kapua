@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.scheduler.trigger.definition;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 
 public interface TriggerDefinitionRepository
-        extends KapuaNamedEntityRepository<TriggerDefinition, TriggerDefinitionListResult> {
+        extends KapuaNamedEntityRepository<TriggerDefinition> {
+
 }

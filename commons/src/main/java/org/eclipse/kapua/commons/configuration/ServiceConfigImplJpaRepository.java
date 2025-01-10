@@ -16,17 +16,18 @@ import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.TxContext;
 
 public class ServiceConfigImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<ServiceConfig, ServiceConfigImpl, ServiceConfigListResult> implements ServiceConfigRepository {
+        extends KapuaUpdatableEntityJpaRepository<ServiceConfig, ServiceConfigImpl> implements ServiceConfigRepository {
 
     public ServiceConfigImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(ServiceConfigImpl.class, ServiceConfig.TYPE, () -> new ServiceConfigListResultImpl(), jpaRepoConfig);
     }
 
     @Override
-    public ServiceConfigListResult findByScopeAndPid(TxContext txContext, KapuaId scopeId, String pid) throws KapuaException {
+    public KapuaListResult<ServiceConfig> findByScopeAndPid(TxContext txContext, KapuaId scopeId, String pid) throws KapuaException {
         final ServiceConfigQueryImpl query = new ServiceConfigQueryImpl(scopeId);
 
         query.setPredicate(

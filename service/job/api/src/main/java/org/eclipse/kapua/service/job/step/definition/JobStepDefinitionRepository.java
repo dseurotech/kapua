@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.job.step.definition;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 
 public interface JobStepDefinitionRepository
-        extends KapuaNamedEntityRepository<JobStepDefinition, JobStepDefinitionListResult> {
+        extends KapuaNamedEntityRepository<JobStepDefinition> {
+
 }

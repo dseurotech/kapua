@@ -12,10 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.device.server;
 
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.google.common.base.Strings;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
 import org.eclipse.kapua.app.console.module.api.server.util.KapuaExceptionHandler;
@@ -25,20 +24,21 @@ import org.eclipse.kapua.app.console.module.device.shared.service.GwtDeviceManag
 import org.eclipse.kapua.app.console.module.device.shared.util.GwtKapuaDeviceModelConverter;
 import org.eclipse.kapua.app.console.module.device.shared.util.KapuaGwtDeviceModelConverter;
 import org.eclipse.kapua.locator.KapuaLocator;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.SortOrder;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperation;
-import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationListResult;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationQuery;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationRegistryService;
 import org.eclipse.kapua.service.device.management.registry.operation.notification.ManagementOperationNotification;
 import org.eclipse.kapua.service.device.management.registry.operation.notification.ManagementOperationNotificationAttributes;
 import org.eclipse.kapua.service.device.management.registry.operation.notification.ManagementOperationNotificationFactory;
-import org.eclipse.kapua.service.device.management.registry.operation.notification.ManagementOperationNotificationListResult;
 import org.eclipse.kapua.service.device.management.registry.operation.notification.ManagementOperationNotificationQuery;
 import org.eclipse.kapua.service.device.management.registry.operation.notification.ManagementOperationNotificationService;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.google.common.base.Strings;
 
 /**
  * The server side implementation of the RPC service.
@@ -61,7 +61,7 @@ public class GwtDeviceManagementOperationServiceImpl extends KapuaRemoteServiceS
         try {
             DeviceManagementOperationQuery query = GwtKapuaDeviceModelConverter.convertDeviceManagementOperationQuery(loadConfig, gwtQuery);
 
-            DeviceManagementOperationListResult managementOperations = DEVICE_MANAGEMENT_OPERATION_REGISTRY_SERVICE.query(query);
+            KapuaListResult<DeviceManagementOperation> managementOperations = DEVICE_MANAGEMENT_OPERATION_REGISTRY_SERVICE.query(query);
             totalLength = managementOperations.getTotalCount().intValue();
 
             for (DeviceManagementOperation dmo : managementOperations.getItems()) {
@@ -73,7 +73,7 @@ public class GwtDeviceManagementOperationServiceImpl extends KapuaRemoteServiceS
                     notificationQuery.setPredicate(notificationQuery.attributePredicate(ManagementOperationNotificationAttributes.OPERATION_ID, dmo.getId()));
                     notificationQuery.setSortCriteria(notificationQuery.fieldSortCriteria(ManagementOperationNotificationAttributes.SENT_ON, SortOrder.ASCENDING));
 
-                    ManagementOperationNotificationListResult notifications = MANAGEMENT_OPERATION_NOTIFICATION_SERVICE.query(notificationQuery);
+                    KapuaListResult<ManagementOperationNotification> notifications = MANAGEMENT_OPERATION_NOTIFICATION_SERVICE.query(notificationQuery);
 
                     StringBuilder logSb = new StringBuilder();
                     for (ManagementOperationNotification mon : notifications.getItems()) {

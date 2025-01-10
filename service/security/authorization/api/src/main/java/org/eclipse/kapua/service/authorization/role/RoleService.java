@@ -12,14 +12,14 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.role;
 
+import java.util.List;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 import org.eclipse.kapua.service.KapuaUpdatableEntityService;
 import org.eclipse.kapua.service.config.KapuaConfigurableService;
-
-import java.util.List;
 
 /**
  * {@link Role} service definition.
@@ -31,10 +31,10 @@ public interface RoleService extends KapuaEntityService<Role, RoleCreator>,
         KapuaConfigurableService {
 
     /**
-     * Creates a new {@link Role} based on the parameters provided in the {@link RoleCreator}.<br>
-     * {@link Role} must have a unique name within the scope.
+     * Creates a new {@link Role} based on the parameters provided in the {@link RoleCreator}.<br> {@link Role} must have a unique name within the scope.
      *
-     * @param roleCreator The creator object from which to create the {@link Role}.
+     * @param roleCreator
+     *         The creator object from which to create the {@link Role}.
      * @throws KapuaException
      * @since 1.0.0
      */
@@ -42,10 +42,10 @@ public interface RoleService extends KapuaEntityService<Role, RoleCreator>,
     Role create(RoleCreator roleCreator) throws KapuaException;
 
     /**
-     * Updates the {@link Role} according the given updated entity.<br>
-     * The {@link Role#getName()} can be updated, but must remain unique within the scope.<br>
+     * Updates the {@link Role} according the given updated entity.<br> The {@link Role#getName()} can be updated, but must remain unique within the scope.<br>
      *
-     * @param role The updated {@link Role}.
+     * @param role
+     *         The updated {@link Role}.
      * @return A {@link Role} with updated values.
      * @throws KapuaException
      * @since 1.0.0
@@ -56,8 +56,10 @@ public interface RoleService extends KapuaEntityService<Role, RoleCreator>,
     /**
      * Finds the {@link Role} by scope identifier and {@link Role} id.
      *
-     * @param scopeId The scope id in which to search.
-     * @param roleId  The {@link Role} id to search.
+     * @param scopeId
+     *         The scope id in which to search.
+     * @param roleId
+     *         The {@link Role} id to search.
      * @return The {@link Role} found or {@code null} if no entity was found.
      * @throws KapuaException
      * @since 1.0.0
@@ -66,20 +68,10 @@ public interface RoleService extends KapuaEntityService<Role, RoleCreator>,
     Role find(KapuaId scopeId, KapuaId roleId) throws KapuaException;
 
     /**
-     * Returns the {@link RoleListResult} with elements matching the provided query.
-     *
-     * @param query The {@link RoleQuery} used to filter results.
-     * @return The {@link RoleListResult} with elements matching the query parameter.
-     * @throws KapuaException
-     * @since 1.0.0
-     */
-    @Override
-    RoleListResult query(KapuaQuery query) throws KapuaException;
-
-    /**
      * Returns the count of the {@link Role} elements matching the provided query.
      *
-     * @param query The {@link RoleQuery} used to filter results.
+     * @param query
+     *         The {@link RoleQuery} used to filter results.
      * @return The count of the {@link Role} elements matching the provided query.
      * @throws KapuaException
      * @since 1.0.0
@@ -90,8 +82,10 @@ public interface RoleService extends KapuaEntityService<Role, RoleCreator>,
     /**
      * Delete the {@link Role} by scope id and {@link Role} id.
      *
-     * @param scopeId The scope id in which to delete.
-     * @param roleId  The {@link Role} id to delete.
+     * @param scopeId
+     *         The scope id in which to delete.
+     * @param roleId
+     *         The {@link Role} id to delete.
      * @throws KapuaException
      * @since 1.0.0
      */
@@ -101,8 +95,10 @@ public interface RoleService extends KapuaEntityService<Role, RoleCreator>,
     /**
      * Return the {@link KapuaId}s of the users who were assigned the given {@link Role} id.
      *
-     * @param scopeId The scope id in which to search.
-     * @param roleId  The {@link Role} id to search.
+     * @param scopeId
+     *         The scope id in which to search.
+     * @param roleId
+     *         The {@link Role} id to search.
      * @throws KapuaException
      * @since 2.1.0
      */

@@ -12,12 +12,13 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.service.event.store.internal;
 
+import javax.inject.Inject;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreFactory;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecord;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordCreator;
-import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordListResult;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordRepository;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreService;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
@@ -25,12 +26,11 @@ import org.eclipse.kapua.event.RaiseServiceEvent;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.storage.TxManager;
-
-import javax.inject.Inject;
 
 /**
  * {@link EventStoreService} implementation.
@@ -120,7 +120,7 @@ public class EventStoreServiceImpl
     }
 
     @Override
-    public EventStoreRecordListResult query(KapuaQuery query)
+    public KapuaListResult<EventStoreRecord> query(KapuaQuery query)
             throws KapuaException {
         ArgumentValidator.notNull(query, "query");
         // Check Access

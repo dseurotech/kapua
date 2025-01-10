@@ -29,6 +29,7 @@ import org.eclipse.kapua.job.engine.commons.wrappers.JobContextWrapper;
 import org.eclipse.kapua.job.engine.commons.wrappers.JobTargetWrapper;
 import org.eclipse.kapua.job.engine.commons.wrappers.StepContextWrapper;
 import org.eclipse.kapua.model.id.KapuaIdFactory;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.model.query.predicate.AndPredicate;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
@@ -39,7 +40,6 @@ import org.eclipse.kapua.service.job.step.JobStepIndex;
 import org.eclipse.kapua.service.job.targets.JobTarget;
 import org.eclipse.kapua.service.job.targets.JobTargetAttributes;
 import org.eclipse.kapua.service.job.targets.JobTargetFactory;
-import org.eclipse.kapua.service.job.targets.JobTargetListResult;
 import org.eclipse.kapua.service.job.targets.JobTargetQuery;
 import org.eclipse.kapua.service.job.targets.JobTargetService;
 import org.eclipse.kapua.service.job.targets.JobTargetStatus;
@@ -100,7 +100,7 @@ public class DefaultTargetReader extends AbstractItemReader implements TargetRea
         // Query the targets
         query.setPredicate(andPredicate);
 
-        JobTargetListResult jobTargets = KapuaSecurityUtils.doPrivileged(() -> jobTargetService.query(query));
+        KapuaListResult<JobTarget> jobTargets = KapuaSecurityUtils.doPrivileged(() -> jobTargetService.query(query));
         // Wrap the JobTargets in a wrapper object to store additional informations
         jobTargets.getItems().forEach(jt -> wrappedJobTargets.add(new JobTargetWrapper(jt)));
 

@@ -12,19 +12,19 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.account.internal;
 
-import org.eclipse.kapua.commons.jpa.JpaAwareTxContext;
-import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
-import org.eclipse.kapua.commons.jpa.KapuaNamedEntityJpaRepository;
-import org.eclipse.kapua.service.account.Account;
-import org.eclipse.kapua.service.account.AccountListResult;
-import org.eclipse.kapua.service.account.AccountRepository;
-import org.eclipse.kapua.storage.TxContext;
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import org.eclipse.kapua.commons.jpa.JpaAwareTxContext;
+import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
+import org.eclipse.kapua.commons.jpa.KapuaNamedEntityJpaRepository;
+import org.eclipse.kapua.model.query.KapuaListResult;
+import org.eclipse.kapua.service.account.Account;
+import org.eclipse.kapua.service.account.AccountRepository;
+import org.eclipse.kapua.storage.TxContext;
+
 public class AccountImplJpaRepository
-        extends KapuaNamedEntityJpaRepository<Account, AccountImpl, AccountListResult>
+        extends KapuaNamedEntityJpaRepository<Account, AccountImpl>
         implements AccountRepository {
 
     public AccountImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
@@ -32,11 +32,11 @@ public class AccountImplJpaRepository
     }
 
     @Override
-    public AccountListResult findChildAccountsRecursive(TxContext tx, String parentAccountPath) {
+    public KapuaListResult<Account> findChildAccountsRecursive(TxContext tx, String parentAccountPath) {
         final EntityManager em = JpaAwareTxContext.extractEntityManager(tx);
         TypedQuery<Account> q = em.createNamedQuery("Account.findChildAccountsRecursive", Account.class);
         q.setParameter("parentAccountPath", "\\" + parentAccountPath + "/%");
-        final AccountListResult result = listSupplier.get();
+        final KapuaListResult<Account> result = listSupplier.get();
         result.addItems(q.getResultList());
         return result;
     }

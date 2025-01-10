@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.account.test;
 
+import java.util.function.Function;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.configuration.AccountRelativeFinder;
 import org.eclipse.kapua.commons.configuration.ResourceLimitedServiceConfigurationManagerImpl;
@@ -36,15 +38,15 @@ import org.eclipse.kapua.commons.setting.system.SystemSetting;
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.config.metatype.KapuaMetatypeFactory;
+import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.query.QueryFactory;
 import org.eclipse.kapua.qa.common.MockedLocator;
 import org.eclipse.kapua.qa.common.TestJAXBContextProvider;
-import org.eclipse.kapua.service.account.AccountFactory;
 import org.eclipse.kapua.service.account.AccountRepository;
 import org.eclipse.kapua.service.account.AccountService;
-import org.eclipse.kapua.service.account.internal.AccountFactoryImpl;
 import org.eclipse.kapua.service.account.internal.AccountImplJpaRepository;
 import org.eclipse.kapua.service.account.internal.AccountMapperImpl;
+import org.eclipse.kapua.service.account.internal.AccountQueryImpl;
 import org.eclipse.kapua.service.account.internal.AccountServiceImpl;
 import org.eclipse.kapua.service.authentication.mfa.MfaAuthenticator;
 import org.eclipse.kapua.service.authentication.shiro.mfa.MfaAuthenticatorImpl;
@@ -111,8 +113,6 @@ public class AccountLocatorConfiguration {
                 // Inject actual account related services
                 //                final AccountEntityManagerFactory entityManagerFactory = AccountEntityManagerFactory.getInstance();
                 //                bind(AccountEntityManagerFactory.class).toInstance(entityManagerFactory);
-                final AccountFactory accountFactory = new AccountFactoryImpl();
-                bind(AccountFactory.class).toInstance(accountFactory);
                 bind(AccountRelativeFinder.class).toInstance(Mockito.mock(AccountRelativeFinder.class));
                 final KapuaJpaRepositoryConfiguration jpaRepoConfig = new KapuaJpaRepositoryConfiguration();
                 final AccountRepository accountRepository = new AccountImplJpaRepository(jpaRepoConfig);
@@ -127,8 +127,8 @@ public class AccountLocatorConfiguration {
                                 new ServiceConfigImplJpaRepository(jpaRepoConfig),
                                 Mockito.mock(RootUserTester.class),
                                 Mockito.mock(AccountRelativeFinder.class),
-                                new UsedEntitiesCounterImpl(
-                                        accountFactory,
+                                new UsedEntitiesCounterImpl<>(
+                                        (Function<KapuaId, AccountQueryImpl>) kapuaId -> new AccountQueryImpl(kapuaId),
                                         accountRepository),
                                 new XmlUtil(new TestJAXBContextProvider())
                         ),

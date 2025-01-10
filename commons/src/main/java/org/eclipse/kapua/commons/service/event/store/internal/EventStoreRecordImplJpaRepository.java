@@ -15,15 +15,14 @@ package org.eclipse.kapua.commons.service.event.store.internal;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecord;
-import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordListResult;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordRepository;
 
 public class EventStoreRecordImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<EventStoreRecord, EventStoreRecordImpl, EventStoreRecordListResult>
+        extends KapuaUpdatableEntityJpaRepository<EventStoreRecord, EventStoreRecordImpl>
         implements EventStoreRecordRepository {
+
     public EventStoreRecordImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(EventStoreRecordImpl.class, EventStoreRecord.TYPE, () -> new EventStoreRecordListResultImpl(), jpaRepoConfig);
     }
-
 
 }

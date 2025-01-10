@@ -15,11 +15,10 @@ package org.eclipse.kapua.service.job.step.definition.internal;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaNamedEntityJpaRepository;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinition;
-import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionListResult;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionRepository;
 
 public class JobStepDefinitionImplJpaRepository
-        extends KapuaNamedEntityJpaRepository<JobStepDefinition, JobStepDefinitionImpl, JobStepDefinitionListResult>
+        extends KapuaNamedEntityJpaRepository<JobStepDefinition, JobStepDefinitionImpl>
         implements JobStepDefinitionRepository {
 
     public JobStepDefinitionImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {

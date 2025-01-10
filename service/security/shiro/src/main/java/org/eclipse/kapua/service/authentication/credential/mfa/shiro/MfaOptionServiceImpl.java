@@ -27,6 +27,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
+import org.eclipse.kapua.commons.model.query.KapuaListResultImpl;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.commons.security.KapuaSession;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
@@ -34,6 +35,7 @@ import org.eclipse.kapua.commons.util.qr.QRCodeBuilder;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.account.Account;
 import org.eclipse.kapua.service.account.AccountService;
@@ -41,11 +43,9 @@ import org.eclipse.kapua.service.authentication.credential.mfa.KapuaExistingMfaO
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOption;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionAttributes;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionCreator;
-import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionListResult;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionRepository;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionService;
 import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCode;
-import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCodeListResult;
 import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCodeRepository;
 import org.eclipse.kapua.service.authentication.exception.KapuaAuthenticationErrorCodes;
 import org.eclipse.kapua.service.authentication.exception.KapuaAuthenticationException;
@@ -178,9 +178,8 @@ public class MfaOptionServiceImpl implements MfaOptionService {
     }
 
     /**
-     * Generates all the scratch codes.
-     * The number of generated scratch codes is decided through the {@link org.eclipse.kapua.service.authentication.mfa.MfaAuthenticator} service.
-     * The scratch code provided within the scratchCodeCreator parameter is ignored.
+     * Generates all the scratch codes. The number of generated scratch codes is decided through the {@link org.eclipse.kapua.service.authentication.mfa.MfaAuthenticator} service. The scratch code
+     * provided within the scratchCodeCreator parameter is ignored.
      *
      * @return
      * @throws KapuaException
@@ -221,7 +220,7 @@ public class MfaOptionServiceImpl implements MfaOptionService {
     }
 
     private MfaOption clearSecuritySensibleFields(MfaOption mfaOption) {
-// Set the mfa secret key to null before returning the mfaOption, because they should never be seen again
+        // Set the mfa secret key to null before returning the mfaOption, because they should never be seen again
         mfaOption.setMfaSecretKey(null);
         mfaOption.setTrustKey(null);
         mfaOption.setScratchCodes(null);
@@ -230,15 +229,15 @@ public class MfaOptionServiceImpl implements MfaOptionService {
     }
 
     @Override
-    public MfaOptionListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<MfaOption> query(KapuaQuery query) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
         // Check Access
         authorizationService.checkPermission(permissionFactory.newPermission(Domains.CREDENTIAL, Actions.read, query.getScopeId()));
 
-        final MfaOptionListResult res = txManager.execute(tx -> mfaOptionRepository.query(tx, query));
+        final KapuaListResult<MfaOption> res = txManager.execute(tx -> mfaOptionRepository.query(tx, query));
         if (res.isEmpty() == false) {
-            final MfaOptionListResultImpl cleanedRes = new MfaOptionListResultImpl();
+            final KapuaListResult<MfaOption> cleanedRes = new KapuaListResultImpl<>();
             cleanedRes.setLimitExceeded(res.isLimitExceeded());
             cleanedRes.setTotalCount(res.getTotalCount());
             cleanedRes.addItems(res.getItems()
@@ -361,7 +360,7 @@ public class MfaOptionServiceImpl implements MfaOptionService {
         }
 
         //  Code is not valid, try scratch codes login
-        final ScratchCodeListResult scratchCodeListResult;
+        final KapuaListResult<ScratchCode> scratchCodeListResult;
         try {
             scratchCodeListResult = scratchCodeRepository.findByMfaOptionId(tx, scopeId, mfaOption.getId());
         } catch (Exception e) {
@@ -471,7 +470,6 @@ public class MfaOptionServiceImpl implements MfaOptionService {
         return mfaOptionRepository.update(tx, mfaOption);
     }
 
-
     /**
      * Generate the trust key string.
      *
@@ -483,13 +481,17 @@ public class MfaOptionServiceImpl implements MfaOptionService {
     }
 
     /**
-     * Produce a QR code in base64 format for the authenticator app.
-     * This QR code generator follows the spec detailed here for the URI format: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
+     * Produce a QR code in base64 format for the authenticator app. This QR code generator follows the spec detailed here for the URI format:
+     * https://github.com/google/google-authenticator/wiki/Key-Uri-Format
      *
-     * @param organizationName the organization name to be used as issuer in the QR code
-     * @param accountName      the account name of the account to which the user belongs
-     * @param username         the username
-     * @param key              the Mfa secret key in plain text
+     * @param organizationName
+     *         the organization name to be used as issuer in the QR code
+     * @param accountName
+     *         the account name of the account to which the user belongs
+     * @param username
+     *         the username
+     * @param key
+     *         the Mfa secret key in plain text
      * @return the QR code image in base64 format
      * @since 1.3.0
      */

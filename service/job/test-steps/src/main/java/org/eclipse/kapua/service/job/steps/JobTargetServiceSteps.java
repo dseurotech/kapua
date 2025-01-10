@@ -12,25 +12,23 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.job.steps;
 
-import com.google.inject.Singleton;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.KapuaEntity;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
 import org.eclipse.kapua.qa.common.StepData;
 import org.eclipse.kapua.service.device.registry.Device;
 import org.eclipse.kapua.service.device.registry.DeviceAttributes;
 import org.eclipse.kapua.service.device.registry.DeviceFactory;
-import org.eclipse.kapua.service.device.registry.DeviceListResult;
 import org.eclipse.kapua.service.device.registry.DeviceQuery;
 import org.eclipse.kapua.service.device.registry.DeviceRegistryService;
 import org.eclipse.kapua.service.job.Job;
@@ -38,7 +36,6 @@ import org.eclipse.kapua.service.job.targets.JobTarget;
 import org.eclipse.kapua.service.job.targets.JobTargetAttributes;
 import org.eclipse.kapua.service.job.targets.JobTargetCreator;
 import org.eclipse.kapua.service.job.targets.JobTargetFactory;
-import org.eclipse.kapua.service.job.targets.JobTargetListResult;
 import org.eclipse.kapua.service.job.targets.JobTargetQuery;
 import org.eclipse.kapua.service.job.targets.JobTargetService;
 import org.eclipse.kapua.service.job.targets.JobTargetStatus;
@@ -46,10 +43,15 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.google.inject.Singleton;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 @Singleton
 public class JobTargetServiceSteps extends JobServiceTestBase {
@@ -77,7 +79,7 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
     public void setServices() {
         KapuaLocator locator = KapuaLocator.getInstance();
 
-        deviceFactory= locator.getFactory(DeviceFactory.class);
+        deviceFactory = locator.getFactory(DeviceFactory.class);
         deviceRegistryService = locator.getService(DeviceRegistryService.class);
 
         jobTargetService = locator.getService(JobTargetService.class);
@@ -126,14 +128,12 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
         }
     }
 
-
     @And("I confirm the step index is different than {int} and status is {string}")
     public void iConfirmTheStepIndexIsDifferentThanAndStatusIs(int stepIndex, String status) {
         JobTarget jobTarget = (JobTarget) stepData.get(JOB_TARGET);
         Assert.assertNotEquals(stepIndex, jobTarget.getStepIndex());
         Assert.assertEquals(status, jobTarget.getStatus().toString());
     }
-
 
     @And("I search for the job targets in database")
     public void iSearchForTheJobTargetsInDatabase() {
@@ -144,7 +144,8 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
     /**
      * Adds {@link Device}s with the given {@link Device#getClientId()}s as a {@link JobTarget} of the {@link Job} in context.
      *
-     * @param clientIds The {@link Device#getClientId()}s to add
+     * @param clientIds
+     *         The {@link Device#getClientId()}s to add
      * @throws Exception
      * @since 2.1.0
      */
@@ -155,7 +156,7 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
                 deviceQuery.attributePredicate(DeviceAttributes.CLIENT_ID, clientIds)
         );
 
-        DeviceListResult devices = deviceRegistryService.query(deviceQuery);
+        KapuaListResult<Device> devices = deviceRegistryService.query(deviceQuery);
 
         List<KapuaId> deviceIds = devices.getItems()
                 .stream()
@@ -299,7 +300,7 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
         primeException();
         try {
             stepData.remove(JOB_TARGET_LIST);
-            JobTargetListResult targetList = jobTargetService.query(tmpQuery);
+            KapuaListResult<JobTarget> targetList = jobTargetService.query(tmpQuery);
             stepData.put(JOB_TARGET_LIST, targetList);
             stepData.updateCount(targetList.getSize());
         } catch (KapuaException ex) {
@@ -367,7 +368,6 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
         Assert.assertNull("Unexpected job target item found!", stepData.get(JOB_TARGET));
     }
 
-
     @When("I test the sanity of the job target factory")
     public void testTheJobTargetFactory() {
         Assert.assertNotNull(jobTargetFactory.newCreator(SYS_SCOPE_ID));
@@ -376,14 +376,15 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
         Assert.assertNotNull(jobTargetFactory.newQuery(SYS_SCOPE_ID));
     }
 
-
     // Check Job Targets
 
     /**
      * Checks that the {@link JobTarget} in context for the {@link Job} in context has the expected {@link JobTarget#getStepIndex()} and {@link JobTarget#getStatus()}
      *
-     * @param expectedStepIndex The expected {@link JobTarget#getStepIndex()}
-     * @param expectedJobTargetStatus The expected {@link JobTarget#getStatus()}
+     * @param expectedStepIndex
+     *         The expected {@link JobTarget#getStepIndex()}
+     * @param expectedJobTargetStatus
+     *         The expected {@link JobTarget#getStatus()}
      * @throws Exception
      * @since 2.1.0
      */
@@ -396,11 +397,15 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
     }
 
     /**
-     * Checks that the {@link JobTarget} that matches the {@link Device} with the given {@link Device#getClientId()} for the {@link Job} in context has the expected {@link JobTarget#getStepIndex()} and {@link JobTarget#getStatus()}
+     * Checks that the {@link JobTarget} that matches the {@link Device} with the given {@link Device#getClientId()} for the {@link Job} in context has the expected {@link JobTarget#getStepIndex()}
+     * and {@link JobTarget#getStatus()}
      *
-     * @param clientId The {@link Device#getClientId()} to look for
-     * @param expectedStepIndex The expected {@link JobTarget#getStepIndex()}
-     * @param expectedJobTargetStatus The expected {@link JobTarget#getStatus()}
+     * @param clientId
+     *         The {@link Device#getClientId()} to look for
+     * @param expectedStepIndex
+     *         The expected {@link JobTarget#getStepIndex()}
+     * @param expectedJobTargetStatus
+     *         The expected {@link JobTarget#getStatus()}
      * @throws Exception
      * @since 2.1.0
      */
@@ -416,10 +421,10 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
 
         JobTargetQuery jobTargetQuery = jobTargetFactory.newQuery(job.getScopeId());
         jobTargetQuery.setPredicate(
-            jobTargetQuery.andPredicate(
-                jobTargetQuery.attributePredicate(JobTargetAttributes.JOB_ID, job.getId()),
-                jobTargetQuery.attributePredicate(JobTargetAttributes.JOB_TARGET_ID, device.getId())
-            )
+                jobTargetQuery.andPredicate(
+                        jobTargetQuery.attributePredicate(JobTargetAttributes.JOB_ID, job.getId()),
+                        jobTargetQuery.attributePredicate(JobTargetAttributes.JOB_TARGET_ID, device.getId())
+                )
         );
 
         JobTarget jobTarget = jobTargetService.query(jobTargetQuery).getFirstItem();
@@ -434,8 +439,10 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
     /**
      * Checks that given {@link JobTarget} has the expected {@link JobTarget#getStepIndex()} and {@link JobTarget#getStatus()}
      *
-     * @param expectedStepIndex The expected {@link JobTarget#getStepIndex()}
-     * @param expectedJobTargetStatus The expected {@link JobTarget#getStatus()}
+     * @param expectedStepIndex
+     *         The expected {@link JobTarget#getStepIndex()}
+     * @param expectedJobTargetStatus
+     *         The expected {@link JobTarget#getStatus()}
      * @throws Exception
      * @since 2.1.0
      */
@@ -470,13 +477,13 @@ public class JobTargetServiceSteps extends JobServiceTestBase {
 
     private JobTargetStatus parseJobTargetStatusFromString(String stat) {
         switch (stat.toUpperCase().trim()) {
-            case "PROCESS_AWAITING":
-                return JobTargetStatus.PROCESS_AWAITING;
-            case "PROCESS_OK":
-                return JobTargetStatus.PROCESS_OK;
-            case "PROCESS_FAILED":
-            default:
-                return JobTargetStatus.PROCESS_FAILED;
+        case "PROCESS_AWAITING":
+            return JobTargetStatus.PROCESS_AWAITING;
+        case "PROCESS_OK":
+            return JobTargetStatus.PROCESS_OK;
+        case "PROCESS_FAILED":
+        default:
+            return JobTargetStatus.PROCESS_FAILED;
         }
     }
 }

@@ -15,5 +15,6 @@ package org.eclipse.kapua.job.engine.queue;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 
 public interface QueuedJobExecutionRepository
-        extends KapuaUpdatableEntityRepository<QueuedJobExecution, QueuedJobExecutionListResult> {
+        extends KapuaUpdatableEntityRepository<QueuedJobExecution> {
+
 }

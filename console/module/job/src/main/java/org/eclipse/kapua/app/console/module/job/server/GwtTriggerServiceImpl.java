@@ -12,10 +12,11 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.job.server;
 
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.google.common.base.Strings;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaErrorCode;
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
@@ -33,23 +34,22 @@ import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.scheduler.trigger.Trigger;
 import org.eclipse.kapua.service.scheduler.trigger.TriggerCreator;
 import org.eclipse.kapua.service.scheduler.trigger.TriggerFactory;
-import org.eclipse.kapua.service.scheduler.trigger.TriggerListResult;
 import org.eclipse.kapua.service.scheduler.trigger.TriggerQuery;
 import org.eclipse.kapua.service.scheduler.trigger.TriggerService;
 import org.eclipse.kapua.service.scheduler.trigger.definition.TriggerDefinition;
 import org.eclipse.kapua.service.scheduler.trigger.definition.TriggerDefinitionFactory;
-import org.eclipse.kapua.service.scheduler.trigger.definition.TriggerDefinitionListResult;
 import org.eclipse.kapua.service.scheduler.trigger.definition.TriggerDefinitionQuery;
 import org.eclipse.kapua.service.scheduler.trigger.definition.TriggerDefinitionService;
 import org.quartz.CronExpression;
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.google.common.base.Strings;
 
 public class GwtTriggerServiceImpl extends KapuaRemoteServiceServlet implements GwtTriggerService {
 
@@ -76,10 +76,10 @@ public class GwtTriggerServiceImpl extends KapuaRemoteServiceServlet implements 
             TriggerDefinition triggerDefinitionCron = null;
             TriggerDefinition triggerDefinitionDeviceConnect = null;
 
-            TriggerDefinitionListResult triggerDefinitions = KapuaSecurityUtils.doPrivileged(new Callable<TriggerDefinitionListResult>() {
+            KapuaListResult<TriggerDefinition> triggerDefinitions = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<TriggerDefinition>>() {
 
                 @Override
-                public TriggerDefinitionListResult call() throws Exception {
+                public KapuaListResult<TriggerDefinition> call() throws Exception {
                     TriggerDefinitionQuery query = TRIGGER_DEFINITION_FACTORY.newQuery(null);
                     return TRIGGER_DEFINITION_SERVICE.query(query);
                 }
@@ -118,7 +118,7 @@ public class GwtTriggerServiceImpl extends KapuaRemoteServiceServlet implements 
             TriggerQuery triggerQuery = GwtKapuaJobModelConverter.convertTriggerQuery(gwtTriggerQuery, loadConfig);
 
             // query
-            TriggerListResult triggerListResult = TRIGGER_SERVICE.query(triggerQuery);
+            KapuaListResult<Trigger> triggerListResult = TRIGGER_SERVICE.query(triggerQuery);
             totalLength = triggerListResult.getTotalCount().intValue();
 
             // Converto to GWT entity

@@ -19,13 +19,13 @@ import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.job.step.JobStep;
 import org.eclipse.kapua.service.job.step.JobStepAttributes;
-import org.eclipse.kapua.service.job.step.JobStepListResult;
 import org.eclipse.kapua.service.job.step.JobStepRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public class JobStepImplJpaRepository
-        extends KapuaNamedEntityJpaRepository<org.eclipse.kapua.service.job.step.JobStep, JobStepImpl, JobStepListResult>
+        extends KapuaNamedEntityJpaRepository<org.eclipse.kapua.service.job.step.JobStep, JobStepImpl>
         implements JobStepRepository {
+
     public JobStepImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(JobStepImpl.class, JobStep.TYPE, () -> new JobStepListResultImpl(), jpaRepoConfig);
     }

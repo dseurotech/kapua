@@ -15,12 +15,12 @@ package org.eclipse.kapua.service.authorization.group.shiro;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaNamedEntityJpaRepository;
 import org.eclipse.kapua.service.authorization.group.Group;
-import org.eclipse.kapua.service.authorization.group.GroupListResult;
 import org.eclipse.kapua.service.authorization.group.GroupRepository;
 
 public class GroupImplJpaRepository
-        extends KapuaNamedEntityJpaRepository<Group, GroupImpl, GroupListResult>
+        extends KapuaNamedEntityJpaRepository<Group, GroupImpl>
         implements GroupRepository {
+
     public GroupImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(GroupImpl.class, Group.TYPE, () -> new GroupListResultImpl(), jpaRepoConfig);
     }

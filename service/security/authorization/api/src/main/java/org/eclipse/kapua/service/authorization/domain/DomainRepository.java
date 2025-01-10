@@ -12,15 +12,15 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.domain;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.storage.KapuaEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Optional;
-
 public interface DomainRepository
-        extends KapuaEntityRepository<Domain, DomainListResult> {
+        extends KapuaEntityRepository<Domain> {
 
     Optional<Domain> findByName(TxContext txContext, KapuaId scopeId, String name) throws KapuaException;
 }

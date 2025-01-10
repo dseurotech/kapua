@@ -15,12 +15,12 @@ package org.eclipse.kapua.service.device.management.job.internal;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.service.device.management.job.JobDeviceManagementOperation;
-import org.eclipse.kapua.service.device.management.job.JobDeviceManagementOperationListResult;
 import org.eclipse.kapua.service.device.management.job.JobDeviceManagementOperationRepository;
 
 public class JobDeviceManagementOperationImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<JobDeviceManagementOperation, JobDeviceManagementOperationImpl, JobDeviceManagementOperationListResult>
+        extends KapuaUpdatableEntityJpaRepository<JobDeviceManagementOperation, JobDeviceManagementOperationImpl>
         implements JobDeviceManagementOperationRepository {
+
     public JobDeviceManagementOperationImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(JobDeviceManagementOperationImpl.class, JobDeviceManagementOperation.TYPE, () -> new JobDeviceManagementOperationListResultImpl(), jpaRepoConfig);
     }

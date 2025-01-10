@@ -12,12 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authentication.credential.mfa;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
-
-import java.util.Optional;
 
 /**
  * {@link MfaOption} {@link KapuaUpdatableEntityRepository} definition.
@@ -25,6 +25,7 @@ import java.util.Optional;
  * @since 2.0.0
  */
 public interface MfaOptionRepository
-        extends KapuaUpdatableEntityRepository<MfaOption, MfaOptionListResult> {
+        extends KapuaUpdatableEntityRepository<MfaOption> {
+
     Optional<MfaOption> findByUserId(TxContext tx, KapuaId scopeId, KapuaId userId) throws KapuaException;
 }

@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.jpa;
 
+import java.util.function.Supplier;
+
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.AbstractKapuaUpdatableEntity;
@@ -20,15 +22,14 @@ import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.function.Supplier;
+public class KapuaUpdatableEntityJpaRepository<E extends KapuaUpdatableEntity, C extends E>
+        extends KapuaEntityJpaRepository<E, C>
+        implements KapuaUpdatableEntityRepository<E> {
 
-public class KapuaUpdatableEntityJpaRepository<E extends KapuaUpdatableEntity, C extends E, L extends KapuaListResult<E>>
-        extends KapuaEntityJpaRepository<E, C, L>
-        implements KapuaUpdatableEntityRepository<E, L> {
     public KapuaUpdatableEntityJpaRepository(
             Class<C> concreteClass,
             String entityName,
-            Supplier<L> listSupplier,
+            Supplier<KapuaListResult<E>> listSupplier,
             KapuaJpaRepositoryConfiguration configuration) {
         super(concreteClass, entityName, listSupplier, configuration);
     }

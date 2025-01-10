@@ -12,32 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.resources.v1.resources;
 
-import com.google.common.base.Strings;
-import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.app.api.core.model.CountResult;
-import org.eclipse.kapua.app.api.core.model.EntityId;
-import org.eclipse.kapua.app.api.core.model.ScopeId;
-import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
-import org.eclipse.kapua.model.KapuaEntityAttributes;
-import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.model.query.SortOrder;
-import org.eclipse.kapua.model.query.predicate.AndPredicate;
-import org.eclipse.kapua.service.KapuaService;
-import org.eclipse.kapua.service.job.Job;
-import org.eclipse.kapua.service.job.execution.JobExecutionAttributes;
-import org.eclipse.kapua.service.job.execution.JobExecutionFactory;
-import org.eclipse.kapua.service.job.execution.JobExecutionListResult;
-import org.eclipse.kapua.service.job.execution.JobExecutionQuery;
-import org.eclipse.kapua.service.job.execution.JobExecutionService;
-import org.eclipse.kapua.service.job.targets.JobTarget;
-import org.eclipse.kapua.service.job.targets.JobTargetAttributes;
-import org.eclipse.kapua.service.job.targets.JobTargetCreator;
-import org.eclipse.kapua.service.job.targets.JobTargetFactory;
-import org.eclipse.kapua.service.job.targets.JobTargetListResult;
-import org.eclipse.kapua.service.job.targets.JobTargetQuery;
-import org.eclipse.kapua.service.job.targets.JobTargetService;
-import org.eclipse.kapua.service.job.targets.JobTargetStatus;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -50,6 +24,34 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.eclipse.kapua.KapuaException;
+import org.eclipse.kapua.app.api.core.model.CountResult;
+import org.eclipse.kapua.app.api.core.model.EntityId;
+import org.eclipse.kapua.app.api.core.model.ScopeId;
+import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
+import org.eclipse.kapua.model.KapuaEntityAttributes;
+import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
+import org.eclipse.kapua.model.query.SortOrder;
+import org.eclipse.kapua.model.query.predicate.AndPredicate;
+import org.eclipse.kapua.service.KapuaService;
+import org.eclipse.kapua.service.job.Job;
+import org.eclipse.kapua.service.job.execution.JobExecution;
+import org.eclipse.kapua.service.job.execution.JobExecutionAttributes;
+import org.eclipse.kapua.service.job.execution.JobExecutionFactory;
+import org.eclipse.kapua.service.job.execution.JobExecutionQuery;
+import org.eclipse.kapua.service.job.execution.JobExecutionService;
+import org.eclipse.kapua.service.job.targets.JobTarget;
+import org.eclipse.kapua.service.job.targets.JobTargetAttributes;
+import org.eclipse.kapua.service.job.targets.JobTargetCreator;
+import org.eclipse.kapua.service.job.targets.JobTargetFactory;
+import org.eclipse.kapua.service.job.targets.JobTargetListResult;
+import org.eclipse.kapua.service.job.targets.JobTargetQuery;
+import org.eclipse.kapua.service.job.targets.JobTargetService;
+import org.eclipse.kapua.service.job.targets.JobTargetStatus;
+
+import com.google.common.base.Strings;
 
 @Path("{scopeId}/jobs/{jobId}/targets")
 public class JobTargets extends AbstractKapuaResource {
@@ -66,20 +68,28 @@ public class JobTargets extends AbstractKapuaResource {
     /**
      * Gets the {@link JobTarget} list for a given {@link Job}.
      *
-     * @param scopeId       The {@link ScopeId} in which to search results.
-     * @param jobId         The {@link Job} id to filter results
-     * @param sortParam     The name of the parameter that will be used as a sorting key
-     * @param sortDir       The sort direction. Can be ASCENDING (default), DESCENDING. Case-insensitive.
-     * @param askTotalCount Ask for the total count of the matched entities in the result
-     * @param offset        The result set offset.
-     * @param limit         The result set limit.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param jobId
+     *         The {@link Job} id to filter results
+     * @param sortParam
+     *         The name of the parameter that will be used as a sorting key
+     * @param sortDir
+     *         The sort direction. Can be ASCENDING (default), DESCENDING. Case-insensitive.
+     * @param askTotalCount
+     *         Ask for the total count of the matched entities in the result
+     * @param offset
+     *         The result set offset.
+     * @param limit
+     *         The result set limit.
      * @return The {@link JobTargetListResult} of all the jobs targets associated to the current selected job.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public JobTargetListResult simpleQuery(
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public KapuaListResult<JobTarget> simpleQuery(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,
             @QueryParam("status") JobTargetStatus status,
@@ -112,17 +122,20 @@ public class JobTargets extends AbstractKapuaResource {
     /**
      * Queries the results with the given {@link JobTargetQuery} parameter.
      *
-     * @param scopeId The {@link ScopeId} in which to search results.
-     * @param query   The {@link JobTargetQuery} to use to filter results.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param query
+     *         The {@link JobTargetQuery} to use to filter results.
      * @return The {@link JobTargetListResult} of all the result matching the given {@link JobTargetQuery} parameter.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @POST
     @Path("_query")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public JobTargetListResult query(
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public KapuaListResult<JobTarget> query(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,
             JobTargetQuery query) throws KapuaException {
@@ -134,16 +147,19 @@ public class JobTargets extends AbstractKapuaResource {
     /**
      * Counts the results with the given {@link JobTargetQuery} parameter.
      *
-     * @param scopeId The {@link ScopeId} in which to search results.
-     * @param query   The {@link JobTargetQuery} to use to filter results.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param query
+     *         The {@link JobTargetQuery} to use to filter results.
      * @return The count of all the result matching the given {@link JobTargetQuery} parameter.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @POST
     @Path("_count")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public CountResult count(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,
@@ -157,16 +173,20 @@ public class JobTargets extends AbstractKapuaResource {
     /**
      * Returns the Job specified by the "jobId" path parameter.
      *
-     * @param scopeId  The {@link ScopeId} of the requested {@link Job}.
-     * @param jobId    The id of the requested Job.
-     * @param targetId The id of the requested JobTarget.
+     * @param scopeId
+     *         The {@link ScopeId} of the requested {@link Job}.
+     * @param jobId
+     *         The id of the requested Job.
+     * @param targetId
+     *         The id of the requested JobTarget.
      * @return The requested Job object.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @GET
     @Path("{targetId}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public JobTarget find(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,
@@ -178,23 +198,23 @@ public class JobTargets extends AbstractKapuaResource {
         ));
         jobTargetQuery.setOffset(0);
         jobTargetQuery.setLimit(1);
-        JobTargetListResult jobTargetListResult = jobTargetService.query(jobTargetQuery);
+        KapuaListResult<JobTarget> jobTargetListResult = jobTargetService.query(jobTargetQuery);
 
         return returnNotNullEntity(jobTargetListResult.getFirstItem(), JobTarget.TYPE, targetId);
     }
 
     @GET
     @Path("{targetId}/executions")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public JobExecutionListResult executionsByTarget(
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public KapuaListResult<JobExecution> executionsByTarget(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,
             @PathParam("targetId") EntityId targetId,
             @QueryParam("offset") @DefaultValue("0") int offset,
             @QueryParam("limit") @DefaultValue("50") int limit) throws KapuaException {
         JobExecutionQuery jobExecutionQuery = jobExecutionFactory.newQuery(scopeId);
-        jobExecutionQuery.setPredicate(jobExecutionQuery.attributePredicate(JobExecutionAttributes.TARGET_IDS, new KapuaId[]{targetId}));
-        JobExecutionListResult jobExecutionListResult = jobExecutionService.query(jobExecutionQuery);
+        jobExecutionQuery.setPredicate(jobExecutionQuery.attributePredicate(JobExecutionAttributes.TARGET_IDS, new KapuaId[] { targetId }));
+        KapuaListResult<JobExecution> jobExecutionListResult = jobExecutionService.query(jobExecutionQuery);
 
         jobExecutionQuery.setOffset(offset);
         jobExecutionQuery.setLimit(limit);
@@ -203,20 +223,23 @@ public class JobTargets extends AbstractKapuaResource {
     }
 
     /**
-     * Creates a new {@link JobTarget} based on the information provided in {@link JobTargetCreator}
-     * parameter.
+     * Creates a new {@link JobTarget} based on the information provided in {@link JobTargetCreator} parameter.
      *
-     * @param scopeId          The {@link ScopeId} in which to create the {@link JobTarget}
-     * @param jobId            The ID of the {@link Job} to attach the {@link JobTarget} to
-     * @param jobTargetCreator Provides the information for the new {@link JobTarget} to be created.
+     * @param scopeId
+     *         The {@link ScopeId} in which to create the {@link JobTarget}
+     * @param jobId
+     *         The ID of the {@link Job} to attach the {@link JobTarget} to
+     * @param jobTargetCreator
+     *         Provides the information for the new {@link JobTarget} to be created.
      * @return The newly created {@link JobTarget} object.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.5.0
      */
 
     @POST
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public Response create(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,
@@ -230,10 +253,13 @@ public class JobTargets extends AbstractKapuaResource {
     /**
      * Deletes the JobTarget specified by the "targetId" path parameter.
      *
-     * @param scopeId  The ScopeId of the requested {@link JobTarget}.
-     * @param targetId The id of the JobTarget to be deleted.
+     * @param scopeId
+     *         The ScopeId of the requested {@link JobTarget}.
+     * @param targetId
+     *         The id of the JobTarget to be deleted.
      * @return HTTP 201 if operation has completed successfully.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.5.0
      */
 

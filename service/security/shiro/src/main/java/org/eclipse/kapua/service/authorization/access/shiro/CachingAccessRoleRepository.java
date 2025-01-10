@@ -16,12 +16,14 @@ import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.service.internal.cache.EntityCache;
 import org.eclipse.kapua.commons.storage.KapuaEntityRepositoryCachingWrapper;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRole;
 import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRoleRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-public class CachingAccessRoleRepository extends KapuaEntityRepositoryCachingWrapper<AccessRole, AccessRoleListResult> implements AccessRoleRepository {
+public class CachingAccessRoleRepository extends KapuaEntityRepositoryCachingWrapper<AccessRole> implements AccessRoleRepository {
+
     private final AccessRoleRepository wrapped;
 
     public CachingAccessRoleRepository(AccessRoleRepository wrapped, EntityCache entityCache) {
@@ -30,8 +32,8 @@ public class CachingAccessRoleRepository extends KapuaEntityRepositoryCachingWra
     }
 
     @Override
-    public AccessRoleListResult findByAccessInfoId(TxContext txContext, KapuaId scopeId, KapuaId accessInfoId) throws KapuaException {
-        AccessRoleListResult listResult = (AccessRoleListResult) entityCache.getList(scopeId, accessInfoId);
+    public KapuaListResult<AccessRole> findByAccessInfoId(TxContext txContext, KapuaId scopeId, KapuaId accessInfoId) throws KapuaException {
+        KapuaListResult<AccessRole> listResult = (AccessRoleListResult) entityCache.getList(scopeId, accessInfoId);
         if (listResult == null) {
             // Do find and populate cache
             listResult = wrapped.findByAccessInfoId(txContext, scopeId, accessInfoId);

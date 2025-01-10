@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.scheduler.trigger.fired;
 import org.eclipse.kapua.storage.KapuaEntityRepository;
 
 public interface FiredTriggerRepository
-        extends KapuaEntityRepository<FiredTrigger, FiredTriggerListResult> {
+        extends KapuaEntityRepository<FiredTrigger> {
+
 }

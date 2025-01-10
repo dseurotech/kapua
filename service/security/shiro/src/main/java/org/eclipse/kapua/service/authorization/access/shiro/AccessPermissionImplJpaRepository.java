@@ -12,6 +12,15 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.access.shiro;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.JpaAwareTxContext;
 import org.eclipse.kapua.commons.jpa.KapuaEntityJpaRepository;
@@ -19,6 +28,7 @@ import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authorization.access.AccessPermission;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionAttributes;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionListResult;
@@ -27,16 +37,8 @@ import org.eclipse.kapua.service.authorization.access.AccessPermissionRepository
 import org.eclipse.kapua.service.authorization.permission.shiro.PermissionImpl_;
 import org.eclipse.kapua.storage.TxContext;
 
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class AccessPermissionImplJpaRepository
-        extends KapuaEntityJpaRepository<AccessPermission, AccessPermissionImpl, AccessPermissionListResult>
+        extends KapuaEntityJpaRepository<AccessPermission, AccessPermissionImpl>
         implements AccessPermissionRepository {
 
     public AccessPermissionImplJpaRepository(KapuaJpaRepositoryConfiguration configuration) {
@@ -44,7 +46,7 @@ public class AccessPermissionImplJpaRepository
     }
 
     @Override
-    public AccessPermissionListResult findByAccessInfoId(TxContext tx, KapuaId scopeId, KapuaId accessInfoId) throws KapuaException {
+    public KapuaListResult<AccessPermission> findByAccessInfoId(TxContext tx, KapuaId scopeId, KapuaId accessInfoId) throws KapuaException {
         AccessPermissionQuery query = new AccessPermissionQueryImpl(scopeId);
         query.setPredicate(query.attributePredicate(AccessPermissionAttributes.ACCESS_INFO_ID, accessInfoId));
         return this.query(tx, query);

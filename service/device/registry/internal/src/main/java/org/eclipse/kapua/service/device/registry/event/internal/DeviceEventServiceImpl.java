@@ -12,12 +12,16 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.registry.event.internal;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
@@ -26,15 +30,11 @@ import org.eclipse.kapua.service.device.registry.DeviceRepository;
 import org.eclipse.kapua.service.device.registry.event.DeviceEvent;
 import org.eclipse.kapua.service.device.registry.event.DeviceEventCreator;
 import org.eclipse.kapua.service.device.registry.event.DeviceEventFactory;
-import org.eclipse.kapua.service.device.registry.event.DeviceEventListResult;
 import org.eclipse.kapua.service.device.registry.event.DeviceEventRepository;
 import org.eclipse.kapua.service.device.registry.event.DeviceEventService;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * {@link DeviceEventService} implementation.
@@ -104,7 +104,7 @@ public class DeviceEventServiceImpl
             final DeviceEvent created = repository.create(tx, newEvent);
             device.setLastEventId(created.getId());
             //Do not call update explicitly, the transaction ending will automatically update the entity
-//            deviceRepository.update(tx, device, device);
+            //            deviceRepository.update(tx, device, device);
             return newEvent;
         });
 
@@ -124,7 +124,7 @@ public class DeviceEventServiceImpl
     }
 
     @Override
-    public DeviceEventListResult query(KapuaQuery query)
+    public KapuaListResult<DeviceEvent> query(KapuaQuery query)
             throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");

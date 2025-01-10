@@ -12,18 +12,18 @@
  *******************************************************************************/
 package org.eclipse.kapua.extras.migrator.encryption.authentication;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOption;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionCreator;
-import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionListResult;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionRepository;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionService;
 import org.eclipse.kapua.storage.TxManager;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * {@link MfaOptionService} implementation.
@@ -48,7 +48,7 @@ public class MfaOptionMigratorServiceImpl implements MfaOptionService {
     }
 
     @Override
-    public MfaOptionListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<MfaOption> query(KapuaQuery query) throws KapuaException {
         return txManager.execute(tx -> repository.query(tx, query));
     }
 

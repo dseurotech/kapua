@@ -37,6 +37,7 @@ import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.config.metatype.KapuaTocd;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.id.KapuaIdImpl;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.qa.common.StepData;
 import org.eclipse.kapua.qa.common.TestBase;
@@ -46,7 +47,6 @@ import org.eclipse.kapua.service.account.Account;
 import org.eclipse.kapua.service.account.AccountAttributes;
 import org.eclipse.kapua.service.account.AccountCreator;
 import org.eclipse.kapua.service.account.AccountFactory;
-import org.eclipse.kapua.service.account.AccountListResult;
 import org.eclipse.kapua.service.account.AccountQuery;
 import org.eclipse.kapua.service.account.AccountService;
 import org.eclipse.kapua.service.account.Organization;
@@ -527,7 +527,7 @@ public class AccountServiceSteps extends TestBase {
         stepData.remove(INT_VALUE);
         try {
             primeException();
-            AccountListResult accList = accountService.query(query);
+            KapuaListResult<Account> accList = accountService.query(query);
             stepData.put(INT_VALUE, accList.getSize());
         } catch (KapuaException ex) {
             verifyException(ex);
@@ -785,7 +785,7 @@ public class AccountServiceSteps extends TestBase {
     public void iFindAccountWithName(String accountName) throws Exception {
         AccountQuery accountQuery = accountFactory.newQuery(getCurrentScopeId());
         accountQuery.setPredicate(accountQuery.attributePredicate(AccountAttributes.NAME, accountName));
-        AccountListResult accountListResult = accountService.query(accountQuery);
+        KapuaListResult<Account> accountListResult = accountService.query(accountQuery);
         Assert.assertTrue(accountListResult.getSize() > 0);
     }
 
@@ -872,7 +872,7 @@ public class AccountServiceSteps extends TestBase {
         AccountQuery query = accountFactory.newQuery(tmpAccount.getId());
         try {
             primeException();
-            AccountListResult accList = accountService.query(query);
+            KapuaListResult<Account> accList = accountService.query(query);
             stepData.put("NumberOfFoundAccounts", accList.getSize());
         } catch (KapuaException ex) {
             verifyException(ex);

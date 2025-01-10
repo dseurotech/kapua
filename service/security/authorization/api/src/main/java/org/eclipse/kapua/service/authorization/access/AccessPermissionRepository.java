@@ -15,12 +15,13 @@ package org.eclipse.kapua.service.authorization.access;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-public interface AccessPermissionRepository extends KapuaEntityRepository<AccessPermission, AccessPermissionListResult> {
+public interface AccessPermissionRepository extends KapuaEntityRepository<AccessPermission> {
 
-    AccessPermissionListResult findByAccessInfoId(TxContext txContext, KapuaId scopeId, KapuaId accessInfoId) throws KapuaException;
+    KapuaListResult<AccessPermission> findByAccessInfoId(TxContext txContext, KapuaId scopeId, KapuaId accessInfoId) throws KapuaException;
 
-    AccessPermissionListResult deleteAllByDomainAndAction(TxContext tx, String domainEntryName, Actions actionToDelete) throws KapuaException;
+    KapuaListResult<AccessPermission> deleteAllByDomainAndAction(TxContext tx, String domainEntryName, Actions actionToDelete) throws KapuaException;
 }

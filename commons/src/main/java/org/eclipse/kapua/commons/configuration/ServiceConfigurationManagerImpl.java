@@ -42,6 +42,7 @@ import org.eclipse.kapua.model.config.metatype.KapuaTad;
 import org.eclipse.kapua.model.config.metatype.KapuaTmetadata;
 import org.eclipse.kapua.model.config.metatype.KapuaTocd;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.config.KapuaConfigurableService;
 import org.eclipse.kapua.storage.TxContext;
 import org.xml.sax.SAXException;
@@ -152,7 +153,7 @@ public class ServiceConfigurationManagerImpl implements ServiceConfigurationMana
                 )
         );
 
-        ServiceConfigListResult result = serviceConfigRepository.query(txContext, query);
+        KapuaListResult<ServiceConfig> result = serviceConfigRepository.query(txContext, query);
 
         Properties props = toProperties(values);
         if (result == null || result.isEmpty()) {
@@ -334,7 +335,7 @@ public class ServiceConfigurationManagerImpl implements ServiceConfigurationMana
         // Argument validation
         ArgumentValidator.notNull(scopeId, "scopeId");
         // Get configuration values
-        final ServiceConfigListResult result = serviceConfigRepository.findByScopeAndPid(txContext, scopeId, pid);
+        final KapuaListResult<ServiceConfig> result = serviceConfigRepository.findByScopeAndPid(txContext, scopeId, pid);
 
         Properties properties = null;
         if (result != null && !result.isEmpty()) {

@@ -20,13 +20,13 @@ import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOption;
-import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionListResult;
 import org.eclipse.kapua.service.authentication.credential.mfa.MfaOptionRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public class MfaOptionImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<MfaOption, MfaOptionImpl, MfaOptionListResult>
+        extends KapuaUpdatableEntityJpaRepository<MfaOption, MfaOptionImpl>
         implements MfaOptionRepository {
+
     public MfaOptionImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(MfaOptionImpl.class, MfaOption.TYPE, MfaOptionListResultImpl::new, jpaRepoConfig);
     }

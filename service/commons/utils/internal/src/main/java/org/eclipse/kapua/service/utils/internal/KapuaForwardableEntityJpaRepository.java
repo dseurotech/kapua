@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.utils.internal;
 
+import java.util.function.Supplier;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaNamedEntityJpaRepository;
@@ -23,17 +25,16 @@ import org.eclipse.kapua.service.utils.KapuaEntityQueryUtil;
 import org.eclipse.kapua.service.utils.KapuaForwardableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.function.Supplier;
+public class KapuaForwardableEntityJpaRepository<E extends KapuaForwardableEntity, C extends E>
+        extends KapuaNamedEntityJpaRepository<E, C>
+        implements KapuaForwardableEntityRepository<E> {
 
-public class KapuaForwardableEntityJpaRepository<E extends KapuaForwardableEntity, C extends E, L extends KapuaListResult<E>>
-        extends KapuaNamedEntityJpaRepository<E, C, L>
-        implements KapuaForwardableEntityRepository<E, L> {
     private final KapuaEntityQueryUtil kapuaEntityQueryUtil;
 
     public KapuaForwardableEntityJpaRepository(
             Class<C> concreteClass,
             String entityName,
-            Supplier<L> listSupplier,
+            Supplier<KapuaListResult<E>> listSupplier,
             KapuaJpaRepositoryConfiguration jpaRepoConfig,
             KapuaEntityQueryUtil kapuaEntityQueryUtil) {
         super(concreteClass, entityName, listSupplier, jpaRepoConfig);
@@ -41,18 +42,18 @@ public class KapuaForwardableEntityJpaRepository<E extends KapuaForwardableEntit
     }
 
     @Override
-    public L query(TxContext txContext, KapuaForwardableEntityQuery kapuaQuery) throws KapuaException {
+    public KapuaListResult<E> query(TxContext txContext, KapuaForwardableEntityQuery kapuaQuery) throws KapuaException {
         return doQuery(txContext, kapuaQuery);
     }
 
     @Override
-    public L query(TxContext txContext, KapuaQuery listQuery) throws KapuaException {
+    public KapuaListResult<E> query(TxContext txContext, KapuaQuery listQuery) throws KapuaException {
         // Transform the query for the includeInherited option
         return (listQuery instanceof KapuaForwardableEntityQuery)
                 ? this.doQuery(txContext, (KapuaForwardableEntityQuery) listQuery) : super.query(txContext, listQuery);
     }
 
-    private L doQuery(TxContext txContext, KapuaForwardableEntityQuery kapuaQuery) throws KapuaException {
+    private KapuaListResult<E> doQuery(TxContext txContext, KapuaForwardableEntityQuery kapuaQuery) throws KapuaException {
         final KapuaQuery query = kapuaEntityQueryUtil.transformInheritedQuery(kapuaQuery);
         return super.query(txContext, query);
     }

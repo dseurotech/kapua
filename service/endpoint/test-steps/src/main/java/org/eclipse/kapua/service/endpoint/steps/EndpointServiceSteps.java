@@ -12,19 +12,16 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.endpoint.steps;
 
+import java.util.List;
+import java.util.concurrent.Callable;
 
-import com.google.inject.Singleton;
-import io.cucumber.datatable.DataTable;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import javax.inject.Inject;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.KapuaIllegalNullArgumentException;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.locator.KapuaLocator;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.predicate.AndPredicate;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
 import org.eclipse.kapua.qa.common.StepData;
@@ -33,14 +30,19 @@ import org.eclipse.kapua.service.endpoint.EndpointInfo;
 import org.eclipse.kapua.service.endpoint.EndpointInfoAttributes;
 import org.eclipse.kapua.service.endpoint.EndpointInfoCreator;
 import org.eclipse.kapua.service.endpoint.EndpointInfoFactory;
-import org.eclipse.kapua.service.endpoint.EndpointInfoListResult;
 import org.eclipse.kapua.service.endpoint.EndpointInfoQuery;
 import org.eclipse.kapua.service.endpoint.EndpointInfoService;
 import org.junit.Assert;
 
-import javax.inject.Inject;
-import java.util.List;
-import java.util.concurrent.Callable;
+import com.google.inject.Singleton;
+
+import io.cucumber.datatable.DataTable;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 @Singleton
 public class EndpointServiceSteps extends TestBase {
@@ -48,13 +50,13 @@ public class EndpointServiceSteps extends TestBase {
     private EndpointInfoService endpointInfoService;
     private EndpointInfoFactory endpointInfoFactory;
 
-// ****************************************************************************************
-// * Implementation of Gherkin steps used in JobService.feature scenarios.                *
-// *                                                                                      *
-// * MockedLocator is used for Location Service. Mockito is used to mock other            *
-// * services that the Account services dependent on. Dependent services are:             *
-// * - Authorization Service                                                              *
-// ****************************************************************************************
+    // ****************************************************************************************
+    // * Implementation of Gherkin steps used in JobService.feature scenarios.                *
+    // *                                                                                      *
+    // * MockedLocator is used for Location Service. Mockito is used to mock other            *
+    // * services that the Account services dependent on. Dependent services are:             *
+    // * - Authorization Service                                                              *
+    // ****************************************************************************************
 
     private static final String ENDPOINT_INFO = "EndpointInfo";
 
@@ -64,7 +66,7 @@ public class EndpointServiceSteps extends TestBase {
         super(stepData);
     }
 
-    @After(value="@setup")
+    @After(value = "@setup")
     public void setServices() {
         KapuaLocator locator = KapuaLocator.getInstance();
         endpointInfoService = locator.getService(EndpointInfoService.class);
@@ -81,7 +83,7 @@ public class EndpointServiceSteps extends TestBase {
     // * Setup and tear-down steps                                                        *
     // ************************************************************************************
 
-    @Before(value="@env_docker or @env_docker_base or @env_none", order=10)
+    @Before(value = "@env_docker or @env_docker_base or @env_none", order = 10)
     public void beforeScenarioNone(Scenario scenario) {
         updateScenario(scenario);
     }
@@ -303,7 +305,7 @@ public class EndpointServiceSteps extends TestBase {
         primeException();
         try {
             EndpointInfoQuery endpointInfoQuery = endpointInfoFactory.newQuery(getCurrentScopeId());
-            EndpointInfoListResult endpointInfo = endpointInfoService.query(endpointInfoQuery);
+            KapuaListResult<EndpointInfo> endpointInfo = endpointInfoService.query(endpointInfoQuery);
             stepData.put("NumberOfEndpoints", endpointInfo.getSize());
         } catch (Exception ex) {
             verifyException(ex);
@@ -342,7 +344,7 @@ public class EndpointServiceSteps extends TestBase {
         try {
             EndpointInfoQuery endpointInfoQuery = endpointInfoFactory.newQuery(getCurrentScopeId());
             endpointInfoQuery.setPredicate(endpointInfoQuery.attributePredicate(EndpointInfoAttributes.SCHEMA, schema, AttributePredicate.Operator.EQUAL));
-            EndpointInfoListResult endpointsToDelete = endpointInfoService.query(endpointInfoQuery);
+            KapuaListResult<EndpointInfo> endpointsToDelete = endpointInfoService.query(endpointInfoQuery);
             for (int i = 0; i < endpointsToDelete.getSize(); i++) {
                 endpointInfoService.delete(getCurrentScopeId(), endpointsToDelete.getItem(i).getId());
             }
@@ -406,7 +408,7 @@ public class EndpointServiceSteps extends TestBase {
     }
 
     @And("I create endpoint with schema {string} and port {int} without domain name")
-    public void iCreateEndpointWithSchemaAndPortWithoutDomain(String schema, int port ) throws Throwable {
+    public void iCreateEndpointWithSchemaAndPortWithoutDomain(String schema, int port) throws Throwable {
         EndpointInfoCreator endpointInfoCreator = endpointInfoFactory.newCreator(getCurrentScopeId());
         endpointInfoCreator.setSchema(schema);
         endpointInfoCreator.setPort(port);
@@ -421,7 +423,7 @@ public class EndpointServiceSteps extends TestBase {
     }
 
     @And("I create endpoint with domain name {string} without schema and port")
-    public void iCreateEndpointWithDomainWithoutSchemaAndPort(String domainName) throws Throwable{
+    public void iCreateEndpointWithDomainWithoutSchemaAndPort(String domainName) throws Throwable {
         EndpointInfoCreator endpointInfoCreator = endpointInfoFactory.newCreator(getCurrentScopeId());
         endpointInfoCreator.setDns(domainName);
         endpointInfoCreator.setEndpointType(EndpointInfo.ENDPOINT_TYPE_RESOURCE);
@@ -448,7 +450,7 @@ public class EndpointServiceSteps extends TestBase {
     }
 
     @And("I create endpoint with port {int} without schema and domain name")
-    public void iCreateEndpointWithPortWithoutSchemaAndDomain(int port) throws Throwable{
+    public void iCreateEndpointWithPortWithoutSchemaAndDomain(int port) throws Throwable {
         EndpointInfoCreator endpointInfoCreator = endpointInfoFactory.newCreator(getCurrentScopeId());
         endpointInfoCreator.setPort(port);
         endpointInfoCreator.setEndpointType(EndpointInfo.ENDPOINT_TYPE_RESOURCE);
@@ -520,10 +522,11 @@ public class EndpointServiceSteps extends TestBase {
     @Then("I have (\\d+) CORS filters?$")
     public void iHaveCORSFilter(int expectedNum) throws KapuaException {
         int corsFilter = KapuaSecurityUtils.doPrivileged(new Callable<Integer>() {
+
             @Override
             public Integer call() throws Exception {
                 EndpointInfoQuery endpointInfoQuery = endpointInfoFactory.newQuery(getCurrentScopeId());
-                EndpointInfoListResult corsFilters = endpointInfoService.query(endpointInfoQuery, EndpointInfo.ENDPOINT_TYPE_CORS);
+                KapuaListResult<EndpointInfo> corsFilters = endpointInfoService.query(endpointInfoQuery, EndpointInfo.ENDPOINT_TYPE_CORS);
                 return corsFilters.getSize();
             }
         });
@@ -536,7 +539,7 @@ public class EndpointServiceSteps extends TestBase {
 
         try {
             EndpointInfoQuery endpointInfoQuery = endpointInfoFactory.newQuery(getCurrentScopeId());
-            EndpointInfoListResult endpointsToDelete = endpointInfoService.query(endpointInfoQuery, EndpointInfo.ENDPOINT_TYPE_CORS);
+            KapuaListResult<EndpointInfo> endpointsToDelete = endpointInfoService.query(endpointInfoQuery, EndpointInfo.ENDPOINT_TYPE_CORS);
 
             for (int i = 0; i < endpointsToDelete.getSize(); i++) {
                 endpointInfoService.delete(getCurrentScopeId(), endpointsToDelete.getItem(i).getId());

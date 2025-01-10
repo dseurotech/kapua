@@ -15,11 +15,10 @@ package org.eclipse.kapua.service.job.targets.internal;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.service.job.targets.JobTarget;
-import org.eclipse.kapua.service.job.targets.JobTargetListResult;
 import org.eclipse.kapua.service.job.targets.JobTargetRepository;
 
 public class JobTargetImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<JobTarget, JobTargetImpl, JobTargetListResult>
+        extends KapuaUpdatableEntityJpaRepository<JobTarget, JobTargetImpl>
         implements JobTargetRepository {
 
     public JobTargetImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {

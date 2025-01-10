@@ -12,13 +12,17 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.event;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.List;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.EntityManager;
 import org.eclipse.kapua.commons.jpa.EntityManagerFactory;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecord;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordAttributes;
-import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordListResult;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreRecordQuery;
 import org.eclipse.kapua.commons.service.event.store.api.EventStoreService;
 import org.eclipse.kapua.commons.service.event.store.api.ServiceEventUtil;
@@ -30,15 +34,11 @@ import org.eclipse.kapua.event.ServiceEvent.EventStatus;
 import org.eclipse.kapua.event.ServiceEventBus;
 import org.eclipse.kapua.event.ServiceEventBusException;
 import org.eclipse.kapua.model.KapuaUpdatableEntityAttributes;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.predicate.AndPredicate;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate.Operator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Event bus housekeeper. It is responsible to send unsent messages or send again messages gone in error.
@@ -78,7 +78,8 @@ public class ServiceEventHousekeeper implements Runnable {
      * @param servicesEntryList
      * @throws KapuaException
      */
-    public ServiceEventHousekeeper(EventStoreService eventStoreService, EntityManagerFactory entityManagerFactory, ServiceEventBus eventbus, List<ServiceEntry> servicesEntryList) throws KapuaException {
+    public ServiceEventHousekeeper(EventStoreService eventStoreService, EntityManagerFactory entityManagerFactory, ServiceEventBus eventbus, List<ServiceEntry> servicesEntryList)
+            throws KapuaException {
         this.eventbus = eventbus;
         this.servicesEntryList = servicesEntryList;
         manager = entityManagerFactory.createEntityManager();
@@ -132,7 +133,7 @@ public class ServiceEventHousekeeper implements Runnable {
     }
 
     private void findAndSendUnsentEvents(String serviceName, EventsProcessType eventsProcessType) throws KapuaException {
-        EventStoreRecordListResult unsentMessagesList = getUnsentEvents(serviceName, eventsProcessType);
+        KapuaListResult<EventStoreRecord> unsentMessagesList = getUnsentEvents(serviceName, eventsProcessType);
         //send unprocessed events
         if (!unsentMessagesList.isEmpty()) {
             for (EventStoreRecord kapuaEvent : unsentMessagesList.getItems()) {
@@ -160,7 +161,7 @@ public class ServiceEventHousekeeper implements Runnable {
         }
     }
 
-    private EventStoreRecordListResult getUnsentEvents(String serviceName, EventsProcessType eventsProcessType) throws KapuaException {
+    private KapuaListResult<EventStoreRecord> getUnsentEvents(String serviceName, EventsProcessType eventsProcessType) throws KapuaException {
         EventStoreRecordQuery query = new EventStoreFactoryImpl().newQuery(null);
 
         AndPredicate andPredicate = query.andPredicate();

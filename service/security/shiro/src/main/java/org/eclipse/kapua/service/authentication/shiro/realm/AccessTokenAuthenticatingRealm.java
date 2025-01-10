@@ -30,6 +30,7 @@ import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.commons.security.KapuaSession;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.account.Account;
 import org.eclipse.kapua.service.authentication.AccessTokenCredentials;
 import org.eclipse.kapua.service.authentication.shiro.AccessTokenCredentialsImpl;
@@ -46,7 +47,6 @@ import org.eclipse.kapua.service.certificate.CertificateAttributes;
 import org.eclipse.kapua.service.certificate.CertificateStatus;
 import org.eclipse.kapua.service.certificate.info.CertificateInfo;
 import org.eclipse.kapua.service.certificate.info.CertificateInfoFactory;
-import org.eclipse.kapua.service.certificate.info.CertificateInfoListResult;
 import org.eclipse.kapua.service.certificate.info.CertificateInfoQuery;
 import org.eclipse.kapua.service.certificate.info.CertificateInfoService;
 import org.eclipse.kapua.service.certificate.util.CertificateUtils;
@@ -110,12 +110,12 @@ public class AccessTokenAuthenticatingRealm extends KapuaAuthenticatingRealm {
             }
             // Set validator
             final JwtConsumer jwtConsumer = new JwtConsumerBuilder()
-                                                .setVerificationKey(CertificateUtils.stringToCertificate(certificateInfo.getCertificate()).getPublicKey()) // Set public key
-                                                .setExpectedIssuer(issuer) // Set expected issuer
-                                                .setRequireIssuedAt() // Set require reserved claim: iatp
-                                                .setRequireExpirationTime() // Set require reserved claim: exp
-                                                .setRequireSubject() // // Set require reserved claim: sub
-                                                .build();
+                    .setVerificationKey(CertificateUtils.stringToCertificate(certificateInfo.getCertificate()).getPublicKey()) // Set public key
+                    .setExpectedIssuer(issuer) // Set expected issuer
+                    .setRequireIssuedAt() // Set require reserved claim: iatp
+                    .setRequireExpirationTime() // Set require reserved claim: exp
+                    .setRequireSubject() // // Set require reserved claim: sub
+                    .build();
             // This validates JWT
             final JwtContext jwtContext = jwtConsumer.process(jwt);
             jwtClaims = jwtContext.getJwtClaims();
@@ -178,7 +178,6 @@ public class AccessTokenAuthenticatingRealm extends KapuaAuthenticatingRealm {
                 accessToken);
     }
 
-
     @Override
     protected void assertCredentialsMatch(AuthenticationToken authcToken, AuthenticationInfo info)
             throws AuthenticationException {
@@ -199,14 +198,13 @@ public class AccessTokenAuthenticatingRealm extends KapuaAuthenticatingRealm {
         return authenticationToken instanceof AccessTokenCredentialsImpl;
     }
 
-
     private CertificateInfo getNearestCertificate(AuthenticationToken authenticationToken)
-        throws KapuaException, InvalidJwtException, MalformedClaimException {
+            throws KapuaException, InvalidJwtException, MalformedClaimException {
         final JwtConsumer jwtConsumerNoValidation = new JwtConsumerBuilder()
-                                                        .setSkipAllValidators()
-                                                        .setDisableRequireSignature()
-                                                        .setSkipSignatureVerification()
-                                                        .build();
+                .setSkipAllValidators()
+                .setDisableRequireSignature()
+                .setSkipSignatureVerification()
+                .build();
         final String principal = (String) authenticationToken.getPrincipal();
         final String username = jwtConsumerNoValidation.process(principal).getJwtClaims().getSubject();
         final String account = jwtConsumerNoValidation.process(principal).getJwtClaims().getClaimValueAsString("sId");
@@ -216,19 +214,18 @@ public class AccessTokenAuthenticatingRealm extends KapuaAuthenticatingRealm {
 
         final CertificateInfoQuery certificateInfoQuery = certificateInfoFactory.newQuery(user.getScopeId());
         certificateInfoQuery.setPredicate(
-            certificateInfoQuery.andPredicate(
-                certificateInfoQuery.attributePredicate(CertificateAttributes.USAGE_NAME, "JWT"),
-                certificateInfoQuery.attributePredicate(CertificateAttributes.STATUS, CertificateStatus.VALID)
-            )
+                certificateInfoQuery.andPredicate(
+                        certificateInfoQuery.attributePredicate(CertificateAttributes.USAGE_NAME, "JWT"),
+                        certificateInfoQuery.attributePredicate(CertificateAttributes.STATUS, CertificateStatus.VALID)
+                )
         );
         certificateInfoQuery.setIncludeInherited(true);
 
-        final CertificateInfoListResult certificateInfoList = KapuaSecurityUtils.doPrivileged(() -> certificateInfoService.query(certificateInfoQuery));
+        final KapuaListResult<CertificateInfo> certificateInfoList = KapuaSecurityUtils.doPrivileged(() -> certificateInfoService.query(certificateInfoQuery));
         return getNearestCertificateFromList(certificateInfoList);
     }
 
-
-    private CertificateInfo getNearestCertificateFromList(CertificateInfoListResult certificateInfoList) throws KapuaException {
+    private CertificateInfo getNearestCertificateFromList(KapuaListResult<CertificateInfo> certificateInfoList) throws KapuaException {
         CertificateInfo result = certificateInfoList.getFirstItem();
         for (CertificateInfo certificateInfo : certificateInfoList.getItems()) {
             if (isNearestThat(certificateInfo, result)) {
@@ -238,13 +235,11 @@ public class AccessTokenAuthenticatingRealm extends KapuaAuthenticatingRealm {
         return result;
     }
 
-
     private boolean isNearestThat(CertificateInfo certificateInfo, CertificateInfo result) throws KapuaException {
         final KapuaId certificateInfoScopeId = certificateInfo.getScopeId();
         final KapuaId resultScopeId = result.getScopeId();
         return isChildOf(certificateInfoScopeId, resultScopeId);
     }
-
 
     private boolean isChildOf(KapuaId certificateInfoScopeId, KapuaId resultScopeId) throws KapuaException {
         final Account certificateInfoAccount = KapuaSecurityUtils.doPrivileged(() -> accountService.find(certificateInfoScopeId));

@@ -32,6 +32,7 @@ import org.eclipse.kapua.app.api.core.model.CountResult;
 import org.eclipse.kapua.app.api.core.model.ScopeId;
 import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
 import org.eclipse.kapua.model.KapuaNamedEntityAttributes;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.SortOrder;
 import org.eclipse.kapua.model.query.predicate.AndPredicate;
 import org.eclipse.kapua.model.query.predicate.MatchPredicate;
@@ -78,7 +79,7 @@ public class Accounts extends AbstractKapuaResource {
      */
     @GET
     @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
-    public AccountListResult simpleQuery(
+    public KapuaListResult<Account> simpleQuery(
             @PathParam("scopeId") ScopeId scopeId, //
             @QueryParam("name") String name, //
             @QueryParam("matchTerm") String matchTerm,
@@ -141,7 +142,7 @@ public class Accounts extends AbstractKapuaResource {
     @Path("_query")
     @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    public AccountListResult query(
+    public KapuaListResult<Account> query(
             @PathParam("scopeId") ScopeId scopeId, //
             AccountQuery query) throws KapuaException {
         query.setScopeId(scopeId);

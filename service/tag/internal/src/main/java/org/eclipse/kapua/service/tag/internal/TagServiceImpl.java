@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.tag.internal;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.configuration.KapuaConfigurableServiceBase;
@@ -20,19 +23,16 @@ import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.service.tag.Tag;
 import org.eclipse.kapua.service.tag.TagCreator;
 import org.eclipse.kapua.service.tag.TagFactory;
-import org.eclipse.kapua.service.tag.TagListResult;
 import org.eclipse.kapua.service.tag.TagRepository;
 import org.eclipse.kapua.service.tag.TagService;
 import org.eclipse.kapua.storage.TxManager;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * {@link TagService} implementation.
@@ -51,11 +51,15 @@ public class TagServiceImpl extends KapuaConfigurableServiceBase implements TagS
     /**
      * Injectable Constructor
      *
-     * @param permissionFactory           The {@link PermissionFactory} instance
-     * @param authorizationService        The {@link AuthorizationService} instance
-     * @param serviceConfigurationManager The {@link ServiceConfigurationManager} instance
+     * @param permissionFactory
+     *         The {@link PermissionFactory} instance
+     * @param authorizationService
+     *         The {@link AuthorizationService} instance
+     * @param serviceConfigurationManager
+     *         The {@link ServiceConfigurationManager} instance
      * @param txManager
-     * @param tagRepository               The {@link TagRepository} instance
+     * @param tagRepository
+     *         The {@link TagRepository} instance
      * @param tagFactory
      * @since 2.0.0
      */
@@ -149,7 +153,7 @@ public class TagServiceImpl extends KapuaConfigurableServiceBase implements TagS
     }
 
     @Override
-    public TagListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<Tag> query(KapuaQuery query) throws KapuaException {
         // Argument validation
         ArgumentValidator.notNull(query, "query");
         // Check Access

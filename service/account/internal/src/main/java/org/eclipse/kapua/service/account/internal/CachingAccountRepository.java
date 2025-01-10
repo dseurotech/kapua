@@ -15,18 +15,19 @@ package org.eclipse.kapua.service.account.internal;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.service.internal.cache.NamedEntityCache;
 import org.eclipse.kapua.commons.storage.KapuaNamedEntityRepositoryCachingWrapper;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.account.Account;
-import org.eclipse.kapua.service.account.AccountListResult;
 import org.eclipse.kapua.service.account.AccountRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-public class CachingAccountRepository extends KapuaNamedEntityRepositoryCachingWrapper<Account, AccountListResult> implements AccountRepository {
+public class CachingAccountRepository extends KapuaNamedEntityRepositoryCachingWrapper<Account> implements AccountRepository {
+
     public CachingAccountRepository(AccountRepository wrapped, NamedEntityCache entityCache) {
         super(wrapped, entityCache);
     }
 
     @Override
-    public AccountListResult findChildAccountsRecursive(TxContext tx, String parentAccountPath) throws KapuaException {
+    public KapuaListResult<Account> findChildAccountsRecursive(TxContext tx, String parentAccountPath) throws KapuaException {
         return ((AccountRepository) wrapped).findChildAccountsRecursive(tx, parentAccountPath);
     }
 }

@@ -15,12 +15,12 @@ package org.eclipse.kapua.service.device.registry.event.internal;
 import org.eclipse.kapua.commons.jpa.KapuaEntityJpaRepository;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.service.device.registry.event.DeviceEvent;
-import org.eclipse.kapua.service.device.registry.event.DeviceEventListResult;
 import org.eclipse.kapua.service.device.registry.event.DeviceEventRepository;
 
 public class DeviceEventImplJpaRepository
-        extends KapuaEntityJpaRepository<DeviceEvent, DeviceEventImpl, DeviceEventListResult>
+        extends KapuaEntityJpaRepository<DeviceEvent, DeviceEventImpl>
         implements DeviceEventRepository {
+
     public DeviceEventImplJpaRepository(KapuaJpaRepositoryConfiguration configuration) {
         super(DeviceEventImpl.class, DeviceEvent.TYPE, () -> new DeviceEventListResultImpl(), configuration);
     }

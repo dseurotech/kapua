@@ -12,18 +12,22 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.domain.shiro;
 
+import java.util.Optional;
+
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.domain.Domain;
 import org.eclipse.kapua.service.authorization.domain.DomainCreator;
 import org.eclipse.kapua.service.authorization.domain.DomainFactory;
-import org.eclipse.kapua.service.authorization.domain.DomainListResult;
 import org.eclipse.kapua.service.authorization.domain.DomainQuery;
 import org.eclipse.kapua.service.authorization.domain.DomainRegistryService;
 import org.eclipse.kapua.service.authorization.domain.DomainRepository;
@@ -31,9 +35,6 @@ import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Singleton;
-import java.util.Optional;
 
 /**
  * {@link DomainRegistryService} implementation.
@@ -121,7 +122,7 @@ public class DomainRegistryServiceImpl implements DomainRegistryService {
     }
 
     @Override
-    public DomainListResult query(KapuaQuery query)
+    public KapuaListResult<Domain> query(KapuaQuery query)
             throws KapuaException {
         ArgumentValidator.notNull(query, "query");
         // Check Access
@@ -154,7 +155,7 @@ public class DomainRegistryServiceImpl implements DomainRegistryService {
     private void deleteDomainByAccountId(KapuaId accountId) throws KapuaException {
         DomainQuery query = domainFactory.newQuery(accountId);
 
-        DomainListResult domainsToDelete = query(query);
+        KapuaListResult<Domain> domainsToDelete = query(query);
 
         for (Domain d : domainsToDelete.getItems()) {
             delete(d.getScopeId(), d.getId());

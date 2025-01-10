@@ -17,10 +17,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import com.google.common.collect.Sets;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.ShiroException;
 import org.apache.shiro.authc.AuthenticationException;
@@ -42,6 +42,7 @@ import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.commons.security.KapuaSession;
 import org.eclipse.kapua.commons.util.KapuaDelayUtil;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.predicate.AndPredicate;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
 import org.eclipse.kapua.service.authentication.AuthenticationCredentials;
@@ -70,20 +71,19 @@ import org.eclipse.kapua.service.authentication.token.AccessTokenService;
 import org.eclipse.kapua.service.authentication.token.LoginInfo;
 import org.eclipse.kapua.service.authorization.access.AccessInfo;
 import org.eclipse.kapua.service.authorization.access.AccessInfoService;
+import org.eclipse.kapua.service.authorization.access.AccessPermission;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionAttributes;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionFactory;
-import org.eclipse.kapua.service.authorization.access.AccessPermissionListResult;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionQuery;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionService;
 import org.eclipse.kapua.service.authorization.access.AccessRole;
 import org.eclipse.kapua.service.authorization.access.AccessRoleAttributes;
 import org.eclipse.kapua.service.authorization.access.AccessRoleFactory;
-import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRoleQuery;
 import org.eclipse.kapua.service.authorization.access.AccessRoleService;
+import org.eclipse.kapua.service.authorization.role.RolePermission;
 import org.eclipse.kapua.service.authorization.role.RolePermissionAttributes;
 import org.eclipse.kapua.service.authorization.role.RolePermissionFactory;
-import org.eclipse.kapua.service.authorization.role.RolePermissionListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermissionQuery;
 import org.eclipse.kapua.service.authorization.role.RolePermissionService;
 import org.eclipse.kapua.service.certificate.Certificate;
@@ -108,6 +108,8 @@ import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+
+import com.google.common.collect.Sets;
 
 /**
  * {@link AuthenticationService} implementation.
@@ -425,18 +427,19 @@ public class AuthenticationServiceShiroImpl implements AuthenticationService {
         // AccessRole
         AccessRoleQuery accessRoleQuery = accessRoleFactory.newQuery(accessToken.getScopeId());
         accessRoleQuery.setPredicate(accessRoleQuery.attributePredicate(AccessRoleAttributes.ACCESS_INFO_ID, accessInfo.getId()));
-        AccessRoleListResult accessRoleListResult = KapuaSecurityUtils.doPrivileged(() -> accessRoleService.query(accessRoleQuery));
+        KapuaListResult<AccessRole> accessRoleListResult = KapuaSecurityUtils.doPrivileged(() -> accessRoleService.query(accessRoleQuery));
 
         // RolePermission
         RolePermissionQuery rolePermissionQuery = rolePermissionFactory.newQuery(accessToken.getScopeId());
-        rolePermissionQuery.setPredicate(rolePermissionQuery.attributePredicate(RolePermissionAttributes.ROLE_ID, accessRoleListResult.getItems().stream().map(AccessRole::getRoleId).collect(Collectors.toList())));
-        RolePermissionListResult rolePermissions = KapuaSecurityUtils.doPrivileged(() -> rolePermissionService.query(rolePermissionQuery));
+        rolePermissionQuery.setPredicate(
+                rolePermissionQuery.attributePredicate(RolePermissionAttributes.ROLE_ID, accessRoleListResult.getItems().stream().map(AccessRole::getRoleId).collect(Collectors.toList())));
+        KapuaListResult<RolePermission> rolePermissions = KapuaSecurityUtils.doPrivileged(() -> rolePermissionService.query(rolePermissionQuery));
         loginInfo.setRolePermission(Sets.newHashSet(rolePermissions.getItems()));
 
         // AccessPermission
         AccessPermissionQuery accessPermissionQuery = accessPermissionFactory.newQuery(accessToken.getScopeId());
         accessPermissionQuery.setPredicate(accessPermissionQuery.attributePredicate(AccessPermissionAttributes.ACCESS_INFO_ID, accessInfo.getId()));
-        AccessPermissionListResult accessPermissions = KapuaSecurityUtils.doPrivileged(() -> accessPermissionService.query(accessPermissionQuery));
+        KapuaListResult<AccessPermission> accessPermissions = KapuaSecurityUtils.doPrivileged(() -> accessPermissionService.query(accessPermissionQuery));
         loginInfo.setAccessPermission(Sets.newHashSet(accessPermissions.getItems()));
 
         return loginInfo;
@@ -459,10 +462,10 @@ public class AuthenticationServiceShiroImpl implements AuthenticationService {
     //
 
     /**
-     * Checks if the Shiro {@link Subject} is authenticated or not.
-     * If {@link Subject#isAuthenticated()} {@code equals true}, {@link KapuaAuthenticationException} is raised.
+     * Checks if the Shiro {@link Subject} is authenticated or not. If {@link Subject#isAuthenticated()} {@code equals true}, {@link KapuaAuthenticationException} is raised.
      *
-     * @throws KapuaAuthenticationException If {@link Subject#isAuthenticated()} {@code equals true}
+     * @throws KapuaAuthenticationException
+     *         If {@link Subject#isAuthenticated()} {@code equals true}
      * @since 1.0
      */
     private void checkCurrentSubjectNotAuthenticated()
@@ -478,9 +481,11 @@ public class AuthenticationServiceShiroImpl implements AuthenticationService {
     /**
      * Converts am instance of {@link AuthenticationCredentials} to the compatible {@link KapuaAuthenticationToken} to be used in Apache Shiro.
      *
-     * @param authenticationCredentials The {@link AuthenticationCredentials} to convert
+     * @param authenticationCredentials
+     *         The {@link AuthenticationCredentials} to convert
      * @return The converted {@link KapuaAuthenticationToken}.
-     * @throws KapuaAuthenticationException if the instance of {@link AuthenticationCredentials} cannot be handled or is are invalid.
+     * @throws KapuaAuthenticationException
+     *         if the instance of {@link AuthenticationCredentials} cannot be handled or is are invalid.
      * @since 2.0.0
      */
     private KapuaAuthenticationToken doMapToShiro(AuthenticationCredentials authenticationCredentials) throws KapuaAuthenticationException {
@@ -529,7 +534,8 @@ public class AuthenticationServiceShiroImpl implements AuthenticationService {
     /**
      * Create and persist a {@link AccessToken} from the data contained in the Shiro {@link Session}
      *
-     * @param session The Shiro {@link Session} from which extract data
+     * @param session
+     *         The Shiro {@link Session} from which extract data
      * @return The persisted {@link AccessToken}
      * @throws KapuaException
      * @since 1.0
@@ -545,8 +551,10 @@ public class AuthenticationServiceShiroImpl implements AuthenticationService {
     /**
      * Create and persist a {@link AccessToken} from a scopeId and a userId
      *
-     * @param scopeId The scopeID
-     * @param userId  The userID
+     * @param scopeId
+     *         The scopeID
+     * @param userId
+     *         The userID
      * @return The persisted {@link AccessToken}
      * @throws KapuaException
      * @since 1.0.0
@@ -583,8 +591,10 @@ public class AuthenticationServiceShiroImpl implements AuthenticationService {
     /**
      * Creates a trust key if given {@link AuthenticationToken} is a {@link UsernamePasswordCredentials} and if {@link UsernamePasswordCredentials#getTrustMe()} is {@code true}
      *
-     * @param shiroAuthenticationToken The {@link AuthenticationToken} extracted {@link LoginCredentials}
-     * @param accessToken              The {@link AccessToken} of this login.
+     * @param shiroAuthenticationToken
+     *         The {@link AuthenticationToken} extracted {@link LoginCredentials}
+     * @param accessToken
+     *         The {@link AccessToken} of this login.
      * @throws KapuaException
      * @since 2.0.0
      */
@@ -670,8 +680,8 @@ public class AuthenticationServiceShiroImpl implements AuthenticationService {
      * <p>
      * As of 2.1.0, only PASSWORD credentials can be locked.
      *
-     * @param authenticationToken The {@link AuthenticationToken} for the login attempt.
-     *
+     * @param authenticationToken
+     *         The {@link AuthenticationToken} for the login attempt.
      * @since 1.1.0
      */
     private Boolean checkIfCredentialHasJustBeenLocked(AuthenticationToken authenticationToken) throws KapuaException {

@@ -18,6 +18,7 @@ import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public interface DeviceConnectionRepository
-        extends KapuaUpdatableEntityRepository<DeviceConnection, DeviceConnectionListResult> {
+        extends KapuaUpdatableEntityRepository<DeviceConnection> {
+
     long countByClientId(TxContext tx, KapuaId scopeId, String clientId) throws KapuaException;
 }

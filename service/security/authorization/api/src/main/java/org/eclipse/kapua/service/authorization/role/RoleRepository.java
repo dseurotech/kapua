@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.authorization.role;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 
 public interface RoleRepository extends
-        KapuaNamedEntityRepository<Role, RoleListResult> {
+        KapuaNamedEntityRepository<Role> {
+
 }

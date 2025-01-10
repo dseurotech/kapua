@@ -12,13 +12,16 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authentication.credential.mfa.shiro;
 
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCodeListResult;
+import org.eclipse.kapua.model.query.KapuaListResult;
+import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCode;
 import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCodeRepository;
 import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCodeService;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
@@ -26,8 +29,6 @@ import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Singleton;
 
 /**
  * {@link ScratchCodeService} implementation.
@@ -53,7 +54,7 @@ public class ScratchCodeServiceImpl implements ScratchCodeService {
     }
 
     @Override
-    public ScratchCodeListResult findByMfaOptionId(KapuaId scopeId, KapuaId mfaOptionId) throws KapuaException {
+    public KapuaListResult<ScratchCode> findByMfaOptionId(KapuaId scopeId, KapuaId mfaOptionId) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(scopeId, KapuaEntityAttributes.SCOPE_ID);
         ArgumentValidator.notNull(mfaOptionId, ScratchCodeImpl_.MFA_OPTION_ID);

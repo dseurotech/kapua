@@ -15,12 +15,12 @@ package org.eclipse.kapua.service.authorization.role.shiro;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaNamedEntityJpaRepository;
 import org.eclipse.kapua.service.authorization.role.Role;
-import org.eclipse.kapua.service.authorization.role.RoleListResult;
 import org.eclipse.kapua.service.authorization.role.RoleRepository;
 
 public class RoleImplJpaRepository
-        extends KapuaNamedEntityJpaRepository<Role, RoleImpl, RoleListResult>
+        extends KapuaNamedEntityJpaRepository<Role, RoleImpl>
         implements RoleRepository {
+
     public RoleImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(RoleImpl.class, Role.TYPE, () -> new RoleListResultImpl(), jpaRepoConfig);
     }

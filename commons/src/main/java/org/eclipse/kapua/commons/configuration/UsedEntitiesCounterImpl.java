@@ -13,6 +13,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.configuration;
 
+import java.util.function.Function;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.KapuaEntity;
 import org.eclipse.kapua.model.KapuaEntityCreator;
@@ -31,18 +33,25 @@ public class UsedEntitiesCounterImpl<
         F extends KapuaEntityFactory<E, C, Q, L>
         > implements UsedEntitiesCounter {
 
-    private final F factory;
-    private final KapuaEntityRepository<E, L> entityRepository;
+    private final Function<KapuaId, Q> queryFactory;
+    private final KapuaEntityRepository<E> entityRepository;
 
     public UsedEntitiesCounterImpl(F factory,
-                                   KapuaEntityRepository<E, L> entityRepository) {
-        this.factory = factory;
+            KapuaEntityRepository<E> entityRepository) {
+        this.queryFactory = kapuaId -> factory.newQuery(kapuaId);
+        this.entityRepository = entityRepository;
+    }
+
+    public UsedEntitiesCounterImpl(
+            Function<KapuaId, Q> queryFactory,
+            KapuaEntityRepository<E> entityRepository) {
+        this.queryFactory = queryFactory;
         this.entityRepository = entityRepository;
     }
 
     @Override
     public long countEntitiesInScope(TxContext tx, KapuaId scopeId) throws KapuaException {
-        final Q query = factory.newQuery(scopeId);
+        final Q query = queryFactory.apply(scopeId);
         // Do count
         return entityRepository.count(tx, query);
     }

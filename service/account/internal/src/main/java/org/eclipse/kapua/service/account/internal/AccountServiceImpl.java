@@ -39,11 +39,11 @@ import org.eclipse.kapua.commons.util.CommonsValidationRegex;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.account.Account;
 import org.eclipse.kapua.service.account.AccountAttributes;
 import org.eclipse.kapua.service.account.AccountCreator;
-import org.eclipse.kapua.service.account.AccountListResult;
 import org.eclipse.kapua.service.account.AccountRepository;
 import org.eclipse.kapua.service.account.AccountService;
 import org.eclipse.kapua.service.account.AccountUpdateRequest;
@@ -262,7 +262,7 @@ public class AccountServiceImpl
         if (expirationDateChanged) {
             // check that expiration date is after all the children account
             // if expiration date is null it means the account never expires, so it will be obviously later its children
-            final AccountListResult childrenAccounts = accountRepository.findChildAccountsRecursive(tx, oldAccount.getParentAccountPath());
+            final KapuaListResult<Account> childrenAccounts = accountRepository.findChildAccountsRecursive(tx, oldAccount.getParentAccountPath());
             // if child account expiration date is null it will be obviously after current account expiration date
             if (childrenAccounts.getItems().stream().anyMatch(childAccount -> childAccount.getExpirationDate() == null || childAccount.getExpirationDate().after(request.expirationDate))) {
                 //TODO: FIXME: toString of a java.util.Date? Without locale nor timezone?
@@ -366,7 +366,7 @@ public class AccountServiceImpl
     }
 
     @Override
-    public AccountListResult findChildrenRecursively(KapuaId scopeId) throws KapuaException {
+    public KapuaListResult<Account> findChildrenRecursively(KapuaId scopeId) throws KapuaException {
         // Argument validation
         ArgumentValidator.notNull(scopeId, KapuaEntityAttributes.SCOPE_ID);
 
@@ -385,7 +385,7 @@ public class AccountServiceImpl
     }
 
     @Override
-    public AccountListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<Account> query(KapuaQuery query) throws KapuaException {
         // Argument validation
         ArgumentValidator.notNull(query, "query");
 
@@ -406,7 +406,7 @@ public class AccountServiceImpl
         return txManager.execute(tx -> accountRepository.count(tx, query));
     }
 
-    private AccountListResult findChildAccountsTrusted(KapuaId accountId)
+    private KapuaListResult<Account> findChildAccountsTrusted(KapuaId accountId)
             throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(accountId, KapuaEntityAttributes.ENTITY_ID);

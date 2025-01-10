@@ -12,8 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.scheduler.trigger.fired;
 
-import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 
 /**
@@ -23,16 +21,5 @@ import org.eclipse.kapua.service.KapuaEntityService;
  * @since 1.5.0
  */
 public interface FiredTriggerService extends KapuaEntityService<FiredTrigger, FiredTriggerCreator> {
-
-    /**
-     * Returns the {@link FiredTriggerListResult} with elements matching the provided query.
-     *
-     * @param query The {@link FiredTriggerQuery} used to filter results.
-     * @return The {@link FiredTriggerListResult} with elements matching the query parameter.
-     * @throws KapuaException
-     * @since 1.5.0
-     */
-    @Override
-    FiredTriggerListResult query(KapuaQuery query) throws KapuaException;
 
 }

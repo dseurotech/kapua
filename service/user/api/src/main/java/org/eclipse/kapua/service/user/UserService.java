@@ -14,6 +14,7 @@ package org.eclipse.kapua.service.user;
 
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 import org.eclipse.kapua.service.KapuaNamedEntityService;
@@ -23,8 +24,7 @@ import org.eclipse.kapua.service.config.KapuaConfigurableService;
 /**
  * UserService exposes APIs to manage User object under an Account.
  * <p>
- * It includes APIs to create, update, find, list and delete Users.<br>
- * Instances of the UserService can be acquired through the ServiceLocator.
+ * It includes APIs to create, update, find, list and delete Users.<br> Instances of the UserService can be acquired through the ServiceLocator.
  *
  * @since 1.0.0
  */
@@ -34,9 +34,7 @@ public interface UserService extends KapuaEntityService<User, UserCreator>,
         KapuaConfigurableService {
 
     /**
-     * Creates a new user under the account specified in the UserCreator.<br>
-     * The returned User object does not have its access information, roles
-     * and permissions, loaded.
+     * Creates a new user under the account specified in the UserCreator.<br> The returned User object does not have its access information, roles and permissions, loaded.
      *
      * @param userCreator
      * @return created User
@@ -46,11 +44,10 @@ public interface UserService extends KapuaEntityService<User, UserCreator>,
     User create(UserCreator userCreator) throws KapuaException;
 
     /**
-     * Updates an User in the database and returns the refreshed/reloaded entity instance.<br>
-     * The returned User object does not have its access information, roles
-     * and permissions, loaded.
+     * Updates an User in the database and returns the refreshed/reloaded entity instance.<br> The returned User object does not have its access information, roles and permissions, loaded.
      *
-     * @param user to be update
+     * @param user
+     *         to be update
      * @return
      * @throws KapuaException
      */
@@ -60,7 +57,8 @@ public interface UserService extends KapuaEntityService<User, UserCreator>,
     /**
      * Deletes the given {@link User}.
      *
-     * @param user The {@link User} to delete
+     * @param user
+     *         The {@link User} to delete
      * @throws KapuaException
      * @deprecated Since 2.0.0. Please make use of {@link #delete(KapuaId, KapuaId)}
      */
@@ -90,16 +88,19 @@ public interface UserService extends KapuaEntityService<User, UserCreator>,
     /**
      * Find user by external id
      *
-     * @param externalId the external ID to look for
+     * @param externalId
+     *         the external ID to look for
      * @return the user or {@code null} if the user could not be found
-     * @throws KapuaException in case anything goes wrong
+     * @throws KapuaException
+     *         in case anything goes wrong
      */
     User findByExternalId(String externalId) throws KapuaException;
 
     /**
      * Finds the {@link User} by it {@link User#getExternalUsername()}
      *
-     * @param externalUsername The {@link User#getExternalUsername()}.
+     * @param externalUsername
+     *         The {@link User#getExternalUsername()}.
      * @return The matching {@link User} or {@code null}.
      * @throws KapuaException
      * @since 2.0.0
@@ -110,6 +111,6 @@ public interface UserService extends KapuaEntityService<User, UserCreator>,
      * Queries for all users
      */
     @Override
-    UserListResult query(KapuaQuery query) throws KapuaException;
+    KapuaListResult<User> query(KapuaQuery query) throws KapuaException;
 
 }

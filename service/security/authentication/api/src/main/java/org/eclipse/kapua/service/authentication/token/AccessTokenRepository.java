@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authentication.token;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Optional;
-
 public interface AccessTokenRepository
-        extends KapuaUpdatableEntityRepository<AccessToken, AccessTokenListResult> {
+        extends KapuaUpdatableEntityRepository<AccessToken> {
 
     /**
      * Finds by token IDENTIFIER the access token

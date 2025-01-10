@@ -17,6 +17,7 @@ import javax.validation.constraints.NotNull;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.KapuaUpdatableEntity;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 import org.eclipse.kapua.service.KapuaNamedEntityService;
@@ -62,7 +63,7 @@ public interface AccountService extends KapuaEntityService<Account, AccountCreat
     Account find(@NotNull KapuaId id) throws KapuaException;
 
     @Override
-    AccountListResult query(@NotNull KapuaQuery query) throws KapuaException;
+    KapuaListResult<Account> query(@NotNull KapuaQuery query) throws KapuaException;
 
     /**
      * Returns an {@link AccountListResult} of direct children {@link Account}s of the given {@link Account#getId()}.
@@ -72,5 +73,5 @@ public interface AccountService extends KapuaEntityService<Account, AccountCreat
      * @return The {@link AccountListResult} of direct children {@link Account}s.
      * @throws KapuaException
      */
-    AccountListResult findChildrenRecursively(@NotNull KapuaId scopeId) throws KapuaException;
+    KapuaListResult<Account> findChildrenRecursively(@NotNull KapuaId scopeId) throws KapuaException;
 }

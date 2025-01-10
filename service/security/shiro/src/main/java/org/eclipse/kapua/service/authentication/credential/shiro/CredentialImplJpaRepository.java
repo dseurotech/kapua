@@ -16,8 +16,8 @@ import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authentication.credential.Credential;
-import org.eclipse.kapua.service.authentication.credential.CredentialListResult;
 import org.eclipse.kapua.service.authentication.credential.CredentialRepository;
 import org.eclipse.kapua.storage.TxContext;
 
@@ -27,13 +27,14 @@ import org.eclipse.kapua.storage.TxContext;
  * @since 2.0.0
  */
 public class CredentialImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<Credential, CredentialImpl, CredentialListResult>
+        extends KapuaUpdatableEntityJpaRepository<Credential, CredentialImpl>
         implements CredentialRepository {
 
     /**
      * Constructor.
      *
-     * @param jpaRepoConfig The {@link KapuaJpaRepositoryConfiguration}.
+     * @param jpaRepoConfig
+     *         The {@link KapuaJpaRepositoryConfiguration}.
      * @since 2.0.0
      */
     public CredentialImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
@@ -41,8 +42,8 @@ public class CredentialImplJpaRepository
     }
 
     @Override
-    public CredentialListResult findByUserId(TxContext txContext, KapuaId scopeId, KapuaId userId) throws KapuaException {
-        final CredentialListResult res = listSupplier.get();
+    public KapuaListResult<Credential> findByUserId(TxContext txContext, KapuaId scopeId, KapuaId userId) throws KapuaException {
+        final KapuaListResult<Credential> res = listSupplier.get();
         res.addItems(this.doFindAllByField(txContext, scopeId, CredentialImpl_.USER_ID, userId));
         return res;
     }

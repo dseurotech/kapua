@@ -18,7 +18,8 @@ import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public interface JobStepRepository
-        extends KapuaNamedEntityRepository<JobStep, JobStepListResult> {
+        extends KapuaNamedEntityRepository<JobStep> {
+
     long countOtherEntitiesWithNameInScope(TxContext tx, KapuaId scopeId, KapuaId jobStepId, String name, KapuaId jobId) throws KapuaException;
 
     long countEntitiesWithNameInScope(TxContext tx, KapuaId scopeId, String name, KapuaId jobId) throws KapuaException;

@@ -12,11 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.authorization.server;
 
-import com.extjs.gxt.ui.client.data.BaseListLoadResult;
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
@@ -33,22 +34,21 @@ import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authorization.group.Group;
 import org.eclipse.kapua.service.authorization.group.GroupCreator;
 import org.eclipse.kapua.service.authorization.group.GroupFactory;
-import org.eclipse.kapua.service.authorization.group.GroupListResult;
 import org.eclipse.kapua.service.authorization.group.GroupQuery;
 import org.eclipse.kapua.service.authorization.group.GroupService;
 import org.eclipse.kapua.service.user.User;
 import org.eclipse.kapua.service.user.UserFactory;
-import org.eclipse.kapua.service.user.UserListResult;
 import org.eclipse.kapua.service.user.UserService;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
+import com.extjs.gxt.ui.client.data.BaseListLoadResult;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 
 public class GwtGroupServiceImpl extends KapuaRemoteServiceServlet implements GwtGroupService {
 
@@ -123,19 +123,19 @@ public class GwtGroupServiceImpl extends KapuaRemoteServiceServlet implements Gw
 
     @Override
     public PagingLoadResult<GwtGroup> query(PagingLoadConfig loadConfig,
-                                            final GwtGroupQuery gwtGroupQuery) throws GwtKapuaException {
+            final GwtGroupQuery gwtGroupQuery) throws GwtKapuaException {
         int totalLength = 0;
         List<GwtGroup> gwtGroupList = new ArrayList<GwtGroup>();
         try {
             GroupQuery groupQuery = GwtKapuaAuthorizationModelConverter.convertGroupQuery(loadConfig, gwtGroupQuery);
-            GroupListResult groups = GROUP_SERVICE.query(groupQuery);
+            KapuaListResult<Group> groups = GROUP_SERVICE.query(groupQuery);
             totalLength = groups.getTotalCount().intValue();
 
             if (!groups.isEmpty()) {
-                UserListResult usernames = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+                KapuaListResult<User> usernames = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                     @Override
-                    public UserListResult call() throws Exception {
+                    public KapuaListResult<User> call() throws Exception {
                         return USER_SERVICE.query(USER_FACTORY.newQuery(null));
                     }
                 });
@@ -174,7 +174,7 @@ public class GwtGroupServiceImpl extends KapuaRemoteServiceServlet implements Gw
 
     @Override
     public ListLoadResult<GwtGroupedNVPair> getGroupDescription(String scopeShortId,
-                                                                String groupShortId) throws GwtKapuaException {
+            String groupShortId) throws GwtKapuaException {
         List<GwtGroupedNVPair> gwtGroupDescription = new ArrayList<GwtGroupedNVPair>();
         try {
             final KapuaId scopeId = KapuaEid.parseCompactId(scopeShortId);
@@ -183,10 +183,10 @@ public class GwtGroupServiceImpl extends KapuaRemoteServiceServlet implements Gw
             final Group group = GROUP_SERVICE.find(scopeId, groupId);
 
             //TODO: #LAYER_VIOLATION - user lookup should not be done here (horribly inefficient)
-            UserListResult userListResult = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+            KapuaListResult<User> userListResult = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                 @Override
-                public UserListResult call() throws Exception {
+                public KapuaListResult<User> call() throws Exception {
                     return USER_SERVICE.query(USER_FACTORY.newQuery(null));
                 }
             });
@@ -218,7 +218,7 @@ public class GwtGroupServiceImpl extends KapuaRemoteServiceServlet implements Gw
         List<GwtGroup> groupList = new ArrayList<GwtGroup>();
         GroupQuery query = GROUP_FACTORY.newQuery(GwtKapuaCommonsModelConverter.convertKapuaId(scopeId));
         try {
-            GroupListResult result = GROUP_SERVICE.query(query);
+            KapuaListResult<Group> result = GROUP_SERVICE.query(query);
             for (Group group : result.getItems()) {
                 groupList.add(KapuaGwtAuthorizationModelConverter.convertGroup(group));
             }

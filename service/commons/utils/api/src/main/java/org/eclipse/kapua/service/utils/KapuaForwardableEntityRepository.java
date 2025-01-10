@@ -24,16 +24,19 @@ import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 /**
- * This contract builds upon {@link KapuaUpdatableEntityRepository} (and in turn {@link KapuaEntityRepository},
- * adding functionalities specific to Kapua Entities that are implement the contract {@link KapuaNamedEntity} (as in: have a name and description fields)
+ * This contract builds upon {@link KapuaUpdatableEntityRepository} (and in turn {@link KapuaEntityRepository}, adding functionalities specific to Kapua Entities that are implement the contract
+ * {@link KapuaNamedEntity} (as in: have a name and description fields)
  *
- * @param <E> The specific subclass of {@link KapuaEntity} handled by this repository
- * @param <L> The specific subclass of {@link KapuaListResult}&lt;E&gt; meant to hold list results for the kapua entity handled by this repo
+ * @param <E>
+ *         The specific subclass of {@link KapuaEntity} handled by this repository
+ * @param <L>
+ *         The specific subclass of {@link KapuaListResult}&lt;E&gt; meant to hold list results for the kapua entity handled by this repo
  * @since 2.0.0
  */
-public interface KapuaForwardableEntityRepository<E extends KapuaForwardableEntity, L extends KapuaListResult<E>>
-        extends KapuaNamedEntityRepository<E, L> {
-    L query(TxContext txContext, KapuaForwardableEntityQuery kapuaQuery) throws KapuaException;
+public interface KapuaForwardableEntityRepository<E extends KapuaForwardableEntity>
+        extends KapuaNamedEntityRepository<E> {
+
+    KapuaListResult<E> query(TxContext txContext, KapuaForwardableEntityQuery kapuaQuery) throws KapuaException;
 
     long count(TxContext txContext, KapuaForwardableEntityQuery kapuaQuery) throws KapuaException;
 

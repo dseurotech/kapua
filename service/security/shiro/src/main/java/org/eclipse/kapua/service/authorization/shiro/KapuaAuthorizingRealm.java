@@ -33,15 +33,12 @@ import org.eclipse.kapua.service.authorization.access.AccessInfoFactory;
 import org.eclipse.kapua.service.authorization.access.AccessInfoQuery;
 import org.eclipse.kapua.service.authorization.access.AccessInfoService;
 import org.eclipse.kapua.service.authorization.access.AccessPermission;
-import org.eclipse.kapua.service.authorization.access.AccessPermissionListResult;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionService;
 import org.eclipse.kapua.service.authorization.access.AccessRole;
-import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRoleService;
 import org.eclipse.kapua.service.authorization.permission.shiro.PermissionImpl;
 import org.eclipse.kapua.service.authorization.role.Role;
 import org.eclipse.kapua.service.authorization.role.RolePermission;
-import org.eclipse.kapua.service.authorization.role.RolePermissionListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermissionService;
 import org.eclipse.kapua.service.authorization.role.RoleService;
 import org.eclipse.kapua.service.user.User;
@@ -120,7 +117,7 @@ public class KapuaAuthorizingRealm extends AuthorizingRealm {
 
             // Access Permissions
             AccessPermissionService accessPermissionService = locator.getService(AccessPermissionService.class);
-            AccessPermissionListResult accessPermissions;
+            KapuaListResult<AccessPermission> accessPermissions;
             try {
                 accessPermissions = KapuaSecurityUtils.doPrivileged(() -> accessPermissionService.findByAccessInfoId(accessInfo.getScopeId(), accessInfo.getId()));
             } catch (AuthenticationException e) {
@@ -137,7 +134,7 @@ public class KapuaAuthorizingRealm extends AuthorizingRealm {
 
             // Access Role Id
             AccessRoleService accessRoleService = locator.getService(AccessRoleService.class);
-            AccessRoleListResult accessRoles;
+            KapuaListResult<AccessRole> accessRoles;
             try {
                 accessRoles = KapuaSecurityUtils.doPrivileged(() -> accessRoleService.findByAccessInfoId(accessInfo.getScopeId(), accessInfo.getId()));
             } catch (AuthenticationException e) {
@@ -162,7 +159,7 @@ public class KapuaAuthorizingRealm extends AuthorizingRealm {
                 }
 
                 info.addRole(role.getName());
-                final RolePermissionListResult rolePermissions;
+                final KapuaListResult<RolePermission> rolePermissions;
                 try {
                     rolePermissions = KapuaSecurityUtils.doPrivileged(() -> rolePermissionService.findByRoleId(role.getScopeId(), role.getId()));
                 } catch (Exception e) {

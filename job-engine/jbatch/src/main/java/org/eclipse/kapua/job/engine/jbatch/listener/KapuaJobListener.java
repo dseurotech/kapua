@@ -42,6 +42,7 @@ import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionFactory;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionService;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionStatus;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.SortOrder;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
 import org.eclipse.kapua.service.job.Job;
@@ -49,13 +50,11 @@ import org.eclipse.kapua.service.job.execution.JobExecution;
 import org.eclipse.kapua.service.job.execution.JobExecutionAttributes;
 import org.eclipse.kapua.service.job.execution.JobExecutionCreator;
 import org.eclipse.kapua.service.job.execution.JobExecutionFactory;
-import org.eclipse.kapua.service.job.execution.JobExecutionListResult;
 import org.eclipse.kapua.service.job.execution.JobExecutionQuery;
 import org.eclipse.kapua.service.job.execution.JobExecutionService;
 import org.eclipse.kapua.service.job.targets.JobTarget;
 import org.eclipse.kapua.service.job.targets.JobTargetAttributes;
 import org.eclipse.kapua.service.job.targets.JobTargetFactory;
-import org.eclipse.kapua.service.job.targets.JobTargetListResult;
 import org.eclipse.kapua.service.job.targets.JobTargetQuery;
 import org.eclipse.kapua.service.job.targets.JobTargetService;
 import org.eclipse.kapua.service.job.targets.JobTargetStatus;
@@ -293,7 +292,7 @@ public class KapuaJobListener extends AbstractJobListener implements JobListener
                     )
             );
 
-            JobTargetListResult jobTargets = KapuaSecurityUtils.doPrivileged(() -> jobTargetService.query(jobTargetQuery));
+            KapuaListResult<JobTarget> jobTargets = KapuaSecurityUtils.doPrivileged(() -> jobTargetService.query(jobTargetQuery));
 
             Set<KapuaId> targetIds = new HashSet<>();
             jobTargets.getItems().forEach(jt -> targetIds.add(jt.getId()));
@@ -351,7 +350,7 @@ public class KapuaJobListener extends AbstractJobListener implements JobListener
 
             jobExecutionQuery.setSortCriteria(jobExecutionQuery.fieldSortCriteria(JobExecutionAttributes.STARTED_ON, SortOrder.ASCENDING));
 
-            JobExecutionListResult jobExecutions = KapuaSecurityUtils.doPrivileged(() -> jobExecutionService.query(jobExecutionQuery));
+            KapuaListResult<JobExecution> jobExecutions = KapuaSecurityUtils.doPrivileged(() -> jobExecutionService.query(jobExecutionQuery));
 
             return jobExecutions.getFirstItem();
         }

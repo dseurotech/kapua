@@ -15,12 +15,12 @@ package org.eclipse.kapua.service.scheduler.trigger.fired.quartz;
 import org.eclipse.kapua.commons.jpa.KapuaEntityJpaRepository;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTrigger;
-import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerListResult;
 import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerRepository;
 
 public class FiredTriggerImplJpaRepository
-        extends KapuaEntityJpaRepository<FiredTrigger, FiredTriggerImpl, FiredTriggerListResult>
+        extends KapuaEntityJpaRepository<FiredTrigger, FiredTriggerImpl>
         implements FiredTriggerRepository {
+
     public FiredTriggerImplJpaRepository(KapuaJpaRepositoryConfiguration configuration) {
         super(FiredTriggerImpl.class, FiredTrigger.TYPE, () -> new FiredTriggerListResultImpl(), configuration);
     }

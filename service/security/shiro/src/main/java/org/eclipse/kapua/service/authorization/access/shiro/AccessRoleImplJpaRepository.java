@@ -16,22 +16,23 @@ import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.KapuaEntityJpaRepository;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRole;
 import org.eclipse.kapua.service.authorization.access.AccessRoleAttributes;
-import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRoleRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public class AccessRoleImplJpaRepository
-        extends KapuaEntityJpaRepository<AccessRole, AccessRoleImpl, AccessRoleListResult>
+        extends KapuaEntityJpaRepository<AccessRole, AccessRoleImpl>
         implements AccessRoleRepository {
+
     public AccessRoleImplJpaRepository(KapuaJpaRepositoryConfiguration configuration) {
         super(AccessRoleImpl.class, AccessRole.TYPE, () -> new AccessRoleListResultImpl(), configuration);
     }
 
     @Override
-    public AccessRoleListResult findByAccessInfoId(TxContext txContext, KapuaId scopeId, KapuaId accessInfoId) throws KapuaException {
-        final AccessRoleListResult res = listSupplier.get();
+    public KapuaListResult<AccessRole> findByAccessInfoId(TxContext txContext, KapuaId scopeId, KapuaId accessInfoId) throws KapuaException {
+        final KapuaListResult<AccessRole> res = listSupplier.get();
         res.addItems(doFindAllByField(txContext, scopeId, AccessRoleAttributes.ACCESS_INFO_ID, accessInfoId));
         return res;
     }

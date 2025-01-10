@@ -12,20 +12,20 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.management.registry.operation.internal;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperation;
-import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationListResult;
 import org.eclipse.kapua.service.device.management.registry.operation.DeviceManagementOperationRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Optional;
-
 public class DeviceManagementOperationRepositoryImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<DeviceManagementOperation, DeviceManagementOperationImpl, DeviceManagementOperationListResult>
+        extends KapuaUpdatableEntityJpaRepository<DeviceManagementOperation, DeviceManagementOperationImpl>
         implements DeviceManagementOperationRepository {
+
     public DeviceManagementOperationRepositoryImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(DeviceManagementOperationImpl.class, DeviceManagementOperation.TYPE, () -> new DeviceManagementOperationListResultImpl(), jpaRepoConfig);
     }

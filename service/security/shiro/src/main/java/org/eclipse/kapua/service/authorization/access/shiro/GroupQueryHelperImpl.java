@@ -12,6 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.access.shiro;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import javax.inject.Inject;
+
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
@@ -20,22 +26,20 @@ import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.commons.security.KapuaSession;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.model.query.predicate.AndPredicate;
 import org.eclipse.kapua.service.authorization.access.AccessInfo;
 import org.eclipse.kapua.service.authorization.access.AccessInfoFactory;
 import org.eclipse.kapua.service.authorization.access.AccessInfoRepository;
 import org.eclipse.kapua.service.authorization.access.AccessPermission;
-import org.eclipse.kapua.service.authorization.access.AccessPermissionListResult;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionRepository;
 import org.eclipse.kapua.service.authorization.access.AccessRole;
-import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRoleRepository;
 import org.eclipse.kapua.service.authorization.access.GroupQueryHelper;
 import org.eclipse.kapua.service.authorization.permission.Permission;
 import org.eclipse.kapua.service.authorization.role.Role;
 import org.eclipse.kapua.service.authorization.role.RolePermission;
-import org.eclipse.kapua.service.authorization.role.RolePermissionListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermissionRepository;
 import org.eclipse.kapua.service.authorization.role.RoleRepository;
 import org.eclipse.kapua.storage.TxContext;
@@ -43,12 +47,8 @@ import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 public class GroupQueryHelperImpl implements GroupQueryHelper {
+
     private final TxManager txManager;
     private final AccessInfoFactory accessInfoFactory;
     private final AccessInfoRepository accessInfoRepository;
@@ -100,14 +100,14 @@ public class GroupQueryHelperImpl implements GroupQueryHelper {
             final List<Permission> groupPermissions = new ArrayList<>();
             if (maybeAccessInfo.isPresent()) {
                 final AccessInfo accessInfo = maybeAccessInfo.get();
-                AccessPermissionListResult accessPermissions = accessPermissionRepository.findByAccessInfoId(txContext, accessInfo.getScopeId(), accessInfo.getId());
+                KapuaListResult<AccessPermission> accessPermissions = accessPermissionRepository.findByAccessInfoId(txContext, accessInfo.getScopeId(), accessInfo.getId());
                 for (AccessPermission ap : accessPermissions.getItems()) {
                     if (checkGroupPermission(domain, groupPermissions, ap.getPermission())) {
                         break;
                     }
                 }
 
-                AccessRoleListResult accessRoles = accessRoleRepository.findByAccessInfoId(txContext, accessInfo.getScopeId(), accessInfo.getId());
+                KapuaListResult<AccessRole> accessRoles = accessRoleRepository.findByAccessInfoId(txContext, accessInfo.getScopeId(), accessInfo.getId());
 
                 for (AccessRole ar : accessRoles.getItems()) {
                     KapuaId roleId = ar.getRoleId();
@@ -115,7 +115,7 @@ public class GroupQueryHelperImpl implements GroupQueryHelper {
                     Role role = roleRepository.find(txContext, ar.getScopeId(), roleId)
                             .orElseThrow(() -> new KapuaEntityNotFoundException(Role.TYPE, roleId));
 
-                    RolePermissionListResult rolePermissions = rolePermissionRepository.findByRoleId(txContext, role.getScopeId(), roleId);
+                    KapuaListResult<RolePermission> rolePermissions = rolePermissionRepository.findByRoleId(txContext, role.getScopeId(), roleId);
 
                     for (RolePermission rp : rolePermissions.getItems()) {
                         if (checkGroupPermission(domain, groupPermissions, rp.getPermission())) {

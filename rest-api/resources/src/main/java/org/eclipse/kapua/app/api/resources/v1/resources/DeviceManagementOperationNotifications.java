@@ -25,13 +25,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.google.common.base.Strings;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.app.api.core.model.CountResult;
 import org.eclipse.kapua.app.api.core.model.EntityId;
 import org.eclipse.kapua.app.api.core.model.ScopeId;
 import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.SortOrder;
 import org.eclipse.kapua.model.query.predicate.AndPredicate;
 import org.eclipse.kapua.service.KapuaService;
@@ -42,6 +42,8 @@ import org.eclipse.kapua.service.device.management.registry.operation.notificati
 import org.eclipse.kapua.service.device.management.registry.operation.notification.ManagementOperationNotificationQuery;
 import org.eclipse.kapua.service.device.management.registry.operation.notification.ManagementOperationNotificationService;
 import org.eclipse.kapua.service.device.registry.Device;
+
+import com.google.common.base.Strings;
 
 @Path("{scopeId}/devices/{deviceId}/operations/{operationId}/notifications")
 public class DeviceManagementOperationNotifications extends AbstractKapuaResource {
@@ -54,18 +56,24 @@ public class DeviceManagementOperationNotifications extends AbstractKapuaResourc
     /**
      * Gets the {@link ManagementOperationNotification} list in the scope.
      *
-     * @param scopeId     The {@link ScopeId} in which to search results.
-     * @param operationId The id of the {@link Device} in which to search results
-     * @param resource    The resource of the {@link ManagementOperationNotification} in which to search results
-     * @param offset      The result set offset.
-     * @param limit       The result set limit.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param operationId
+     *         The id of the {@link Device} in which to search results
+     * @param resource
+     *         The resource of the {@link ManagementOperationNotification} in which to search results
+     * @param offset
+     *         The result set offset.
+     * @param limit
+     *         The result set limit.
      * @return The {@link ManagementOperationNotificationListResult} of all the ManagementOperationNotifications associated to the current selected scope.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public ManagementOperationNotificationListResult simpleQuery(
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public KapuaListResult<ManagementOperationNotification> simpleQuery(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("deviceId") EntityId deviceId,
             @PathParam("operationId") EntityId operationId,
@@ -99,18 +107,22 @@ public class DeviceManagementOperationNotifications extends AbstractKapuaResourc
     /**
      * Queries the results with the given {@link ManagementOperationNotificationQuery} parameter.
      *
-     * @param scopeId     The {@link ScopeId} in which to search results.
-     * @param operationId The id of the {@link Device} in which to search results
-     * @param query       The {@link ManagementOperationNotificationQuery} to use to filter results.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param operationId
+     *         The id of the {@link Device} in which to search results
+     * @param query
+     *         The {@link ManagementOperationNotificationQuery} to use to filter results.
      * @return The {@link ManagementOperationNotificationListResult} of all the result matching the given {@link ManagementOperationNotificationQuery} parameter.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @POST
     @Path("_query")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public ManagementOperationNotificationListResult query(
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public KapuaListResult<ManagementOperationNotification> query(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("deviceId") EntityId deviceId,
             @PathParam("operationId") EntityId operationId,
@@ -127,17 +139,21 @@ public class DeviceManagementOperationNotifications extends AbstractKapuaResourc
     /**
      * Counts the results with the given {@link ManagementOperationNotificationQuery} parameter.
      *
-     * @param scopeId     The {@link ScopeId} in which to search results.
-     * @param operationId The id of the {@link Device} in which to search results
-     * @param query       The {@link ManagementOperationNotificationQuery} to use to filter results.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param operationId
+     *         The id of the {@link Device} in which to search results
+     * @param query
+     *         The {@link ManagementOperationNotificationQuery} to use to filter results.
      * @return The count of all the result matching the given {@link ManagementOperationNotificationQuery} parameter.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @POST
     @Path("_count")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public CountResult count(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("deviceId") EntityId deviceId,
@@ -152,22 +168,26 @@ public class DeviceManagementOperationNotifications extends AbstractKapuaResourc
     /**
      * Returns the ManagementOperationNotification specified by the "ManagementOperationNotificationId" path parameter.
      *
-     * @param scopeId                           The {@link ScopeId} of the requested {@link ManagementOperationNotification}.
-     * @param operationId                       The {@link Device} id of the request {@link ManagementOperationNotification}.
-     * @param managementOperationNotificationId The id of the requested ManagementOperationNotification.
+     * @param scopeId
+     *         The {@link ScopeId} of the requested {@link ManagementOperationNotification}.
+     * @param operationId
+     *         The {@link Device} id of the request {@link ManagementOperationNotification}.
+     * @param managementOperationNotificationId
+     *         The id of the requested ManagementOperationNotification.
      * @return The requested ManagementOperationNotification object.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @GET
     @Path("{managementOperationNotificationId}")
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
     public ManagementOperationNotification find(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("deviceId") EntityId deviceId,
             @PathParam("operationId") EntityId operationId,
             @PathParam("managementOperationNotificationId") EntityId managementOperationNotificationId) throws KapuaException {
-//TODO: #LAYER_VIOLATION - findFirst should be resolved in bottom layer
+        //TODO: #LAYER_VIOLATION - findFirst should be resolved in bottom layer
         ManagementOperationNotificationQuery query = managementOperationNotificationFactory.newQuery(scopeId);
 
         AndPredicate andPredicate = query.andPredicate(
@@ -179,7 +199,7 @@ public class DeviceManagementOperationNotifications extends AbstractKapuaResourc
         query.setOffset(0);
         query.setLimit(1);
 
-        ManagementOperationNotificationListResult results = managementOperationNotificationService.query(query);
+        KapuaListResult<ManagementOperationNotification> results = managementOperationNotificationService.query(query);
 
         return returnNotNullEntity(results.getFirstItem(), ManagementOperationNotification.TYPE, managementOperationNotificationId);
     }
@@ -187,10 +207,13 @@ public class DeviceManagementOperationNotifications extends AbstractKapuaResourc
     /**
      * Deletes the ManagementOperationNotification specified by the "ManagementOperationNotificationId" path parameter.
      *
-     * @param operationId                       The id of the Device in which to delete the ManagementOperation
-     * @param managementOperationNotificationId The id of the ManagementOperationNotification to be deleted.
+     * @param operationId
+     *         The id of the Device in which to delete the ManagementOperation
+     * @param managementOperationNotificationId
+     *         The id of the ManagementOperationNotification to be deleted.
      * @return HTTP 200 if operation has completed successfully.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.0.0
      */
     @DELETE

@@ -13,6 +13,7 @@
 package org.eclipse.kapua.service.job.step.definition.internal;
 
 import java.util.Optional;
+
 import javax.inject.Singleton;
 
 import org.eclipse.kapua.KapuaDuplicateNameInAnotherAccountError;
@@ -21,13 +22,13 @@ import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinition;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionAttributes;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionCreator;
-import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionListResult;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionQuery;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionRepository;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionService;
@@ -144,7 +145,7 @@ public class JobStepDefinitionServiceImpl implements JobStepDefinitionService {
     }
 
     @Override
-    public JobStepDefinitionListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<JobStepDefinition> query(KapuaQuery query) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
         // Check Access

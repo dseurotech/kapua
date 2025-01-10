@@ -13,13 +13,13 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.security;
 
+import java.util.concurrent.Callable;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.util.ThrowingRunnable;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.Callable;
 
 /**
  * Security utilities to handle the {@link KapuaSession}.
@@ -48,7 +48,8 @@ public class KapuaSecurityUtils {
     /**
      * Bounds the {@link KapuaSession} to the current {@link ThreadLocal}.
      *
-     * @param session The {@link KapuaSession} to the current {@link ThreadLocal}.
+     * @param session
+     *         The {@link KapuaSession} to the current {@link ThreadLocal}.
      * @since 1.0.0
      */
     public static void setSession(KapuaSession session) {
@@ -69,7 +70,8 @@ public class KapuaSecurityUtils {
      * <p>
      * Trusted mode means that checks for permissions and role will be skipped.
      *
-     * @param runnable The {@link ThrowingRunnable} action to be executed.
+     * @param runnable
+     *         The {@link ThrowingRunnable} action to be executed.
      * @throws KapuaException
      * @since 1.0.0
      */
@@ -81,10 +83,10 @@ public class KapuaSecurityUtils {
     }
 
     /**
-     * Execute the {@link Callable} in a privileged context.<br>
-     * Trusted mode means that checks for permissions and role will pass.
+     * Execute the {@link Callable} in a privileged context.<br> Trusted mode means that checks for permissions and role will pass.
      *
-     * @param privilegedAction The {@link Callable} action to be executed.
+     * @param privilegedAction
+     *         The {@link Callable} action to be executed.
      * @return The result of the {@link Callable} action.
      * @throws KapuaException
      * @since 1.0.0

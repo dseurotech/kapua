@@ -14,7 +14,6 @@ package org.eclipse.kapua.service.scheduler.trigger;
 
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 import org.eclipse.kapua.service.KapuaUpdatableEntityService;
 
@@ -27,17 +26,6 @@ import org.eclipse.kapua.service.KapuaUpdatableEntityService;
  */
 public interface TriggerService extends KapuaEntityService<Trigger, TriggerCreator>,
         KapuaUpdatableEntityService<Trigger> {
-
-    /**
-     * Returns the {@link TriggerListResult} with elements matching the provided query.
-     *
-     * @param query The {@link TriggerQuery} used to filter results.
-     * @return The {@link TriggerListResult} with elements matching the query parameter.
-     * @throws KapuaException
-     * @since 1.0.0
-     */
-    @Override
-    TriggerListResult query(KapuaQuery query) throws KapuaException;
 
     void deleteAllByJobId(KapuaId scopeId, KapuaId jobId) throws KapuaException;
 }

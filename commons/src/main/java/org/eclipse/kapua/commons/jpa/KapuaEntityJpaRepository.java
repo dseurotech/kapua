@@ -68,11 +68,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
 
-public class KapuaEntityJpaRepository<E extends KapuaEntity, C extends E, L extends KapuaListResult<E>> implements KapuaEntityRepository<E, L> {
+public class KapuaEntityJpaRepository<E extends KapuaEntity, C extends E> implements KapuaEntityRepository<E> {
 
     protected final Class<C> concreteClass;
     protected final String entityName;
-    protected final Supplier<? extends L> listSupplier;
+    protected final Supplier<KapuaListResult<E>> listSupplier;
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
     private static final String SQL_ERROR_CODE_CONSTRAINT_VIOLATION = "23505";
     private final KapuaJpaRepositoryConfiguration configuration;
@@ -91,7 +91,7 @@ public class KapuaEntityJpaRepository<E extends KapuaEntity, C extends E, L exte
      */
     public KapuaEntityJpaRepository(
             Class<C> concreteClass,
-            String entityName, Supplier<L> listSupplier,
+            String entityName, Supplier<KapuaListResult<E>> listSupplier,
             KapuaJpaRepositoryConfiguration configuration) {
         this.concreteClass = concreteClass;
         this.entityName = entityName;
@@ -149,7 +149,7 @@ public class KapuaEntityJpaRepository<E extends KapuaEntity, C extends E, L exte
     }
 
     @Override
-    public L query(TxContext txContext, KapuaQuery listQuery) throws KapuaException {
+    public KapuaListResult<E> query(TxContext txContext, KapuaQuery listQuery) throws KapuaException {
         final EntityManager em = JpaAwareTxContext.extractEntityManager(txContext);
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -239,7 +239,7 @@ public class KapuaEntityJpaRepository<E extends KapuaEntity, C extends E, L exte
 
         // Finally querying!
         List<C> result = query.getResultList();
-        final L resultContainer = listSupplier.get();
+        final KapuaListResult<E> resultContainer = listSupplier.get();
 
         // Check limit exceeded
         if (listQuery.getLimit() != null &&

@@ -15,5 +15,6 @@ package org.eclipse.kapua.commons.service.event.store.api;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 
 public interface EventStoreRecordRepository
-        extends KapuaUpdatableEntityRepository<EventStoreRecord, EventStoreRecordListResult> {
+        extends KapuaUpdatableEntityRepository<EventStoreRecord> {
+
 }

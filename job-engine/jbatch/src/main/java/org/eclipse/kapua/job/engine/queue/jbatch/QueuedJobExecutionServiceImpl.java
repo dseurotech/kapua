@@ -12,22 +12,22 @@
  *******************************************************************************/
 package org.eclipse.kapua.job.engine.queue.jbatch;
 
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecution;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionCreator;
-import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionListResult;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionRepository;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionService;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.storage.TxManager;
-
-import javax.inject.Singleton;
 
 /**
  * {@link QueuedJobExecutionService} implementation
@@ -92,7 +92,7 @@ public class QueuedJobExecutionServiceImpl implements QueuedJobExecutionService 
     }
 
     @Override
-    public QueuedJobExecutionListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<QueuedJobExecution> query(KapuaQuery query) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
         // Check Access

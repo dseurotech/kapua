@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.job.server;
 
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
 import org.eclipse.kapua.app.console.module.api.server.util.KapuaExceptionHandler;
@@ -30,18 +30,19 @@ import org.eclipse.kapua.app.console.module.job.shared.util.KapuaGwtJobModelConv
 import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.job.step.JobStep;
 import org.eclipse.kapua.service.job.step.JobStepAttributes;
 import org.eclipse.kapua.service.job.step.JobStepCreator;
 import org.eclipse.kapua.service.job.step.JobStepFactory;
-import org.eclipse.kapua.service.job.step.JobStepListResult;
 import org.eclipse.kapua.service.job.step.JobStepQuery;
 import org.eclipse.kapua.service.job.step.JobStepService;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinition;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinitionService;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 
 public class GwtJobStepServiceImpl extends KapuaRemoteServiceServlet implements GwtJobStepService {
 
@@ -63,7 +64,7 @@ public class GwtJobStepServiceImpl extends KapuaRemoteServiceServlet implements 
             JobStepQuery jobStepQuery = GwtKapuaJobModelConverter.convertJobStepQuery(gwtJobStepQuery, loadConfig);
 
             // query
-            JobStepListResult jobStepList = JOB_STEP_SERVICE.query(jobStepQuery);
+            KapuaListResult<JobStep> jobStepList = JOB_STEP_SERVICE.query(jobStepQuery);
             totalLength = jobStepList.getTotalCount().intValue();
 
             // Converto to GWT entity
@@ -223,8 +224,8 @@ public class GwtJobStepServiceImpl extends KapuaRemoteServiceServlet implements 
     }
 
     /**
-     * Set the {@link GwtJobStepProperty#isEnum()} property.
-     * This cannot be performed in *.shared.* packages (entity converters are in that package), since `Class.forName` is not present in the JRE Emulation library.
+     * Set the {@link GwtJobStepProperty#isEnum()} property. This cannot be performed in *.shared.* packages (entity converters are in that package), since `Class.forName` is not present in the JRE
+     * Emulation library.
      *
      * @param jobStepProperties
      * @throws ClassNotFoundException

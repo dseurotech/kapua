@@ -24,15 +24,14 @@ import org.eclipse.kapua.app.console.module.authorization.shared.util.GwtKapuaAu
 import org.eclipse.kapua.app.console.module.authorization.shared.util.KapuaGwtAuthorizationModelConverter;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authorization.access.AccessInfo;
 import org.eclipse.kapua.service.authorization.access.AccessInfoCreator;
 import org.eclipse.kapua.service.authorization.access.AccessInfoFactory;
 import org.eclipse.kapua.service.authorization.access.AccessInfoService;
 import org.eclipse.kapua.service.authorization.access.AccessPermission;
-import org.eclipse.kapua.service.authorization.access.AccessPermissionListResult;
 import org.eclipse.kapua.service.authorization.access.AccessPermissionService;
 import org.eclipse.kapua.service.authorization.access.AccessRole;
-import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRoleService;
 
 public class GwtAccessInfoServiceImpl extends KapuaRemoteServiceServlet implements GwtAccessInfoService {
@@ -80,13 +79,13 @@ public class GwtAccessInfoServiceImpl extends KapuaRemoteServiceServlet implemen
             accessInfoService.delete(scopeId, accessInfoId);
 
             AccessRoleService accessRoleService = locator.getService(AccessRoleService.class);
-            AccessRoleListResult accessRoles = accessRoleService.findByAccessInfoId(scopeId, accessInfoId);
+            KapuaListResult<AccessRole> accessRoles = accessRoleService.findByAccessInfoId(scopeId, accessInfoId);
             for (AccessRole accessRole : accessRoles.getItems()) {
                 accessRoleService.delete(scopeId, accessRole.getId());
             }
 
             AccessPermissionService accessPermissionService = locator.getService(AccessPermissionService.class);
-            AccessPermissionListResult accessPermissions = accessPermissionService.findByAccessInfoId(scopeId, accessInfoId);
+            KapuaListResult<AccessPermission> accessPermissions = accessPermissionService.findByAccessInfoId(scopeId, accessInfoId);
             for (AccessPermission accessPermission : accessPermissions.getItems()) {
                 accessPermissionService.delete(scopeId, accessPermission.getId());
 

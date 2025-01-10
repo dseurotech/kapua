@@ -15,12 +15,12 @@ package org.eclipse.kapua.service.authorization.role.shiro;
 import org.eclipse.kapua.commons.service.internal.cache.NamedEntityCache;
 import org.eclipse.kapua.commons.storage.KapuaNamedEntityRepositoryCachingWrapper;
 import org.eclipse.kapua.service.authorization.role.Role;
-import org.eclipse.kapua.service.authorization.role.RoleListResult;
 import org.eclipse.kapua.service.authorization.role.RoleRepository;
 
 public class RoleCachingRepository
-        extends KapuaNamedEntityRepositoryCachingWrapper<Role, RoleListResult>
+        extends KapuaNamedEntityRepositoryCachingWrapper<Role>
         implements RoleRepository {
+
     public RoleCachingRepository(RoleRepository wrapped, NamedEntityCache entityCache) {
         super(wrapped, entityCache);
     }

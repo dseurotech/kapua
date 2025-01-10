@@ -12,13 +12,14 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.configuration;
 
-import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.service.KapuaService;
-import org.eclipse.kapua.service.account.AccountListResult;
-
 import java.util.List;
 import java.util.Optional;
+
+import org.eclipse.kapua.KapuaException;
+import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
+import org.eclipse.kapua.service.KapuaService;
+import org.eclipse.kapua.service.account.Account;
 
 /**
  * Service to retrieve relative accounts for a given scope
@@ -28,16 +29,19 @@ import java.util.Optional;
 public interface AccountRelativeFinder extends KapuaService {
 
     /**
-     * @param scopeId       The scope id - must be provided
-     * @param targetScopeId - nullable target scope id
+     * @param scopeId
+     *         The scope id - must be provided
+     * @param targetScopeId
+     *         - nullable target scope id
      * @return the list of child accounts
      * @throws KapuaException
      */
-    AccountListResult findChildren(KapuaId scopeId, Optional<KapuaId> targetScopeId) throws KapuaException;
+    KapuaListResult<Account> findChildren(KapuaId scopeId, Optional<KapuaId> targetScopeId) throws KapuaException;
 
     /**
-     * @param accountId    The id of the account to lookup
-     * @return             The list of parent ids for the target account
+     * @param accountId
+     *         The id of the account to lookup
+     * @return The list of parent ids for the target account
      * @throws KapuaException
      */
     List<KapuaId> findParentIds(KapuaId accountId) throws KapuaException;

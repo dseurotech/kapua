@@ -13,17 +13,16 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.job.steps;
 
-import com.google.inject.Singleton;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate.Operator;
 import org.eclipse.kapua.qa.common.StepData;
 import org.eclipse.kapua.qa.common.cucumber.CucConfig;
@@ -31,16 +30,20 @@ import org.eclipse.kapua.service.job.Job;
 import org.eclipse.kapua.service.job.JobAttributes;
 import org.eclipse.kapua.service.job.JobCreator;
 import org.eclipse.kapua.service.job.JobFactory;
-import org.eclipse.kapua.service.job.JobListResult;
 import org.eclipse.kapua.service.job.JobQuery;
 import org.eclipse.kapua.service.job.JobService;
 import org.eclipse.kapua.service.job.step.JobStep;
 import org.junit.Assert;
 
-import javax.inject.Inject;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.inject.Singleton;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 @Singleton
 public class JobServiceSteps extends JobServiceTestBase {
@@ -374,7 +377,6 @@ public class JobServiceSteps extends JobServiceTestBase {
         }
     }
 
-
     @When("I query for the job with the name {string} and I find it")
     public void iQueryForTheJobWithTheNameAndIFoundIt(String jobName) throws Exception {
         JobQuery tmpQuery = jobFactory.newQuery(getCurrentScopeId());
@@ -438,7 +440,7 @@ public class JobServiceSteps extends JobServiceTestBase {
         try {
             JobQuery query = jobFactory.newQuery(getCurrentScopeId());
             query.setPredicate(query.attributePredicate(JobAttributes.NAME, oldName, Operator.EQUAL));
-            JobListResult queryResult = jobService.query(query);
+            KapuaListResult<Job> queryResult = jobService.query(query);
             Job job = queryResult.getFirstItem();
             job.setName(newName);
             jobService.update(job);
@@ -459,7 +461,7 @@ public class JobServiceSteps extends JobServiceTestBase {
         try {
             JobQuery query = jobFactory.newQuery(getCurrentScopeId());
             query.setPredicate(query.attributePredicate(JobAttributes.DESCRIPTION, oldDescription, Operator.EQUAL));
-            JobListResult queryResult = jobService.query(query);
+            KapuaListResult<Job> queryResult = jobService.query(query);
             Job job = queryResult.getFirstItem();
             job.setDescription(newDescription);
             jobService.update(job);

@@ -12,15 +12,14 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.certificate;
 
+import java.util.List;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 import org.eclipse.kapua.service.KapuaNamedEntityService;
 import org.eclipse.kapua.service.KapuaUpdatableEntityService;
 import org.eclipse.kapua.service.config.KapuaConfigurableService;
-
-import java.util.List;
 
 /**
  * @since 1.0.0
@@ -29,9 +28,6 @@ public interface CertificateService extends KapuaEntityService<Certificate, Cert
         KapuaNamedEntityService<Certificate>,
         KapuaUpdatableEntityService<Certificate>,
         KapuaConfigurableService {
-
-    @Override
-    CertificateListResult query(KapuaQuery query) throws KapuaException;
 
     Certificate generate(CertificateGenerator generator) throws KapuaException;
 

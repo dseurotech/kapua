@@ -17,6 +17,7 @@ import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public interface TriggerRepository
-        extends KapuaNamedEntityRepository<Trigger, TriggerListResult> {
+        extends KapuaNamedEntityRepository<Trigger> {
+
     void deleteAllByJobId(TxContext tx, KapuaId scopeId, KapuaId jobId);
 }

@@ -13,6 +13,11 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.user.internal;
 
+import java.util.Objects;
+import java.util.Optional;
+
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateExternalIdException;
 import org.eclipse.kapua.KapuaDuplicateExternalUsernameException;
 import org.eclipse.kapua.KapuaDuplicateNameException;
@@ -32,13 +37,13 @@ import org.eclipse.kapua.commons.util.CommonsValidationRegex;
 import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.service.user.User;
 import org.eclipse.kapua.service.user.UserCreator;
 import org.eclipse.kapua.service.user.UserFactory;
-import org.eclipse.kapua.service.user.UserListResult;
 import org.eclipse.kapua.service.user.UserQuery;
 import org.eclipse.kapua.service.user.UserRepository;
 import org.eclipse.kapua.service.user.UserService;
@@ -47,10 +52,6 @@ import org.eclipse.kapua.service.user.UserType;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Singleton;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * {@link UserService} implementation.
@@ -308,7 +309,7 @@ public class UserServiceImpl extends KapuaConfigurableServiceBase implements Use
     }
 
     @Override
-    public UserListResult query(KapuaQuery query)
+    public KapuaListResult<User> query(KapuaQuery query)
             throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
@@ -367,7 +368,7 @@ public class UserServiceImpl extends KapuaConfigurableServiceBase implements Use
 
     private void deleteUserByAccountId(KapuaId scopeId, KapuaId accountId) throws KapuaException {
         UserQuery query = new UserQueryImpl(accountId);
-        UserListResult usersToDelete = query(query);
+        KapuaListResult<User> usersToDelete = query(query);
 
         for (User u : usersToDelete.getItems()) {
             delete(u.getScopeId(), u.getId());

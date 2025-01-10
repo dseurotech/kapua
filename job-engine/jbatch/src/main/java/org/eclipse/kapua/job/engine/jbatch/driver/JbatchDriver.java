@@ -54,12 +54,12 @@ import org.eclipse.kapua.job.engine.jbatch.driver.utils.JobDefinitionBuildUtils;
 import org.eclipse.kapua.job.engine.jbatch.persistence.JPAPersistenceManagerImpl;
 import org.eclipse.kapua.job.engine.jbatch.setting.JobEngineSettingKeys;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.job.Job;
 import org.eclipse.kapua.service.job.execution.JobExecutionService;
 import org.eclipse.kapua.service.job.step.JobStep;
 import org.eclipse.kapua.service.job.step.JobStepAttributes;
 import org.eclipse.kapua.service.job.step.JobStepFactory;
-import org.eclipse.kapua.service.job.step.JobStepListResult;
 import org.eclipse.kapua.service.job.step.JobStepQuery;
 import org.eclipse.kapua.service.job.step.JobStepService;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinition;
@@ -156,7 +156,7 @@ public class JbatchDriver {
             JobStepQuery query = jobStepFactory.newQuery(scopeId);
             query.setPredicate(query.attributePredicate(JobStepAttributes.JOB_ID, jobId));
 
-            JobStepListResult jobSteps = jobStepService.query(query);
+            KapuaListResult<JobStep> jobSteps = jobStepService.query(query);
             jobSteps.sort(Comparator.comparing(JobStep::getStepIndex));
 
             List<ExecutionElement> jslExecutionElements = new ArrayList<>();

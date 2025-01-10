@@ -16,13 +16,13 @@ import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.jpa.KapuaEntityJpaRepository;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCode;
-import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCodeListResult;
 import org.eclipse.kapua.service.authentication.credential.mfa.ScratchCodeRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public class ScratchCodeImplJpaRepository
-        extends KapuaEntityJpaRepository<ScratchCode, ScratchCodeImpl, ScratchCodeListResult>
+        extends KapuaEntityJpaRepository<ScratchCode, ScratchCodeImpl>
         implements ScratchCodeRepository {
 
     public ScratchCodeImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
@@ -30,8 +30,8 @@ public class ScratchCodeImplJpaRepository
     }
 
     @Override
-    public ScratchCodeListResult findByMfaOptionId(TxContext tx, KapuaId scopeId, KapuaId mfaOptionId) throws KapuaException {
-        final ScratchCodeListResult res = listSupplier.get();
+    public KapuaListResult<ScratchCode> findByMfaOptionId(TxContext tx, KapuaId scopeId, KapuaId mfaOptionId) throws KapuaException {
+        final KapuaListResult<ScratchCode> res = listSupplier.get();
         res.addItems(doFindAllByField(tx, scopeId, ScratchCodeImpl_.MFA_OPTION_ID, mfaOptionId));
         return res;
     }

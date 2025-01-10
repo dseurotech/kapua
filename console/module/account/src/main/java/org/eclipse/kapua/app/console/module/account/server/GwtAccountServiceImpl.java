@@ -12,12 +12,26 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.account.server;
 
-import com.extjs.gxt.ui.client.data.BaseListLoadResult;
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.google.common.collect.Sets;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Properties;
+import java.util.concurrent.Callable;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.imaging.ImageFormat;
 import org.apache.commons.imaging.ImageFormats;
@@ -68,33 +82,19 @@ import org.eclipse.kapua.service.authorization.role.RoleService;
 import org.eclipse.kapua.service.config.KapuaConfigurableService;
 import org.eclipse.kapua.service.endpoint.EndpointInfo;
 import org.eclipse.kapua.service.endpoint.EndpointInfoFactory;
-import org.eclipse.kapua.service.endpoint.EndpointInfoListResult;
 import org.eclipse.kapua.service.endpoint.EndpointInfoService;
 import org.eclipse.kapua.service.user.User;
 import org.eclipse.kapua.service.user.UserFactory;
-import org.eclipse.kapua.service.user.UserListResult;
 import org.eclipse.kapua.service.user.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.xml.namespace.QName;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Properties;
-import java.util.concurrent.Callable;
+import com.extjs.gxt.ui.client.data.BaseListLoadResult;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.google.common.collect.Sets;
 
 /**
  * The server side implementation of the RPC service.
@@ -207,11 +207,11 @@ public class GwtAccountServiceImpl extends KapuaRemoteServiceServlet implements 
         try {
             final Account account = ACCOUNT_SERVICE.find(scopeId, accountId);
 
-//TODO: #LAYER_VIOLATION - user lookup should not be done here
-            UserListResult userListResult = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+            //TODO: #LAYER_VIOLATION - user lookup should not be done here
+            KapuaListResult<User> userListResult = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                 @Override
-                public UserListResult call() throws Exception {
+                public KapuaListResult<User> call() throws Exception {
                     return USER_SERVICE.query(USER_FACTORY.newQuery(null));
                 }
             });
@@ -245,10 +245,10 @@ public class GwtAccountServiceImpl extends KapuaRemoteServiceServlet implements 
             if (AUTHORIZATION_SERVICE.isPermitted(PERMISSION_FACTORY.newPermission(Domains.ENDPOINT_INFO, Actions.read, scopeId))) {
                 //TODO: #LAYER_VIOLATION - related entities lookup should not be done here
 
-                EndpointInfoListResult endpointInfos = KapuaSecurityUtils.doPrivileged(new Callable<EndpointInfoListResult>() {
+                KapuaListResult<EndpointInfo> endpointInfos = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<EndpointInfo>>() {
 
                     @Override
-                    public EndpointInfoListResult call() throws Exception {
+                    public KapuaListResult<EndpointInfo> call() throws Exception {
                         return ENDPOINT_INFO_SERVICE.query(ENDPOINT_INFO_FACTORY.newQuery(account.getId()));
                     }
                 });
@@ -490,7 +490,7 @@ public class GwtAccountServiceImpl extends KapuaRemoteServiceServlet implements 
                                                         strValues.add(v.toString());
                                                     }
                                                 }
-                                                gwtParam.setValues(strValues.toArray(new String[]{}));
+                                                gwtParam.setValues(strValues.toArray(new String[] {}));
                                             }
                                         }
                                     }
@@ -672,10 +672,10 @@ public class GwtAccountServiceImpl extends KapuaRemoteServiceServlet implements 
             totalLength = accounts.getTotalCount().intValue();
 
             if (!accounts.isEmpty()) {
-                UserListResult usernames = KapuaSecurityUtils.doPrivileged(new Callable<UserListResult>() {
+                KapuaListResult<User> usernames = KapuaSecurityUtils.doPrivileged(new Callable<KapuaListResult<User>>() {
 
                     @Override
-                    public UserListResult call() throws Exception {
+                    public KapuaListResult<User> call() throws Exception {
                         return USER_SERVICE.query(USER_FACTORY.newQuery(null));
                     }
                 });

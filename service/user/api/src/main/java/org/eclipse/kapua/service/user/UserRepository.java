@@ -12,13 +12,13 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.user;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Optional;
-
 public interface UserRepository extends
-        KapuaNamedEntityRepository<User, UserListResult> {
+        KapuaNamedEntityRepository<User> {
 
     Optional<User> findByExternalId(TxContext txContext, final String externalId);
 

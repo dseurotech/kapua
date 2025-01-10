@@ -12,16 +12,16 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.registry.connection.internal;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnection;
-import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionListResult;
 import org.eclipse.kapua.service.device.registry.connection.DeviceConnectionRepository;
 import org.eclipse.kapua.service.device.registry.internal.DeviceRegistryCache;
 import org.eclipse.kapua.storage.TxContext;
-
-import java.util.Optional;
 
 public class CachingDeviceConnectionRepository
         implements DeviceConnectionRepository {
@@ -51,7 +51,7 @@ public class CachingDeviceConnectionRepository
     }
 
     @Override
-    public DeviceConnectionListResult query(TxContext txContext, KapuaQuery kapuaQuery) throws KapuaException {
+    public KapuaListResult<DeviceConnection> query(TxContext txContext, KapuaQuery kapuaQuery) throws KapuaException {
         return wrapped.query(txContext, kapuaQuery);
     }
 

@@ -12,6 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.role.shiro;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaErrorCodes;
@@ -24,17 +30,16 @@ import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.access.AccessInfo;
 import org.eclipse.kapua.service.authorization.access.AccessInfoFactory;
-import org.eclipse.kapua.service.authorization.access.AccessInfoListResult;
 import org.eclipse.kapua.service.authorization.access.AccessInfoQuery;
 import org.eclipse.kapua.service.authorization.access.AccessInfoService;
 import org.eclipse.kapua.service.authorization.access.AccessRole;
 import org.eclipse.kapua.service.authorization.access.AccessRoleAttributes;
 import org.eclipse.kapua.service.authorization.access.AccessRoleFactory;
-import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRoleQuery;
 import org.eclipse.kapua.service.authorization.access.AccessRoleService;
 import org.eclipse.kapua.service.authorization.permission.Permission;
@@ -42,7 +47,6 @@ import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.service.authorization.permission.shiro.PermissionValidator;
 import org.eclipse.kapua.service.authorization.role.Role;
 import org.eclipse.kapua.service.authorization.role.RoleCreator;
-import org.eclipse.kapua.service.authorization.role.RoleListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermission;
 import org.eclipse.kapua.service.authorization.role.RolePermissionCreator;
 import org.eclipse.kapua.service.authorization.role.RolePermissionFactory;
@@ -53,11 +57,6 @@ import org.eclipse.kapua.service.authorization.role.RoleService;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * {@link RoleService} implementation.
@@ -80,14 +79,17 @@ public class RoleServiceImpl extends KapuaConfigurableServiceBase implements Rol
 
     public AccessInfoService accessInfoService;
 
-
     /**
      * Injectable constructor
      *
-     * @param permissionFactory           The {@link PermissionFactory} instance.
-     * @param authorizationService        The {@link AuthorizationService} instance.
-     * @param rolePermissionFactory       The {@link RolePermissionFactory} instance.
-     * @param serviceConfigurationManager The {@link ServiceConfigurationManager} instance.
+     * @param permissionFactory
+     *         The {@link PermissionFactory} instance.
+     * @param authorizationService
+     *         The {@link AuthorizationService} instance.
+     * @param rolePermissionFactory
+     *         The {@link RolePermissionFactory} instance.
+     * @param serviceConfigurationManager
+     *         The {@link ServiceConfigurationManager} instance.
      * @param txManager
      * @param roleRepository
      * @param rolePermissionRepository
@@ -226,7 +228,7 @@ public class RoleServiceImpl extends KapuaConfigurableServiceBase implements Rol
     }
 
     @Override
-    public RoleListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<Role> query(KapuaQuery query) throws KapuaException {
         // Argument validation
         ArgumentValidator.notNull(query, "query");
         // Check Access
@@ -261,7 +263,7 @@ public class RoleServiceImpl extends KapuaConfigurableServiceBase implements Rol
 
         RoleQuery query = new RoleQueryImpl(accountId);
 
-        RoleListResult rolesToDelete = query(query);
+        KapuaListResult<Role> rolesToDelete = query(query);
 
         for (Role r : rolesToDelete.getItems()) {
             delete(r.getScopeId(), r.getId());
@@ -271,11 +273,12 @@ public class RoleServiceImpl extends KapuaConfigurableServiceBase implements Rol
     public List<KapuaId> userIdsByRoleId(KapuaId scopeId, KapuaId roleId) throws KapuaException {
         AccessRoleQuery accessRoleQuery = accessRoleFactory.newQuery(scopeId);
         accessRoleQuery.setPredicate(accessRoleQuery.attributePredicate(AccessRoleAttributes.ROLE_ID, roleId));
-        AccessRoleListResult accessRoleListResult = accessRoleService.query(accessRoleQuery);
+        KapuaListResult<AccessRole> accessRoleListResult = accessRoleService.query(accessRoleQuery);
 
         AccessInfoQuery accessInfoQuery = accessInfoFactory.newQuery(scopeId);
-        accessInfoQuery.setPredicate(accessInfoQuery.attributePredicate(KapuaEntityAttributes.ENTITY_ID, accessRoleListResult.getItems().stream().map(AccessRole::getAccessInfoId).collect(Collectors.toList())));
-        AccessInfoListResult accessInfoListResult = accessInfoService.query(accessInfoQuery);
+        accessInfoQuery.setPredicate(
+                accessInfoQuery.attributePredicate(KapuaEntityAttributes.ENTITY_ID, accessRoleListResult.getItems().stream().map(AccessRole::getAccessInfoId).collect(Collectors.toList())));
+        KapuaListResult<AccessInfo> accessInfoListResult = accessInfoService.query(accessInfoQuery);
 
         return accessInfoListResult.getItems().stream().map(AccessInfo::getUserId).collect(Collectors.toList());
     }

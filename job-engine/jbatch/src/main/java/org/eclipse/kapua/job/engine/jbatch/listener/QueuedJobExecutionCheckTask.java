@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.job.engine.jbatch.listener;
 
+import java.util.TimerTask;
+
 import org.eclipse.kapua.commons.model.query.predicate.AndPredicateImpl;
 import org.eclipse.kapua.commons.model.query.predicate.AttributePredicateImpl;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
@@ -21,15 +23,13 @@ import org.eclipse.kapua.job.engine.jbatch.setting.JobEngineSettingKeys;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecution;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionAttributes;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionFactory;
-import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionListResult;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionQuery;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionService;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionStatus;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.TimerTask;
 
 public class QueuedJobExecutionCheckTask extends TimerTask {
 
@@ -73,7 +73,7 @@ public class QueuedJobExecutionCheckTask extends TimerTask {
                     )
             );
 
-            QueuedJobExecutionListResult queuedJobExecutions = KapuaSecurityUtils.doPrivileged(() -> queuedJobExecutionService.query(query));
+            KapuaListResult<QueuedJobExecution> queuedJobExecutions = KapuaSecurityUtils.doPrivileged(() -> queuedJobExecutionService.query(query));
 
             int i = 0;
             int failedToResumeExecution = 0;

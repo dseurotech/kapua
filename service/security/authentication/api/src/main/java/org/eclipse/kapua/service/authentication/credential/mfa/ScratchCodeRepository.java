@@ -14,6 +14,7 @@ package org.eclipse.kapua.service.authentication.credential.mfa;
 
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.storage.KapuaEntityRepository;
 import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
@@ -24,6 +25,7 @@ import org.eclipse.kapua.storage.TxContext;
  * @since 2.0.0
  */
 public interface ScratchCodeRepository
-        extends KapuaEntityRepository<ScratchCode, ScratchCodeListResult> {
-    ScratchCodeListResult findByMfaOptionId(TxContext tx, KapuaId scopeId, KapuaId mfaOptionId) throws KapuaException;
+        extends KapuaEntityRepository<ScratchCode> {
+
+    KapuaListResult<ScratchCode> findByMfaOptionId(TxContext tx, KapuaId scopeId, KapuaId mfaOptionId) throws KapuaException;
 }

@@ -12,23 +12,6 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.api.resources.v1.resources;
 
-import org.eclipse.kapua.KapuaException;
-import org.eclipse.kapua.app.api.core.model.CountResult;
-import org.eclipse.kapua.app.api.core.model.EntityId;
-import org.eclipse.kapua.app.api.core.model.ScopeId;
-import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
-import org.eclipse.kapua.model.query.SortOrder;
-import org.eclipse.kapua.model.query.predicate.AndPredicate;
-import org.eclipse.kapua.service.KapuaService;
-import org.eclipse.kapua.service.job.Job;
-import org.eclipse.kapua.service.scheduler.trigger.Trigger;
-import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerAttributes;
-import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerFactory;
-import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerListResult;
-import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerQuery;
-import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerService;
-import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerStatus;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -39,6 +22,25 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+
+import org.eclipse.kapua.KapuaException;
+import org.eclipse.kapua.app.api.core.model.CountResult;
+import org.eclipse.kapua.app.api.core.model.EntityId;
+import org.eclipse.kapua.app.api.core.model.ScopeId;
+import org.eclipse.kapua.app.api.core.resources.AbstractKapuaResource;
+import org.eclipse.kapua.model.query.KapuaListResult;
+import org.eclipse.kapua.model.query.SortOrder;
+import org.eclipse.kapua.model.query.predicate.AndPredicate;
+import org.eclipse.kapua.service.KapuaService;
+import org.eclipse.kapua.service.job.Job;
+import org.eclipse.kapua.service.scheduler.trigger.Trigger;
+import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTrigger;
+import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerAttributes;
+import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerFactory;
+import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerListResult;
+import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerQuery;
+import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerService;
+import org.eclipse.kapua.service.scheduler.trigger.fired.FiredTriggerStatus;
 
 @Path("{scopeId}/jobs/{jobId}/triggers/{triggerId}/fired")
 public class JobTriggersFired extends AbstractKapuaResource {
@@ -51,18 +53,24 @@ public class JobTriggersFired extends AbstractKapuaResource {
     /**
      * Gets the {@link Trigger} list for a given {@link Job}.
      *
-     * @param scopeId       The {@link ScopeId} in which to search results.
-     * @param jobId         The {@link Job} id to filter results.
-     * @param offset        The result set offset.
-     * @param limit         The result set limit.
-     * @param askTotalCount Whether or not to fetch the total count of elements.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param jobId
+     *         The {@link Job} id to filter results.
+     * @param offset
+     *         The result set offset.
+     * @param limit
+     *         The result set limit.
+     * @param askTotalCount
+     *         Whether or not to fetch the total count of elements.
      * @return The {@link FiredTriggerListResult} of all the jobs triggers associated to the current selected job.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.5.0
      */
     @GET
-    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public FiredTriggerListResult simpleQuery(
+    @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+    public KapuaListResult<FiredTrigger> simpleQuery(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,
             @PathParam("triggerId") EntityId triggerId,
@@ -94,17 +102,20 @@ public class JobTriggersFired extends AbstractKapuaResource {
     /**
      * Queries the results with the given {@link FiredTriggerQuery} parameter.
      *
-     * @param scopeId The {@link ScopeId} in which to search results.
-     * @param query   The {@link FiredTriggerQuery} to use to filter results.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param query
+     *         The {@link FiredTriggerQuery} to use to filter results.
      * @return The {@link FiredTriggerListResult} of all the result matching the given {@link FiredTriggerQuery} parameter.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.5.0
      */
     @POST
     @Path("_query")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public FiredTriggerListResult query(
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    public KapuaListResult<FiredTrigger> query(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,
             @PathParam("triggerId") EntityId triggerId,
@@ -127,16 +138,19 @@ public class JobTriggersFired extends AbstractKapuaResource {
     /**
      * Counts the results with the given {@link FiredTriggerQuery} parameter.
      *
-     * @param scopeId The {@link ScopeId} in which to search results.
-     * @param query   The {@link FiredTriggerQuery} to use to filter results.
+     * @param scopeId
+     *         The {@link ScopeId} in which to search results.
+     * @param query
+     *         The {@link FiredTriggerQuery} to use to filter results.
      * @return The count of all the result matching the given {@link FiredTriggerQuery} parameter.
-     * @throws KapuaException Whenever something bad happens. See specific {@link KapuaService} exceptions.
+     * @throws KapuaException
+     *         Whenever something bad happens. See specific {@link KapuaService} exceptions.
      * @since 1.5.0
      */
     @POST
     @Path("_count")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     public CountResult count(
             @PathParam("scopeId") ScopeId scopeId,
             @PathParam("jobId") EntityId jobId,

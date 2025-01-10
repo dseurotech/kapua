@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.certificate.info;
 import org.eclipse.kapua.service.utils.KapuaForwardableEntityRepository;
 
 public interface CertificateInfoRepository
-        extends KapuaForwardableEntityRepository<CertificateInfo, CertificateInfoListResult> {
+        extends KapuaForwardableEntityRepository<CertificateInfo> {
+
 }

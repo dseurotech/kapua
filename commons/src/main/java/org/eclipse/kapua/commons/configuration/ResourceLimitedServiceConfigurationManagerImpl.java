@@ -24,8 +24,8 @@ import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
 import org.eclipse.kapua.commons.util.xml.XmlUtil;
 import org.eclipse.kapua.model.config.metatype.KapuaTocd;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.account.Account;
-import org.eclipse.kapua.service.account.AccountListResult;
 import org.eclipse.kapua.service.config.KapuaConfigurableService;
 import org.eclipse.kapua.storage.TxContext;
 
@@ -144,7 +144,7 @@ public class ResourceLimitedServiceConfigurationManagerImpl
             // Current used entities
             long currentUsedEntities = usedEntitiesCounter.countEntitiesInScope(txContext, scopeId);
 
-            final AccountListResult childAccounts = accountRelativeFinder.findChildren(scopeId, targetScopeId);
+            final KapuaListResult<Account> childAccounts = accountRelativeFinder.findChildren(scopeId, targetScopeId);
             // Resources assigned to children
             long childCount = 0;
             for (Account childAccount : childAccounts.getItems()) {

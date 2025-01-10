@@ -12,17 +12,18 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.job.steps;
 
-import com.google.inject.Singleton;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
 import org.eclipse.kapua.qa.common.StepData;
 import org.eclipse.kapua.qa.common.cucumber.CucJobStepProperty;
@@ -31,7 +32,6 @@ import org.eclipse.kapua.service.job.step.JobStep;
 import org.eclipse.kapua.service.job.step.JobStepAttributes;
 import org.eclipse.kapua.service.job.step.JobStepCreator;
 import org.eclipse.kapua.service.job.step.JobStepFactory;
-import org.eclipse.kapua.service.job.step.JobStepListResult;
 import org.eclipse.kapua.service.job.step.JobStepQuery;
 import org.eclipse.kapua.service.job.step.JobStepService;
 import org.eclipse.kapua.service.job.step.definition.JobStepDefinition;
@@ -40,12 +40,15 @@ import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.google.inject.Singleton;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 @Singleton
 public class JobStepServiceSteps extends JobServiceTestBase {
@@ -106,13 +109,15 @@ public class JobStepServiceSteps extends JobServiceTestBase {
     /**
      * Adds a {@link JobStep} to the {@link Job} in context with the {@link JobStepDefinition} in context with the given {@link JobStepProperty}es
      *
-     * @param jobStepName The {@link JobStepCreator#getName()}
-     * @param cucJobStepProperties The {@link JobStepCreator#getStepProperties()}
+     * @param jobStepName
+     *         The {@link JobStepCreator#getName()}
+     * @param cucJobStepProperties
+     *         The {@link JobStepCreator#getStepProperties()}
      * @throws Exception
      * @since 2.1.0
      */
     @And("I add job step to job with name {string} and with selected job step definition and properties")
-    public void iAddJobStepToJobWithSelectedJobStepDefinitionAndFollowingJobStepProperties(String jobStepName, List<CucJobStepProperty> cucJobStepProperties) throws Exception{
+    public void iAddJobStepToJobWithSelectedJobStepDefinitionAndFollowingJobStepProperties(String jobStepName, List<CucJobStepProperty> cucJobStepProperties) throws Exception {
         Job job = (Job) stepData.get(JOB);
         JobStepDefinition jobStepDefinition = (JobStepDefinition) stepData.get(JOB_STEP_DEFINITION);
 
@@ -123,11 +128,11 @@ public class JobStepServiceSteps extends JobServiceTestBase {
         jobStepCreator.setStepProperties(
                 cucJobStepProperties.stream()
                         .map(
-                            (cucJobStepProperty) -> jobStepFactory.newStepProperty(
-                                cucJobStepProperty.getName(),
-                                cucJobStepProperty.getType(),
-                                cucJobStepProperty.getValue()
-                            )
+                                (cucJobStepProperty) -> jobStepFactory.newStepProperty(
+                                        cucJobStepProperty.getName(),
+                                        cucJobStepProperty.getType(),
+                                        cucJobStepProperty.getValue()
+                                )
                         )
                         .collect(Collectors.toList())
         );
@@ -271,7 +276,7 @@ public class JobStepServiceSteps extends JobServiceTestBase {
 
         primeException();
         try {
-            JobStepListResult jobSteps = jobStepService.query(tmpQuery);
+            KapuaListResult<JobStep> jobSteps = jobStepService.query(tmpQuery);
             stepData.put(JOB_STEP, jobSteps.getFirstItem());
         } catch (KapuaException ex) {
             verifyException(ex);
@@ -287,7 +292,7 @@ public class JobStepServiceSteps extends JobServiceTestBase {
         primeException();
         try {
             stepData.remove(JOB_STEPS);
-            JobStepListResult jobSteps = jobStepService.query(tmpQuery);
+            KapuaListResult<JobStep> jobSteps = jobStepService.query(tmpQuery);
             stepData.put(JOB_STEPS, jobSteps);
             stepData.updateCount(jobSteps.getSize());
         } catch (KapuaException ex) {
@@ -311,7 +316,7 @@ public class JobStepServiceSteps extends JobServiceTestBase {
             while (System.currentTimeMillis() < endWaitTime);
             logger.info("============================    Wait 30 seconds again!!!! job id: {}", currentJobId);
             Thread.sleep(30000);
-            JobStepListResult list = getJobStepListResult(currentJobId);
+            KapuaListResult<JobStep> list = getJobStepListResult(currentJobId);
             list.getItems().forEach(jobStep -> logger.info("{} - {}", jobStep.getJobId(), jobStep.getJobStepDefinitionId()));
             Assert.assertEquals("Wrong job step size!", count, list.getSize());
         } catch (KapuaException ke) {
@@ -319,7 +324,7 @@ public class JobStepServiceSteps extends JobServiceTestBase {
         }
     }
 
-    private JobStepListResult getJobStepListResult(KapuaId currentJobId) throws KapuaException {
+    private KapuaListResult<JobStep> getJobStepListResult(KapuaId currentJobId) throws KapuaException {
         JobStepQuery jobStepQuery = jobStepFactory.newQuery(getCurrentScopeId());
         jobStepQuery.setPredicate(jobStepQuery.attributePredicate(JobStepAttributes.JOB_ID, currentJobId, AttributePredicate.Operator.EQUAL));
 

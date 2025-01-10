@@ -12,19 +12,19 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.access.shiro;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.storage.KapuaUpdatableEntityRepositoryCachingWrapper;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.authorization.access.AccessInfo;
-import org.eclipse.kapua.service.authorization.access.AccessInfoListResult;
 import org.eclipse.kapua.service.authorization.access.AccessInfoRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Optional;
-
 public class AccessInfoCachingRepository
-        extends KapuaUpdatableEntityRepositoryCachingWrapper<AccessInfo, AccessInfoListResult>
+        extends KapuaUpdatableEntityRepositoryCachingWrapper<AccessInfo>
         implements AccessInfoRepository {
+
     private final AccessInfoRepository wrapped;
     private final AccessInfoCache entityCache;
 

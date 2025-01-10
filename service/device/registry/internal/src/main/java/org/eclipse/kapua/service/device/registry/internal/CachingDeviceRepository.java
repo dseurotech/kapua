@@ -12,19 +12,19 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.registry.internal;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.storage.KapuaUpdatableEntityRepositoryCachingWrapper;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.service.device.registry.Device;
-import org.eclipse.kapua.service.device.registry.DeviceListResult;
 import org.eclipse.kapua.service.device.registry.DeviceRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.Optional;
-
 public class CachingDeviceRepository
-        extends KapuaUpdatableEntityRepositoryCachingWrapper<Device, DeviceListResult>
+        extends KapuaUpdatableEntityRepositoryCachingWrapper<Device>
         implements DeviceRepository {
+
     private final DeviceRepository wrapped;
     private final DeviceRegistryCache entityCache;
 

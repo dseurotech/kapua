@@ -12,13 +12,12 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.certificate.info;
 
+import java.util.List;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 import org.eclipse.kapua.service.certificate.CertificateUsage;
-
-import java.util.List;
 
 /**
  * {@link CertificateInfo} {@link KapuaEntityService} definition.
@@ -26,9 +25,6 @@ import java.util.List;
  * @since 1.1.0
  */
 public interface CertificateInfoService extends KapuaEntityService<CertificateInfo, CertificateInfoCreator> {
-
-    @Override
-    CertificateInfoListResult query(KapuaQuery query) throws KapuaException;
 
     /**
      * @param scopeId

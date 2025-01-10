@@ -14,19 +14,13 @@ package org.eclipse.kapua.service.job.steps;
 
 import java.util.Calendar;
 import java.util.Date;
+
 import javax.inject.Inject;
 
-import com.google.inject.Singleton;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.predicate.AndPredicate;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
 import org.eclipse.kapua.qa.common.StepData;
@@ -46,6 +40,16 @@ import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.google.inject.Singleton;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 @Singleton
 public class JobExecutionServiceSteps extends JobServiceTestBase {
@@ -149,7 +153,8 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
     /**
      * Checks that the last {@link Job} in context has the given number of {@link JobExecution}s
      *
-     * @param expectedNumberOfExecution Expected number of {@link JobExecution}s
+     * @param expectedNumberOfExecution
+     *         Expected number of {@link JobExecution}s
      * @throws Exception
      * @since 2.1.0
      */
@@ -163,8 +168,10 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
     /**
      * Looks for a {@link Job} by its {@link Job#getName()} and checks that has the given number of {@link JobExecution}s
      *
-     * @param jobName The {@link Job#getName()} to look for
-     * @param expectedNumberOfExecution Expected number of {@link JobExecution}s
+     * @param jobName
+     *         The {@link Job#getName()} to look for
+     * @param expectedNumberOfExecution
+     *         Expected number of {@link JobExecution}s
      * @throws Exception
      * @since 2.1.0
      */
@@ -178,8 +185,10 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
     /**
      * Checks that the given {@link Job} has the given number of {@link JobExecution}s
      *
-     * @param job The {@link Job} to check
-     * @param expectedNumberOfExecution Expected number of {@link JobExecution}s
+     * @param job
+     *         The {@link Job} to check
+     * @param expectedNumberOfExecution
+     *         Expected number of {@link JobExecution}s
      * @throws Exception
      * @since 2.1.0
      */
@@ -205,7 +214,7 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         primeException();
         try {
             stepData.remove(JOB_EXECUTION_LIST);
-            JobExecutionListResult resultList = jobExecutionService.query(tmpQuery);
+            KapuaListResult<JobExecution> resultList = jobExecutionService.query(tmpQuery);
             stepData.put(JOB_EXECUTION_LIST, resultList);
             stepData.updateCount(resultList.getSize());
         } catch (KapuaException ex) {
@@ -213,20 +222,17 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         }
     }
 
-
     @Then("I query for the execution items for the current job starting from date in the future")
     public void queryExecutionsForJobWithStartDateInFuture() throws Exception {
         final Date startDate = createDateInFuture();
         queryExecutionsForJobWithStartDate(startDate);
     }
 
-
     @Then("I query for the execution items for the current job starting from date in the past")
     public void queryExecutionsForJobWithStartDateInPast() throws Exception {
         final Date startDate = createDateInPast();
         queryExecutionsForJobWithStartDate(startDate);
     }
-
 
     private void queryExecutionsForJobWithStartDate(Date startDate) throws Exception {
         final Job job = (Job) stepData.get("Job");
@@ -237,7 +243,7 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         primeException();
         try {
             stepData.remove(JOB_EXECUTION_LIST);
-            JobExecutionListResult resultList = jobExecutionService.query(tmpQuery);
+            KapuaListResult<JobExecution> resultList = jobExecutionService.query(tmpQuery);
             stepData.put(JOB_EXECUTION_LIST, resultList);
             stepData.updateCount(resultList.getSize());
         } catch (KapuaException ex) {
@@ -245,13 +251,11 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         }
     }
 
-
     private Date createDateInFuture() {
         final Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 7);
         return calendar.getTime();
     }
-
 
     private Date createDateInPast() {
         final Calendar calendar = Calendar.getInstance();
@@ -271,7 +275,7 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
 
     private void iQueryForTheExecutionItemsForTheCurrentJobAndICountOrMoreInternal(int numberOfExecutions, int timeout, boolean greater) throws Exception {
         long endWaitTime = System.currentTimeMillis() + timeout * 1000;
-        JobExecutionListResult resultList = null;
+        KapuaListResult<JobExecution> resultList = null;
         do {
             primeException();
             try {
@@ -301,7 +305,7 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         }
     }
 
-    private JobExecutionListResult getExecutionsForJob(Job job) throws Exception {
+    private KapuaListResult<JobExecution> getExecutionsForJob(Job job) throws Exception {
         JobExecutionQuery tmpQuery = jobExecutionFactory.newQuery(getCurrentScopeId());
         tmpQuery.setPredicate(tmpQuery.attributePredicate(JobExecutionAttributes.JOB_ID, job.getId(), AttributePredicate.Operator.EQUAL));
         return jobExecutionService.query(tmpQuery);
@@ -332,7 +336,7 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         try {
             //update job in stepdata to allow job execution retrieval
             getJobAndUpdateStepData(jobName);
-            JobExecutionListResult jobExecutionList = getJobExecutionListAndUpdateStepData();
+            KapuaListResult<JobExecution> jobExecutionList = getJobExecutionListAndUpdateStepData();
             Assert.assertEquals("Wrong job execution count", 0, jobExecutionList.getSize());
         } catch (KapuaException ex) {
             verifyException(ex);
@@ -343,7 +347,7 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         primeException();
         try {
             Job job = null;
-            JobExecutionListResult jobExecutionList = null;
+            KapuaListResult<JobExecution> jobExecutionList = null;
             JobExecution jobExecution = null;
             int execution = 0;
             while (execution++ < timeout) {
@@ -376,15 +380,15 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         return job;
     }
 
-    private JobExecutionListResult getJobExecutionListAndUpdateStepData() throws Exception {
+    private KapuaListResult<JobExecution> getJobExecutionListAndUpdateStepData() throws Exception {
         stepData.remove(JOB_EXECUTION_LIST);
-        JobExecutionListResult jobExecutionList = getExecutionsForJob((Job) stepData.get("Job"));
+        KapuaListResult<JobExecution> jobExecutionList = getExecutionsForJob((Job) stepData.get("Job"));
         stepData.put(JOB_EXECUTION_LIST, jobExecutionList);
         stepData.updateCount(jobExecutionList.getSize());
         return jobExecutionList;
     }
 
-    private boolean isJobExecutionCompled(JobExecutionListResult jobExecutionList, JobExecution jobExecution, Job job, int execution, String jobName, int count, boolean greaterThan) {
+    private boolean isJobExecutionCompled(KapuaListResult<JobExecution> jobExecutionList, JobExecution jobExecution, Job job, int execution, String jobName, int count, boolean greaterThan) {
         boolean result = jobName.equals(job.getName()) &&
                 jobExecution != null &&
                 jobExecution.getEndedOn() != null &&
@@ -392,7 +396,7 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         return result && (greaterThan ? jobExecutionList.getSize() >= count : jobExecutionList.getSize() == count);
     }
 
-    private void jobInfoAssertCheck(JobExecutionListResult jobExecutionList, JobExecution jobExecution, Job job, String jobName, int count, boolean greaterThan) {
+    private void jobInfoAssertCheck(KapuaListResult<JobExecution> jobExecutionList, JobExecution jobExecution, Job job, String jobName, int count, boolean greaterThan) {
         Assert.assertEquals(jobName, job.getName());
         if (!greaterThan) {
             Assert.assertEquals("Wrong Job execution expected count" + jobExecutionList.getSize(), count, jobExecutionList.getSize());
@@ -404,7 +408,7 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
         Assert.assertNotNull("Job execution log cannot be null!", jobExecution.getLog());
     }
 
-    private void logJobInfo(JobExecutionListResult jobExecutionList, Job job, int execution) {
+    private void logJobInfo(KapuaListResult<JobExecution> jobExecutionList, Job job, int execution) {
         LOG.info("Job executions after {} seconds", execution);
         LOG.info("job id: {} - name: {} - description: {}", job.getId(), job.getName(), job.getDescription());
         if (jobExecutionList.getItems() != null) {
@@ -418,7 +422,6 @@ public class JobExecutionServiceSteps extends JobServiceTestBase {
             }
         }
     }
-
 
     @Then("The job execution matches the creator")
     public void checkJobExecutionItemAgainstCreator() {

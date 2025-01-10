@@ -12,9 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.job.server;
 
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
 import org.eclipse.kapua.app.console.module.api.server.util.KapuaExceptionHandler;
@@ -24,13 +24,14 @@ import org.eclipse.kapua.app.console.module.job.shared.service.GwtJobExecutionSe
 import org.eclipse.kapua.app.console.module.job.shared.util.GwtKapuaJobModelConverter;
 import org.eclipse.kapua.app.console.module.job.shared.util.KapuaGwtJobModelConverter;
 import org.eclipse.kapua.locator.KapuaLocator;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.job.execution.JobExecution;
-import org.eclipse.kapua.service.job.execution.JobExecutionListResult;
 import org.eclipse.kapua.service.job.execution.JobExecutionQuery;
 import org.eclipse.kapua.service.job.execution.JobExecutionService;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
 
 public class GwtJobExecutionServiceImpl extends KapuaRemoteServiceServlet implements GwtJobExecutionService {
 
@@ -47,7 +48,7 @@ public class GwtJobExecutionServiceImpl extends KapuaRemoteServiceServlet implem
             gwtJobExecutionQuery.setJobId(jobId);
 
             JobExecutionQuery executionQuery = GwtKapuaJobModelConverter.convertJobExecutionQuery(loadConfig, gwtJobExecutionQuery);
-            JobExecutionListResult jobExecutionList = EXECUTION_SERVICE.query(executionQuery);
+            KapuaListResult<JobExecution> jobExecutionList = EXECUTION_SERVICE.query(executionQuery);
             totalLength = jobExecutionList.getTotalCount().intValue();
 
             // Converto to GWT entity

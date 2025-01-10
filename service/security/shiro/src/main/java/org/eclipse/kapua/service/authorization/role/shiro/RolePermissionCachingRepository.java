@@ -17,13 +17,14 @@ import org.eclipse.kapua.commons.service.internal.cache.EntityCache;
 import org.eclipse.kapua.commons.storage.KapuaEntityRepositoryCachingWrapper;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermission;
 import org.eclipse.kapua.service.authorization.role.RolePermissionListResult;
 import org.eclipse.kapua.service.authorization.role.RolePermissionRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public class RolePermissionCachingRepository
-        extends KapuaEntityRepositoryCachingWrapper<RolePermission, RolePermissionListResult>
+        extends KapuaEntityRepositoryCachingWrapper<RolePermission>
         implements RolePermissionRepository {
 
     private final RolePermissionRepository wrapped;
@@ -55,21 +56,21 @@ public class RolePermissionCachingRepository
     }
 
     @Override
-    public RolePermissionListResult findByRoleId(TxContext tx, KapuaId scopeId, KapuaId roleId) throws KapuaException {
+    public KapuaListResult<RolePermission> findByRoleId(TxContext tx, KapuaId scopeId, KapuaId roleId) throws KapuaException {
 
         RolePermissionListResult listResult = (RolePermissionListResult) entityCache.getList(scopeId, roleId);
         if (listResult != null) {
             return listResult;
         }
-        final RolePermissionListResult fromWrapped = wrapped.findByRoleId(tx, scopeId, roleId);
+        final KapuaListResult<RolePermission> fromWrapped = wrapped.findByRoleId(tx, scopeId, roleId);
 
         entityCache.putList(scopeId, roleId, fromWrapped);
         return fromWrapped;
     }
 
     @Override
-    public RolePermissionListResult deleteAllByDomainAndAction(TxContext tx, String domainName, Actions actionToDelete) throws KapuaException {
-        final RolePermissionListResult removed = wrapped.deleteAllByDomainAndAction(tx, domainName, actionToDelete);
+    public KapuaListResult<RolePermission> deleteAllByDomainAndAction(TxContext tx, String domainName, Actions actionToDelete) throws KapuaException {
+        final KapuaListResult<RolePermission> removed = wrapped.deleteAllByDomainAndAction(tx, domainName, actionToDelete);
         if (!removed.isEmpty()) {
             removed.getItems().forEach(item -> entityCache.removeList(item.getScopeId(), item.getRoleId()));
         }

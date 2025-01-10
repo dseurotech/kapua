@@ -12,14 +12,21 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.user.steps;
 
-import com.google.inject.Singleton;
-import io.cucumber.java.After;
-import io.cucumber.java.Before;
-import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import java.math.BigInteger;
+import java.text.MessageFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.inject.Inject;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
@@ -28,6 +35,7 @@ import org.eclipse.kapua.model.config.metatype.KapuaTocd;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.id.KapuaIdImpl;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.model.query.predicate.AttributePredicate;
 import org.eclipse.kapua.qa.common.BasicSteps;
@@ -45,7 +53,6 @@ import org.eclipse.kapua.service.authentication.credential.Credential;
 import org.eclipse.kapua.service.authentication.credential.CredentialAttributes;
 import org.eclipse.kapua.service.authentication.credential.CredentialCreator;
 import org.eclipse.kapua.service.authentication.credential.CredentialFactory;
-import org.eclipse.kapua.service.authentication.credential.CredentialListResult;
 import org.eclipse.kapua.service.authentication.credential.CredentialQuery;
 import org.eclipse.kapua.service.authentication.credential.CredentialService;
 import org.eclipse.kapua.service.authentication.credential.CredentialStatus;
@@ -75,19 +82,15 @@ import org.eclipse.kapua.service.user.UserService;
 import org.eclipse.kapua.service.user.UserStatus;
 import org.junit.Assert;
 
-import javax.inject.Inject;
-import java.math.BigInteger;
-import java.text.MessageFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import com.google.inject.Singleton;
+
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 /**
  * Implementation of Gherkin steps used in user test scenarios.
@@ -243,7 +246,7 @@ public class UserServiceSteps extends TestBase {
         Set<ComparableUser> iFoundUsers;
         stepData.remove(USER_LIST);
         KapuaQuery query = userFactory.newQuery(scpId);
-        UserListResult queryResult = userService.query(query);
+        KapuaListResult<User> queryResult = userService.query(query);
         iFoundUsers = new HashSet<>();
         List<User> users = queryResult.getItems();
         for (User userItem : users) {
@@ -336,7 +339,7 @@ public class UserServiceSteps extends TestBase {
     public void queryForUsers(int scopeId) throws Exception {
         stepData.remove(USER_LIST);
         UserQuery query = userFactory.newQuery(new KapuaEid(BigInteger.valueOf(scopeId)));
-        UserListResult queryResult = userService.query(query);
+        KapuaListResult<User> queryResult = userService.query(query);
         Set<ComparableUser> iFoundUsers = new HashSet<>();
         for (User userItem : queryResult.getItems()) {
             iFoundUsers.add(new ComparableUser(userItem));
@@ -466,7 +469,7 @@ public class UserServiceSteps extends TestBase {
         try {
             CredentialQuery credentialQuery = new CredentialQueryImpl(getCurrentScopeId());
             credentialQuery.setPredicate(credentialQuery.attributePredicate(CredentialAttributes.USER_ID, comparableUser.getUser().getId()));
-            CredentialListResult credentials = credentialService.query(credentialQuery);
+            KapuaListResult<Credential> credentials = credentialService.query(credentialQuery);
             stepData.put("CredentialsListFound", credentials);
             stepData.put("CredentialsCount", credentials.getSize());
             stepData.put("CredentialFound", credentials.getFirstItem());
@@ -717,12 +720,12 @@ public class UserServiceSteps extends TestBase {
     // *******************
 
     /**
-     * Extract list of users form step parameter table and create those users in
-     * kapua.
-     * Operation is performed in privileged mode, without access and authorization checks.
+     * Extract list of users form step parameter table and create those users in kapua. Operation is performed in privileged mode, without access and authorization checks.
      *
-     * @param userList list of users in step
-     * @param account  account in which users are created
+     * @param userList
+     *         list of users in step
+     * @param account
+     *         account in which users are created
      * @return Set of created users as ComparableUser Set
      * @throws Exception
      */
@@ -751,11 +754,12 @@ public class UserServiceSteps extends TestBase {
     }
 
     /**
-     * Create User object with user data filed with quasi random data for user name,
-     * email, display name. Scope id and user id is set to test wide id.
+     * Create User object with user data filed with quasi random data for user name, email, display name. Scope id and user id is set to test wide id.
      *
-     * @param userId  unique user id
-     * @param scopeId user scope id
+     * @param userId
+     *         unique user id
+     * @param scopeId
+     *         user scope id
      * @return User instance
      */
     private User createUserInstance(int userId, int scopeId) {
@@ -794,10 +798,10 @@ public class UserServiceSteps extends TestBase {
     }
 
     /**
-     * Create credentials for specific user, set users password.
-     * It finds user by name and sets its password.
+     * Create credentials for specific user, set users password. It finds user by name and sets its password.
      *
-     * @param cucCredentials username and open password
+     * @param cucCredentials
+     *         username and open password
      * @return created credential
      */
     private Credential createCredentials(CucCredentials cucCredentials) throws Exception {
@@ -819,11 +823,16 @@ public class UserServiceSteps extends TestBase {
     /**
      * Create credential creator for user with password.
      *
-     * @param scopeId        scopeId in which user is
-     * @param userId         userId for which credetntials are set
-     * @param password       open password as credetntials
-     * @param status         status of credentials enabled or disabled
-     * @param expirationDate credential expiration date
+     * @param scopeId
+     *         scopeId in which user is
+     * @param userId
+     *         userId for which credetntials are set
+     * @param password
+     *         open password as credetntials
+     * @param status
+     *         status of credentials enabled or disabled
+     * @param expirationDate
+     *         credential expiration date
      * @return credential creator used for creating credentials
      */
     private CredentialCreator credentialCreatorCreator(KapuaId scopeId, KapuaId userId, String password, CredentialStatus status, Date expirationDate) {
@@ -835,10 +844,12 @@ public class UserServiceSteps extends TestBase {
     /**
      * Creates permissions for user with specified account. Permissions are created in priveledged mode.
      *
-     * @param permissionList list of permissions for user, if targetScopeId is not set user scope that is
-     *                       specifed as account
-     * @param user           user for whom permissions are set
-     * @param account        account in which user is defined
+     * @param permissionList
+     *         list of permissions for user, if targetScopeId is not set user scope that is specifed as account
+     * @param user
+     *         user for whom permissions are set
+     * @param account
+     *         account in which user is defined
      * @throws Exception
      */
     private void createPermissions(List<CucPermission> permissionList, ComparableUser user, Account account) throws Exception {
@@ -855,12 +866,14 @@ public class UserServiceSteps extends TestBase {
     }
 
     /**
-     * Create accessInfoCreator instance with data about user permissions.
-     * If target scope is not defined in permission list use account scope.
+     * Create accessInfoCreator instance with data about user permissions. If target scope is not defined in permission list use account scope.
      *
-     * @param permissionList list of all permissions
-     * @param user           user for which permissions are set
-     * @param account        that user belongs to
+     * @param permissionList
+     *         list of all permissions
+     * @param user
+     *         user for which permissions are set
+     * @param account
+     *         that user belongs to
      * @return AccessInfoCreator instance for creating user permissions
      */
     private AccessInfoCreator accessInfoCreatorCreator(List<CucPermission> permissionList, ComparableUser user, Account account) throws KapuaException {
@@ -1038,7 +1051,7 @@ public class UserServiceSteps extends TestBase {
         Set<ComparableUser> iFoundUsers;
         stepData.remove(USER_LIST);
         KapuaQuery query = userFactory.newQuery(scpId);
-        UserListResult queryResult = userService.query(query);
+        KapuaListResult<User> queryResult = userService.query(query);
         iFoundUsers = new HashSet<>();
         List<User> users = queryResult.getItems();
         for (User userItems : users) {
@@ -1077,7 +1090,7 @@ public class UserServiceSteps extends TestBase {
         Set<ComparableUser> iFoundUsers;
         stepData.remove(USER_LIST);
         KapuaQuery query = userFactory.newQuery(scpId);
-        UserListResult queryResult = userService.query(query);
+        KapuaListResult<User> queryResult = userService.query(query);
         iFoundUsers = new HashSet<>();
         List<User> users = queryResult.getItems();
         for (User userItems : users) {
@@ -1181,7 +1194,7 @@ public class UserServiceSteps extends TestBase {
     public void iSearchUsersWithPhoneNumber(String phoneNum) throws Throwable {
         UserQuery userQuery = userFactory.newQuery(DEFAULT_ID);
         userQuery.setPredicate(userQuery.attributePredicate(UserAttributes.PHONE_NUMBER, phoneNum, AttributePredicate.Operator.EQUAL));
-        UserListResult userListResult = userService.query(userQuery);
+        KapuaListResult<User> userListResult = userService.query(userQuery);
         stepData.put(FOUND_USERS, userListResult);
     }
 
@@ -1189,7 +1202,7 @@ public class UserServiceSteps extends TestBase {
     public void iSearchForUsersWithEmail(String email) throws Throwable {
         UserQuery userQuery = userFactory.newQuery(DEFAULT_ID);
         userQuery.setPredicate(userQuery.attributePredicate(UserAttributes.EMAIL, email, AttributePredicate.Operator.EQUAL));
-        UserListResult userListResult = userService.query(userQuery);
+        KapuaListResult<User> userListResult = userService.query(userQuery);
         stepData.put(FOUND_USERS, userListResult);
     }
 

@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authorization.access.shiro;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaDuplicateNameException;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
@@ -20,6 +23,7 @@ import org.eclipse.kapua.commons.util.ArgumentValidator;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.access.AccessInfo;
@@ -27,7 +31,6 @@ import org.eclipse.kapua.service.authorization.access.AccessInfoRepository;
 import org.eclipse.kapua.service.authorization.access.AccessRole;
 import org.eclipse.kapua.service.authorization.access.AccessRoleAttributes;
 import org.eclipse.kapua.service.authorization.access.AccessRoleCreator;
-import org.eclipse.kapua.service.authorization.access.AccessRoleListResult;
 import org.eclipse.kapua.service.authorization.access.AccessRoleQuery;
 import org.eclipse.kapua.service.authorization.access.AccessRoleRepository;
 import org.eclipse.kapua.service.authorization.access.AccessRoleService;
@@ -36,9 +39,6 @@ import org.eclipse.kapua.service.authorization.role.Role;
 import org.eclipse.kapua.service.authorization.role.RolePermissionAttributes;
 import org.eclipse.kapua.service.authorization.role.RoleRepository;
 import org.eclipse.kapua.storage.TxManager;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 /**
  * {@link AccessRoleService} implementation.
@@ -123,7 +123,7 @@ public class AccessRoleServiceImpl implements AccessRoleService {
     }
 
     @Override
-    public AccessRoleListResult findByAccessInfoId(KapuaId scopeId, KapuaId accessInfoId)
+    public KapuaListResult<AccessRole> findByAccessInfoId(KapuaId scopeId, KapuaId accessInfoId)
             throws KapuaException {
         ArgumentValidator.notNull(scopeId, KapuaEntityAttributes.SCOPE_ID);
         ArgumentValidator.notNull(accessInfoId, "accessInfoId");
@@ -136,7 +136,7 @@ public class AccessRoleServiceImpl implements AccessRoleService {
     }
 
     @Override
-    public AccessRoleListResult query(KapuaQuery query)
+    public KapuaListResult<AccessRole> query(KapuaQuery query)
             throws KapuaException {
         ArgumentValidator.notNull(query, "query");
         // Check Access

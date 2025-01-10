@@ -13,6 +13,7 @@
 package org.eclipse.kapua.service.device.registry.event;
 
 import org.eclipse.kapua.KapuaException;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.KapuaEntityService;
 
@@ -26,12 +27,13 @@ public interface DeviceEventService extends KapuaEntityService<DeviceEvent, Devi
     /**
      * Returns the {@link DeviceEventListResult} with elements matching the provided query.
      *
-     * @param query The {@link DeviceEventQuery} used to filter results.
+     * @param query
+     *         The {@link DeviceEventQuery} used to filter results.
      * @return The {@link DeviceEventListResult} with elements matching the query parameter.
      * @throws KapuaException
      * @since 1.0.0
      */
     @Override
-    DeviceEventListResult query(KapuaQuery query) throws KapuaException;
+    KapuaListResult<DeviceEvent> query(KapuaQuery query) throws KapuaException;
 
 }

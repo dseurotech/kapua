@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.certificate.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
 import org.eclipse.kapua.app.console.module.api.server.util.KapuaExceptionHandler;
@@ -21,16 +24,13 @@ import org.eclipse.kapua.app.console.module.certificate.shared.service.GwtCertif
 import org.eclipse.kapua.commons.model.id.KapuaEid;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.certificate.info.CertificateInfo;
 import org.eclipse.kapua.service.certificate.info.CertificateInfoFactory;
-import org.eclipse.kapua.service.certificate.info.CertificateInfoListResult;
 import org.eclipse.kapua.service.certificate.info.CertificateInfoQuery;
 import org.eclipse.kapua.service.certificate.info.CertificateInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GwtCertificateInfoServiceImpl extends KapuaRemoteServiceServlet implements GwtCertificateInfoService {
 
@@ -51,7 +51,7 @@ public class GwtCertificateInfoServiceImpl extends KapuaRemoteServiceServlet imp
             CertificateInfoQuery query = CERTIFICATE_INFO_FACTORY.newQuery(scopeId);
             query.setIncludeInherited(true);
 
-            CertificateInfoListResult certificateInfos = CERTIFICATE_INFO_SERVICE.query(query);
+            KapuaListResult<CertificateInfo> certificateInfos = CERTIFICATE_INFO_SERVICE.query(query);
 
             for (CertificateInfo certificateInfo : certificateInfos.getItems()) {
                 GwtCertificateInfo gwtCertificateInfo = new GwtCertificateInfo();

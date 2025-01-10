@@ -12,6 +12,9 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.job.server;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaErrorCode;
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
@@ -26,15 +29,13 @@ import org.eclipse.kapua.job.engine.JobEngineService;
 import org.eclipse.kapua.job.engine.JobStartOptions;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.SortOrder;
+import org.eclipse.kapua.service.job.execution.JobExecution;
 import org.eclipse.kapua.service.job.execution.JobExecutionAttributes;
 import org.eclipse.kapua.service.job.execution.JobExecutionFactory;
-import org.eclipse.kapua.service.job.execution.JobExecutionListResult;
 import org.eclipse.kapua.service.job.execution.JobExecutionQuery;
 import org.eclipse.kapua.service.job.execution.JobExecutionService;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class GwtJobEngineServiceImpl extends KapuaRemoteServiceServlet implements GwtJobEngineService {
 
@@ -100,7 +101,7 @@ public class GwtJobEngineServiceImpl extends KapuaRemoteServiceServlet implement
                 query.setSortCriteria(query.fieldSortCriteria(JobExecutionAttributes.STARTED_ON, SortOrder.DESCENDING));
                 query.setLimit(1);
 
-                JobExecutionListResult jobExecutions = JOB_EXECUTION_SERVICE.query(query);
+                KapuaListResult<JobExecution> jobExecutions = JOB_EXECUTION_SERVICE.query(query);
 
                 if (!jobExecutions.isEmpty()) {
                     jobExecutionId = jobExecutions.getFirstItem().getId();

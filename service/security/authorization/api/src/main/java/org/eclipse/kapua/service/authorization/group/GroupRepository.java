@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.authorization.group;
 import org.eclipse.kapua.storage.KapuaNamedEntityRepository;
 
 public interface GroupRepository extends
-        KapuaNamedEntityRepository<Group, GroupListResult> {
+        KapuaNamedEntityRepository<Group> {
+
 }

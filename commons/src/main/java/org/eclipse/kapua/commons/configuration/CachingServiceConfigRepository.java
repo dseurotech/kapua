@@ -16,16 +16,17 @@ import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.service.internal.cache.EntityCache;
 import org.eclipse.kapua.commons.storage.KapuaUpdatableEntityRepositoryCachingWrapper;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
-import org.eclipse.kapua.storage.KapuaUpdatableEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
 public class CachingServiceConfigRepository
-        extends KapuaUpdatableEntityRepositoryCachingWrapper<ServiceConfig, ServiceConfigListResult>
+        extends KapuaUpdatableEntityRepositoryCachingWrapper<ServiceConfig>
         implements ServiceConfigRepository {
-    private final KapuaUpdatableEntityRepository<ServiceConfig, ServiceConfigListResult> wrapped;
 
-    public CachingServiceConfigRepository(KapuaUpdatableEntityRepository<ServiceConfig, ServiceConfigListResult> wrapped, EntityCache entityCache) {
+    private final ServiceConfigRepository wrapped;
+
+    public CachingServiceConfigRepository(ServiceConfigRepository wrapped, EntityCache entityCache) {
         super(wrapped, entityCache);
         this.wrapped = wrapped;
     }
@@ -45,18 +46,18 @@ public class CachingServiceConfigRepository
     }
 
     @Override
-    public ServiceConfigListResult findByScopeAndPid(TxContext txContext, KapuaId scopeId, String pid) throws KapuaException {
+    public KapuaListResult<ServiceConfig> findByScopeAndPid(TxContext txContext, KapuaId scopeId, String pid) throws KapuaException {
         final ServiceConfigListResult cached = (ServiceConfigListResult) entityCache.getList(scopeId, pid);
         if (cached != null) {
             return cached;
         }
-        final ServiceConfigListResult found = ((ServiceConfigRepository) wrapped).findByScopeAndPid(txContext, scopeId, pid);
+        final KapuaListResult<ServiceConfig> found = wrapped.findByScopeAndPid(txContext, scopeId, pid);
         entityCache.putList(scopeId, pid, found);
         return found;
     }
 
     @Override
-    public ServiceConfigListResult query(TxContext txContext, KapuaQuery kapuaQuery) throws KapuaException {
+    public KapuaListResult<ServiceConfig> query(TxContext txContext, KapuaQuery kapuaQuery) throws KapuaException {
         return super.query(txContext, kapuaQuery);
     }
 }

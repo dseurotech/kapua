@@ -12,6 +12,10 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.authorization.server;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaException;
 import org.eclipse.kapua.app.console.module.api.server.KapuaRemoteServiceServlet;
 import org.eclipse.kapua.app.console.module.api.server.util.KapuaExceptionHandler;
@@ -21,15 +25,11 @@ import org.eclipse.kapua.app.console.module.authorization.shared.service.GwtDoma
 import org.eclipse.kapua.app.console.module.authorization.shared.util.KapuaGwtAuthorizationModelConverter;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.domain.Actions;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.authorization.domain.Domain;
 import org.eclipse.kapua.service.authorization.domain.DomainFactory;
-import org.eclipse.kapua.service.authorization.domain.DomainListResult;
 import org.eclipse.kapua.service.authorization.domain.DomainQuery;
 import org.eclipse.kapua.service.authorization.domain.DomainRegistryService;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class GwtDomainRegistryServiceImpl extends KapuaRemoteServiceServlet implements GwtDomainRegistryService {
 
@@ -39,13 +39,12 @@ public class GwtDomainRegistryServiceImpl extends KapuaRemoteServiceServlet impl
     private final DomainRegistryService domainRegistryService = locator.getService(DomainRegistryService.class);
     private final DomainFactory domainFactory = locator.getFactory(DomainFactory.class);
 
-
     @Override
     public List<GwtDomain> findAll() throws GwtKapuaException {
         List<GwtDomain> gwtDomainList = new ArrayList<GwtDomain>();
         try {
             DomainQuery query = domainFactory.newQuery(null);
-            DomainListResult list = domainRegistryService.query(query);
+            KapuaListResult<Domain> list = domainRegistryService.query(query);
 
             for (Domain domain : list.getItems()) {
                 gwtDomainList.add(KapuaGwtAuthorizationModelConverter.convertDomain(domain));

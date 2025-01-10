@@ -12,6 +12,11 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.authentication.token.shiro;
 
+import java.util.Date;
+import java.util.Optional;
+
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
@@ -20,12 +25,12 @@ import org.eclipse.kapua.event.ServiceEvent;
 import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authentication.token.AccessToken;
 import org.eclipse.kapua.service.authentication.token.AccessTokenAttributes;
 import org.eclipse.kapua.service.authentication.token.AccessTokenCreator;
 import org.eclipse.kapua.service.authentication.token.AccessTokenFactory;
-import org.eclipse.kapua.service.authentication.token.AccessTokenListResult;
 import org.eclipse.kapua.service.authentication.token.AccessTokenQuery;
 import org.eclipse.kapua.service.authentication.token.AccessTokenRepository;
 import org.eclipse.kapua.service.authentication.token.AccessTokenService;
@@ -34,10 +39,6 @@ import org.eclipse.kapua.service.authorization.permission.PermissionFactory;
 import org.eclipse.kapua.storage.TxManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Singleton;
-import java.util.Date;
-import java.util.Optional;
 
 /**
  * {@link AccessTokenService} implementation.
@@ -124,7 +125,7 @@ public class AccessTokenServiceImpl implements AccessTokenService {
     }
 
     @Override
-    public AccessTokenListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<AccessToken> query(KapuaQuery query) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(query, "query");
         // Check Access
@@ -161,7 +162,7 @@ public class AccessTokenServiceImpl implements AccessTokenService {
     }
 
     @Override
-    public AccessTokenListResult findByUserId(KapuaId scopeId, KapuaId userId) throws KapuaException {
+    public KapuaListResult<AccessToken> findByUserId(KapuaId scopeId, KapuaId userId) throws KapuaException {
         // Argument Validation
         ArgumentValidator.notNull(scopeId, KapuaEntityAttributes.SCOPE_ID);
         ArgumentValidator.notNull(userId, "userId");
@@ -226,7 +227,7 @@ public class AccessTokenServiceImpl implements AccessTokenService {
         AccessTokenQuery query = new AccessTokenQueryImpl(scopeId);
         query.setPredicate(query.attributePredicate(AccessTokenAttributes.USER_ID, userId));
 
-        AccessTokenListResult accessTokensToDelete = query(query);
+        KapuaListResult<AccessToken> accessTokensToDelete = query(query);
 
         for (AccessToken at : accessTokensToDelete.getItems()) {
             delete(at.getScopeId(), at.getId());
@@ -237,7 +238,7 @@ public class AccessTokenServiceImpl implements AccessTokenService {
 
         AccessTokenQuery query = new AccessTokenQueryImpl(accountId);
 
-        AccessTokenListResult accessTokensToDelete = query(query);
+        KapuaListResult<AccessToken> accessTokensToDelete = query(query);
 
         for (AccessToken at : accessTokensToDelete.getItems()) {
             delete(at.getScopeId(), at.getId());

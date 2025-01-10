@@ -15,13 +15,13 @@ package org.eclipse.kapua.job.engine.queue.jbatch;
 import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
 import org.eclipse.kapua.commons.jpa.KapuaUpdatableEntityJpaRepository;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecution;
-import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionListResult;
 import org.eclipse.kapua.job.engine.queue.QueuedJobExecutionRepository;
 import org.eclipse.kapua.service.job.execution.JobExecution;
 
 public class QueuedJobExecutionImplJpaRepository
-        extends KapuaUpdatableEntityJpaRepository<QueuedJobExecution, QueuedJobExecutionImpl, QueuedJobExecutionListResult>
+        extends KapuaUpdatableEntityJpaRepository<QueuedJobExecution, QueuedJobExecutionImpl>
         implements QueuedJobExecutionRepository {
+
     public QueuedJobExecutionImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {
         super(QueuedJobExecutionImpl.class, JobExecution.TYPE, () -> new QueuedJobExecutionListResultImpl(), jpaRepoConfig);
     }

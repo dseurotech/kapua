@@ -12,6 +12,17 @@
  *******************************************************************************/
 package org.eclipse.kapua.commons.storage.memory;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.RandomUtils;
 import org.eclipse.kapua.KapuaEntityNotFoundException;
 import org.eclipse.kapua.KapuaException;
@@ -24,28 +35,18 @@ import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.storage.KapuaEntityRepository;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
+public class KapuaEntityInMemoryRepository<E extends KapuaEntity> implements KapuaEntityRepository<E> {
 
-public class KapuaEntityInMemoryRepository<E extends KapuaEntity, L extends KapuaListResult<E>> implements KapuaEntityRepository<E, L> {
     protected final List<E> entities;
     protected final Class<E> clazz;
-    protected final Supplier<L> listSupplier;
+    protected final Supplier<KapuaListResult<E>> listSupplier;
     protected final KapuaQueryConverter kapuaQueryConverter;
     protected final Map<String, Function<E, Object>> pluckers;
 
     public KapuaEntityInMemoryRepository(Class<E> clazz,
-                                         Supplier<L> listSupplier,
-                                         KapuaQueryConverter kapuaQueryConverter,
-                                         Map<String, Function<E, Object>> fieldPluckers) {
+            Supplier<KapuaListResult<E>> listSupplier,
+            KapuaQueryConverter kapuaQueryConverter,
+            Map<String, Function<E, Object>> fieldPluckers) {
         this.clazz = clazz;
         this.listSupplier = listSupplier;
         this.kapuaQueryConverter = kapuaQueryConverter;
@@ -76,8 +77,8 @@ public class KapuaEntityInMemoryRepository<E extends KapuaEntity, L extends Kapu
     }
 
     @Override
-    public L query(TxContext txContext, KapuaQuery kapuaQuery) throws KapuaException {
-        final L res = this.listSupplier.get();
+    public KapuaListResult<E> query(TxContext txContext, KapuaQuery kapuaQuery) throws KapuaException {
+        final KapuaListResult<E> res = this.listSupplier.get();
         final Predicate<E> scopePredicate = extractScopePredicate(kapuaQuery);
         final Predicate<E> queryPredicate = Optional.ofNullable(kapuaQuery.getPredicate())
                 .map(p -> kapuaQueryConverter.convert(p, pluckers))
@@ -152,11 +153,11 @@ public class KapuaEntityInMemoryRepository<E extends KapuaEntity, L extends Kapu
                     };
                     final Comparator<E> comparator = (E lhs, E rhs) -> entitySpecificComparator.apply(lhs).compare(lhs, rhs);
                     switch (fsc.getSortOrder()) {
-                        default:
-                        case ASCENDING:
-                            return comparator;
-                        case DESCENDING:
-                            return comparator.reversed();
+                    default:
+                    case ASCENDING:
+                        return comparator;
+                    case DESCENDING:
+                        return comparator.reversed();
                     }
                 }))
                 .orElse((E lhs, E rhs) -> 0);

@@ -12,26 +12,25 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.scheduler.trigger.quartz;
 
-import org.eclipse.kapua.commons.jpa.JpaAwareTxContext;
-import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
-import org.eclipse.kapua.commons.jpa.KapuaNamedEntityJpaRepository;
-import org.eclipse.kapua.commons.model.id.KapuaEid;
-import org.eclipse.kapua.model.id.KapuaId;
-import org.eclipse.kapua.service.scheduler.trigger.Trigger;
-import org.eclipse.kapua.service.scheduler.trigger.TriggerListResult;
-import org.eclipse.kapua.service.scheduler.trigger.TriggerRepository;
-import org.eclipse.kapua.service.scheduler.trigger.definition.quartz.TriggerPropertyImpl;
-import org.eclipse.kapua.service.scheduler.trigger.definition.quartz.TriggerPropertyImpl_;
-import org.eclipse.kapua.storage.TxContext;
-
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Root;
 
+import org.eclipse.kapua.commons.jpa.JpaAwareTxContext;
+import org.eclipse.kapua.commons.jpa.KapuaJpaRepositoryConfiguration;
+import org.eclipse.kapua.commons.jpa.KapuaNamedEntityJpaRepository;
+import org.eclipse.kapua.commons.model.id.KapuaEid;
+import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.service.scheduler.trigger.Trigger;
+import org.eclipse.kapua.service.scheduler.trigger.TriggerRepository;
+import org.eclipse.kapua.service.scheduler.trigger.definition.quartz.TriggerPropertyImpl;
+import org.eclipse.kapua.service.scheduler.trigger.definition.quartz.TriggerPropertyImpl_;
+import org.eclipse.kapua.storage.TxContext;
+
 public class TriggerImplJpaRepository
-        extends KapuaNamedEntityJpaRepository<Trigger, TriggerImpl, TriggerListResult>
+        extends KapuaNamedEntityJpaRepository<Trigger, TriggerImpl>
         implements TriggerRepository {
 
     public TriggerImplJpaRepository(KapuaJpaRepositoryConfiguration jpaRepoConfig) {

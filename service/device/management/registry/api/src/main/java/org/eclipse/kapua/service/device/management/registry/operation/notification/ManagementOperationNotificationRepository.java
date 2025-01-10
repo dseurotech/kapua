@@ -15,5 +15,6 @@ package org.eclipse.kapua.service.device.management.registry.operation.notificat
 import org.eclipse.kapua.storage.KapuaEntityRepository;
 
 public interface ManagementOperationNotificationRepository
-        extends KapuaEntityRepository<ManagementOperationNotification, ManagementOperationNotificationListResult> {
+        extends KapuaEntityRepository<ManagementOperationNotification> {
+
 }

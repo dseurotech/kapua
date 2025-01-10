@@ -12,28 +12,30 @@
  *******************************************************************************/
 package org.eclipse.kapua.storage;
 
+import java.util.Optional;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.KapuaNamedEntity;
 import org.eclipse.kapua.model.id.KapuaId;
 import org.eclipse.kapua.model.query.KapuaListResult;
 
-import java.util.Optional;
-
 /**
- * This utility class is provided as syntactic sugar for classes that need to wrap around a {@link KapuaNamedEntityRepository}, decorating it with additional functionalities.
- * This way your wrapper only needs to override significant methods, avoiding boilerplate clutter.
+ * This utility class is provided as syntactic sugar for classes that need to wrap around a {@link KapuaNamedEntityRepository}, decorating it with additional functionalities. This way your wrapper
+ * only needs to override significant methods, avoiding boilerplate clutter.
  *
- * @param <E> The specific subclass of {@link KapuaNamedEntity} handled by this repository
- * @param <L> The specific subclass of {@link KapuaListResult}&lt;E&gt; meant to hold list results for the kapua entity handled by this repo
+ * @param <E>
+ *         The specific subclass of {@link KapuaNamedEntity} handled by this repository
+ * @param <L>
+ *         The specific subclass of {@link KapuaListResult}&lt;E&gt; meant to hold list results for the kapua entity handled by this repo
  * @since 2.0.0
  */
-public abstract class KapuaNamedEntityRepositoryNoopWrapper<E extends KapuaNamedEntity, L extends KapuaListResult<E>>
-        extends KapuaUpdatableEntityRepositoryNoopWrapper<E, L>
-        implements KapuaNamedEntityRepository<E, L> {
+public abstract class KapuaNamedEntityRepositoryNoopWrapper<E extends KapuaNamedEntity>
+        extends KapuaUpdatableEntityRepositoryNoopWrapper<E>
+        implements KapuaNamedEntityRepository<E> {
 
-    protected final KapuaNamedEntityRepository<E, L> wrapped;
+    protected final KapuaNamedEntityRepository<E> wrapped;
 
-    public KapuaNamedEntityRepositoryNoopWrapper(KapuaNamedEntityRepository<E, L> wrapped) {
+    public KapuaNamedEntityRepositoryNoopWrapper(KapuaNamedEntityRepository<E> wrapped) {
         super(wrapped);
         this.wrapped = wrapped;
     }

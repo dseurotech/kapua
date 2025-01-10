@@ -26,10 +26,10 @@ import org.eclipse.kapua.service.user.User;
 public interface AccessInfoService extends KapuaEntityService<AccessInfo, AccessInfoCreator> {
 
     /**
-     * Creates a new {@link AccessInfo} entity.<br>
-     * Is up to the implementation whether or not to check the existence of the referred {@link User} entity.
+     * Creates a new {@link AccessInfo} entity.<br> Is up to the implementation whether or not to check the existence of the referred {@link User} entity.
      *
-     * @param accessInfoCreator The {@link AccessInfoCreator} form which create the {@link AccessInfo}
+     * @param accessInfoCreator
+     *         The {@link AccessInfoCreator} form which create the {@link AccessInfo}
      * @return The created {@link AccessInfo} entity.
      * @throws KapuaException
      * @since 1.0.0
@@ -41,8 +41,10 @@ public interface AccessInfoService extends KapuaEntityService<AccessInfo, Access
     /**
      * Finds the {@link AccessInfo} by scope identifier and {@link AccessInfo} id.
      *
-     * @param scopeId The scope id in which to search.
-     * @param userId  The {@link User} id to search.
+     * @param scopeId
+     *         The scope id in which to search.
+     * @param userId
+     *         The {@link User} id to search.
      * @return The {@link AccessInfo} found or {@code null} if no entity was found.
      * @throws KapuaException
      * @since 1.0.0
@@ -53,8 +55,10 @@ public interface AccessInfoService extends KapuaEntityService<AccessInfo, Access
     /**
      * Finds the {@link AccessInfo} by scope identifier and {@link User} id.
      *
-     * @param scopeId      The scope id in which to search.
-     * @param accessInfoId The {@link AccessInfo} id to search.
+     * @param scopeId
+     *         The scope id in which to search.
+     * @param accessInfoId
+     *         The {@link AccessInfo} id to search.
      * @return The {@link AccessInfo} found or {@code null} if no entity was found.
      * @throws KapuaException
      * @since 1.0.0
@@ -64,21 +68,10 @@ public interface AccessInfoService extends KapuaEntityService<AccessInfo, Access
             throws KapuaException;
 
     /**
-     * Returns the {@link AccessInfoListResult} with elements matching the provided query.
-     *
-     * @param query The {@link AccessInfoQuery} used to filter results.
-     * @return The {@link AccessInfoListResult} with elements matching the query parameter.
-     * @throws KapuaException
-     * @since 1.0.0
-     */
-    @Override
-    AccessInfoListResult query(KapuaQuery query)
-            throws KapuaException;
-
-    /**
      * Returns the count of the {@link AccessInfo} elements matching the provided query.
      *
-     * @param query The {@link AccessInfoQuery} used to filter results.
+     * @param query
+     *         The {@link AccessInfoQuery} used to filter results.
      * @return The count of the {@link AccessInfo} elements matching the provided query.
      * @throws KapuaException
      * @since 1.0.0
@@ -90,8 +83,10 @@ public interface AccessInfoService extends KapuaEntityService<AccessInfo, Access
     /**
      * Delete the {@link AccessInfo} by scope id and {@link AccessInfo} id.
      *
-     * @param scopeId      The scope id in which to delete.
-     * @param accessInfoId The {@link AccessInfo} id to delete.
+     * @param scopeId
+     *         The scope id in which to delete.
+     * @param accessInfoId
+     *         The {@link AccessInfo} id to delete.
      * @throws KapuaException
      * @since 1.0.0
      */

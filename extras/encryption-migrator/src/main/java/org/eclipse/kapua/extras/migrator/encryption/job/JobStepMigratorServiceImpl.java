@@ -12,17 +12,17 @@
  *******************************************************************************/
 package org.eclipse.kapua.extras.migrator.encryption.job;
 
+import javax.inject.Singleton;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.job.step.JobStep;
 import org.eclipse.kapua.service.job.step.JobStepCreator;
-import org.eclipse.kapua.service.job.step.JobStepListResult;
 import org.eclipse.kapua.service.job.step.JobStepRepository;
 import org.eclipse.kapua.service.job.step.JobStepService;
 import org.eclipse.kapua.storage.TxManager;
-
-import javax.inject.Singleton;
 
 /**
  * {@link JobStepService} implementation.
@@ -31,6 +31,7 @@ import javax.inject.Singleton;
  */
 @Singleton
 public class JobStepMigratorServiceImpl implements JobStepService {
+
     private final TxManager txManager;
     private final JobStepRepository jobStepRepository;
 
@@ -45,7 +46,7 @@ public class JobStepMigratorServiceImpl implements JobStepService {
     }
 
     @Override
-    public JobStepListResult query(KapuaQuery query) throws KapuaException {
+    public KapuaListResult<JobStep> query(KapuaQuery query) throws KapuaException {
         return txManager.execute(tx -> jobStepRepository.query(tx, query));
     }
 

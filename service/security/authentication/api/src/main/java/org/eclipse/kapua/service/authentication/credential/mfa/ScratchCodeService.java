@@ -14,6 +14,7 @@ package org.eclipse.kapua.service.authentication.credential.mfa;
 
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.service.KapuaService;
 
 /**
@@ -26,18 +27,23 @@ public interface ScratchCodeService extends KapuaService {
     /**
      * Finds the {@link ScratchCodeListResult}.
      *
-     * @param scopeId The {@link MfaOption#getScopeId()}
-     * @param mfaOptionId The {@link MfaOption#getId()}
+     * @param scopeId
+     *         The {@link MfaOption#getScopeId()}
+     * @param mfaOptionId
+     *         The {@link MfaOption#getId()}
      * @return A {@link ScratchCodeListResult} with matching items
      * @throws KapuaException
      * @since 1.3.0
      */
-    ScratchCodeListResult findByMfaOptionId(KapuaId scopeId, KapuaId mfaOptionId) throws KapuaException;
+    KapuaListResult<ScratchCode> findByMfaOptionId(KapuaId scopeId, KapuaId mfaOptionId) throws KapuaException;
 
     /**
      * Deletes a {@link ScratchCode}
-     * @param scopeId The {@link ScratchCode#getScopeId()}
-     * @param scratchCodeId The {@link ScratchCode#getId()}
+     *
+     * @param scopeId
+     *         The {@link ScratchCode#getScopeId()}
+     * @param scratchCodeId
+     *         The {@link ScratchCode#getId()}
      * @throws KapuaException
      * @since 1.3.0
      */

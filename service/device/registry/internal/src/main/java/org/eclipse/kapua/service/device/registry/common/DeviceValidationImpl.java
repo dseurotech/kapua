@@ -13,7 +13,8 @@
  *******************************************************************************/
 package org.eclipse.kapua.service.device.registry.common;
 
-import com.google.common.base.Strings;
+import java.util.List;
+
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.commons.model.domains.Domains;
 import org.eclipse.kapua.commons.security.KapuaSecurityUtils;
@@ -22,6 +23,7 @@ import org.eclipse.kapua.model.KapuaEntityAttributes;
 import org.eclipse.kapua.model.KapuaUpdatableEntity;
 import org.eclipse.kapua.model.domain.Actions;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.query.KapuaQuery;
 import org.eclipse.kapua.service.authorization.AuthorizationService;
 import org.eclipse.kapua.service.authorization.group.Group;
@@ -32,7 +34,6 @@ import org.eclipse.kapua.service.device.registry.Device;
 import org.eclipse.kapua.service.device.registry.DeviceCreator;
 import org.eclipse.kapua.service.device.registry.DeviceExtendedProperty;
 import org.eclipse.kapua.service.device.registry.DeviceFactory;
-import org.eclipse.kapua.service.device.registry.DeviceListResult;
 import org.eclipse.kapua.service.device.registry.DeviceQuery;
 import org.eclipse.kapua.service.device.registry.DeviceRegistryService;
 import org.eclipse.kapua.service.device.registry.DeviceRepository;
@@ -43,7 +44,7 @@ import org.eclipse.kapua.service.tag.TagService;
 import org.eclipse.kapua.service.user.User;
 import org.eclipse.kapua.storage.TxContext;
 
-import java.util.List;
+import com.google.common.base.Strings;
 
 /**
  * Logic used to validate preconditions required to execute the {@link DeviceRegistryServiceImpl} operations.
@@ -89,10 +90,14 @@ public final class DeviceValidationImpl implements DeviceValidation {
     /**
      * Validates the {@link DeviceCreator}.
      *
-     * @param deviceCreator The {@link DeviceCreator} to validate.
-     * @throws org.eclipse.kapua.KapuaIllegalArgumentException                                if one of the {@link DeviceCreator} fields is invalid.
-     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException if current {@link User} does not have sufficient {@link Permission}s
-     * @throws KapuaException                                                                 if there are other errors.
+     * @param deviceCreator
+     *         The {@link DeviceCreator} to validate.
+     * @throws org.eclipse.kapua.KapuaIllegalArgumentException
+     *         if one of the {@link DeviceCreator} fields is invalid.
+     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException
+     *         if current {@link User} does not have sufficient {@link Permission}s
+     * @throws KapuaException
+     *         if there are other errors.
      * @since 1.0.0
      */
     @Override
@@ -265,10 +270,14 @@ public final class DeviceValidationImpl implements DeviceValidation {
     /**
      * Validates the {@link Device} for {@link DeviceRegistryService#update(KapuaUpdatableEntity)} operation.
      *
-     * @param device The {@link Device} to validate.
-     * @throws org.eclipse.kapua.KapuaIllegalArgumentException                                if one of the {@link Device} fields is invalid.
-     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException if current {@link User} does not have sufficient {@link Permission}s
-     * @throws KapuaException                                                                 if there are other errors.
+     * @param device
+     *         The {@link Device} to validate.
+     * @throws org.eclipse.kapua.KapuaIllegalArgumentException
+     *         if one of the {@link Device} fields is invalid.
+     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException
+     *         if current {@link User} does not have sufficient {@link Permission}s
+     * @throws KapuaException
+     *         if there are other errors.
      * @since 1.0.0
      */
     @Override
@@ -455,11 +464,16 @@ public final class DeviceValidationImpl implements DeviceValidation {
     /**
      * Validates the parameters for {@link DeviceRegistryService#find(KapuaId, KapuaId)} operation.
      *
-     * @param scopeId  The {@link Device#getScopeId()}
-     * @param deviceId The {@link Device#getId()}
-     * @throws org.eclipse.kapua.KapuaIllegalArgumentException                                if one of the parameters is invalid.
-     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException if current {@link User} does not have sufficient {@link Permission}s
-     * @throws KapuaException                                                                 if there are other errors.
+     * @param scopeId
+     *         The {@link Device#getScopeId()}
+     * @param deviceId
+     *         The {@link Device#getId()}
+     * @throws org.eclipse.kapua.KapuaIllegalArgumentException
+     *         if one of the parameters is invalid.
+     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException
+     *         if current {@link User} does not have sufficient {@link Permission}s
+     * @throws KapuaException
+     *         if there are other errors.
      * @since 1.0.0
      */
     @Override
@@ -475,10 +489,14 @@ public final class DeviceValidationImpl implements DeviceValidation {
     /**
      * Validates the {@link KapuaQuery} for {@link DeviceRegistryService#query(KapuaQuery)} operation.
      *
-     * @param query The {@link KapuaQuery} to validate.
-     * @throws org.eclipse.kapua.KapuaIllegalArgumentException                                if one of the {@link KapuaQuery} fields is invalid.
-     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException if current {@link User} does not have sufficient {@link Permission}s
-     * @throws KapuaException                                                                 if there are other errors.
+     * @param query
+     *         The {@link KapuaQuery} to validate.
+     * @throws org.eclipse.kapua.KapuaIllegalArgumentException
+     *         if one of the {@link KapuaQuery} fields is invalid.
+     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException
+     *         if current {@link User} does not have sufficient {@link Permission}s
+     * @throws KapuaException
+     *         if there are other errors.
      * @since 1.0.0
      */
     @Override
@@ -500,10 +518,14 @@ public final class DeviceValidationImpl implements DeviceValidation {
     /**
      * Validates the {@link KapuaQuery} for {@link DeviceRegistryService#count(KapuaQuery)} operation.
      *
-     * @param query The {@link KapuaQuery} to validate.
-     * @throws org.eclipse.kapua.KapuaIllegalArgumentException                                if one of the {@link KapuaQuery} fields is invalid.
-     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException if current {@link User} does not have sufficient {@link Permission}s
-     * @throws KapuaException                                                                 if there are other errors.
+     * @param query
+     *         The {@link KapuaQuery} to validate.
+     * @throws org.eclipse.kapua.KapuaIllegalArgumentException
+     *         if one of the {@link KapuaQuery} fields is invalid.
+     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException
+     *         if current {@link User} does not have sufficient {@link Permission}s
+     * @throws KapuaException
+     *         if there are other errors.
      * @since 1.0.0
      */
     @Override
@@ -517,11 +539,16 @@ public final class DeviceValidationImpl implements DeviceValidation {
     /**
      * Validates the parameters for {@link DeviceRegistryService#delete(KapuaId, KapuaId)} operation.
      *
-     * @param scopeId  The {@link Device#getScopeId()}
-     * @param deviceId The {@link Device#getId()}
-     * @throws org.eclipse.kapua.KapuaIllegalArgumentException                                if one of the parameters is invalid.
-     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException if current {@link User} does not have sufficient {@link Permission}s
-     * @throws KapuaException                                                                 if there are other errors.
+     * @param scopeId
+     *         The {@link Device#getScopeId()}
+     * @param deviceId
+     *         The {@link Device#getId()}
+     * @throws org.eclipse.kapua.KapuaIllegalArgumentException
+     *         if one of the parameters is invalid.
+     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException
+     *         if current {@link User} does not have sufficient {@link Permission}s
+     * @throws KapuaException
+     *         if there are other errors.
      * @since 1.0.0
      */
     @Override
@@ -537,11 +564,16 @@ public final class DeviceValidationImpl implements DeviceValidation {
     /**
      * Validates the parameters for {@link DeviceRegistryService#findByClientId(KapuaId, String)} operation.
      *
-     * @param scopeId  The {@link Device#getScopeId()}
-     * @param clientId The {@link Device#getClientId()}
-     * @throws org.eclipse.kapua.KapuaIllegalArgumentException                                if one of the parameters is invalid.
-     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException if current {@link User} does not have sufficient {@link Permission}s
-     * @throws KapuaException                                                                 if there are other errors.
+     * @param scopeId
+     *         The {@link Device#getScopeId()}
+     * @param clientId
+     *         The {@link Device#getClientId()}
+     * @throws org.eclipse.kapua.KapuaIllegalArgumentException
+     *         if one of the parameters is invalid.
+     * @throws org.eclipse.kapua.service.authorization.exception.SubjectUnauthorizedException
+     *         if current {@link User} does not have sufficient {@link Permission}s
+     * @throws KapuaException
+     *         if there are other errors.
      * @since 1.0.0
      */
     @Override
@@ -555,17 +587,20 @@ public final class DeviceValidationImpl implements DeviceValidation {
     /**
      * Finds the current {@link Group} id assigned to the given {@link Device#getId()}.
      *
-     * @param scopeId  The {@link Device#getScopeId()}
-     * @param entityId The {@link Device#getId()}
+     * @param scopeId
+     *         The {@link Device#getScopeId()}
+     * @param entityId
+     *         The {@link Device#getId()}
      * @return The {@link Group} id found.
-     * @throws KapuaException if any error occurs while looking for the Group.
+     * @throws KapuaException
+     *         if any error occurs while looking for the Group.
      * @since 1.0.0
      */
     private KapuaId findCurrentGroupId(TxContext tx, KapuaId scopeId, KapuaId entityId) throws KapuaException {
         DeviceQuery query = deviceFactory.newQuery(scopeId);
         query.setPredicate(query.attributePredicate(KapuaEntityAttributes.ENTITY_ID, entityId));
 
-        DeviceListResult results;
+        KapuaListResult<Device> results;
         try {
             results = deviceRepository.query(tx, query);
         } catch (Exception e) {

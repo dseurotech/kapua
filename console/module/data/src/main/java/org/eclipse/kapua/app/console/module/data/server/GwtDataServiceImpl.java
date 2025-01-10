@@ -12,15 +12,14 @@
  *******************************************************************************/
 package org.eclipse.kapua.app.console.module.data.server;
 
-import com.extjs.gxt.ui.client.Style;
-import com.extjs.gxt.ui.client.data.BaseListLoadResult;
-import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
-import com.extjs.gxt.ui.client.data.ListLoadResult;
-import com.extjs.gxt.ui.client.data.LoadConfig;
-import com.extjs.gxt.ui.client.data.ModelData;
-import com.extjs.gxt.ui.client.data.PagingLoadConfig;
-import com.extjs.gxt.ui.client.data.PagingLoadResult;
-import com.google.common.base.Strings;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.kapua.KapuaException;
 import org.eclipse.kapua.app.console.module.api.client.GwtKapuaErrorCode;
@@ -39,6 +38,7 @@ import org.eclipse.kapua.app.console.module.data.shared.util.GwtKapuaDataModelCo
 import org.eclipse.kapua.app.console.module.data.shared.util.KapuaGwtDataModelConverter;
 import org.eclipse.kapua.locator.KapuaLocator;
 import org.eclipse.kapua.model.id.KapuaId;
+import org.eclipse.kapua.model.query.KapuaListResult;
 import org.eclipse.kapua.model.type.ObjectTypeConverter;
 import org.eclipse.kapua.service.datastore.ChannelInfoFactory;
 import org.eclipse.kapua.service.datastore.ChannelInfoRegistryService;
@@ -71,7 +71,6 @@ import org.eclipse.kapua.service.datastore.model.query.predicate.ChannelMatchPre
 import org.eclipse.kapua.service.datastore.model.query.predicate.DatastorePredicateFactory;
 import org.eclipse.kapua.service.device.registry.Device;
 import org.eclipse.kapua.service.device.registry.DeviceFactory;
-import org.eclipse.kapua.service.device.registry.DeviceListResult;
 import org.eclipse.kapua.service.device.registry.DeviceQuery;
 import org.eclipse.kapua.service.device.registry.DeviceRegistryService;
 import org.eclipse.kapua.service.storable.model.query.SortDirection;
@@ -83,13 +82,15 @@ import org.eclipse.kapua.service.storable.model.query.predicate.RangePredicate;
 import org.eclipse.kapua.service.storable.model.query.predicate.StorablePredicate;
 import org.eclipse.kapua.service.storable.model.query.predicate.TermPredicate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.extjs.gxt.ui.client.Style;
+import com.extjs.gxt.ui.client.data.BaseListLoadResult;
+import com.extjs.gxt.ui.client.data.BasePagingLoadResult;
+import com.extjs.gxt.ui.client.data.ListLoadResult;
+import com.extjs.gxt.ui.client.data.LoadConfig;
+import com.extjs.gxt.ui.client.data.ModelData;
+import com.extjs.gxt.ui.client.data.PagingLoadConfig;
+import com.extjs.gxt.ui.client.data.PagingLoadResult;
+import com.google.common.base.Strings;
 
 public class GwtDataServiceImpl extends KapuaRemoteServiceServlet implements GwtDataService {
 
@@ -308,7 +309,7 @@ public class GwtDataServiceImpl extends KapuaRemoteServiceServlet implements Gwt
                     clientIds.add(client.getClientId());
                 }
                 DeviceQuery deviceQuery = deviceFactory.newQuery(convertedScopeId);
-                DeviceListResult deviceListResult = deviceRegistryService.query(deviceQuery);
+                KapuaListResult<Device> deviceListResult = deviceRegistryService.query(deviceQuery);
                 Map<String, String> clientIdsMap = buildClientIdsMap(clientIds, deviceListResult);
 
                 devices = buildDevicesList(result, clientIdsMap);
@@ -335,7 +336,7 @@ public class GwtDataServiceImpl extends KapuaRemoteServiceServlet implements Gwt
         return devices;
     }
 
-    private Map<String, String> buildClientIdsMap(List<String> clientIds, DeviceListResult deviceListResult) {
+    private Map<String, String> buildClientIdsMap(List<String> clientIds, KapuaListResult<Device> deviceListResult) {
         Map<String, String> clientIdsMap = new HashMap<String, String>();
         for (Device device : deviceListResult.getItems()) {
             if (clientIds.contains(device.getClientId())) {
@@ -423,7 +424,8 @@ public class GwtDataServiceImpl extends KapuaRemoteServiceServlet implements Gwt
     }
 
     @Override
-    public PagingLoadResult<GwtMessage> findMessagesByAssets(PagingLoadConfig loadConfig, String scopeId, GwtDatastoreDevice device, GwtDatastoreAsset asset, List<GwtHeader> headers, Date startDate, Date endDate)
+    public PagingLoadResult<GwtMessage> findMessagesByAssets(PagingLoadConfig loadConfig, String scopeId, GwtDatastoreDevice device, GwtDatastoreAsset asset, List<GwtHeader> headers, Date startDate,
+            Date endDate)
             throws GwtKapuaException {
         ChannelMatchPredicate assetPredicate = DATASTORE_PREDICATE_FACTORY.newChannelMatchPredicate(asset.getTopick());
         TermPredicate devicePredicate = DATASTORE_PREDICATE_FACTORY.newTermPredicate(MessageField.CLIENT_ID, device.getDevice());
@@ -474,7 +476,8 @@ public class GwtDataServiceImpl extends KapuaRemoteServiceServlet implements Gwt
             OrPredicate metricsPredicate = DATASTORE_PREDICATE_FACTORY.newOrPredicate();
             for (GwtHeader header : headers) {
                 try {
-                    metricsPredicate.getPredicates().add(DATASTORE_PREDICATE_FACTORY.newMetricExistsPredicate(header.getName(), (Class<? extends Comparable>) ObjectTypeConverter.fromString(header.getType().toLowerCase())));
+                    metricsPredicate.getPredicates()
+                            .add(DATASTORE_PREDICATE_FACTORY.newMetricExistsPredicate(header.getName(), (Class<? extends Comparable>) ObjectTypeConverter.fromString(header.getType().toLowerCase())));
                 } catch (ClassNotFoundException e) {
                     throw new GwtKapuaException(GwtKapuaErrorCode.INTERNAL_ERROR, e);
                 }
